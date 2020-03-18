@@ -4,12 +4,13 @@ DROP TABLE IF EXISTS ORGANIZATION;
 DROP TABLE IF EXISTS USER;
 DROP TABLE IF EXISTS RESEARCH_TOPIC;
 DROP TABLE IF EXISTS CONFERENCE;
+DROP TABLE IF EXISTS USER_CONFERENCE;
 DROP TABLE IF EXISTS CONFERENCE_CATEGORY;
 DROP TABLE IF EXISTS PAPER;
 DROP TABLE IF EXISTS REVIEW;
 SET FOREIGN_KEY_CHECKS = 1;
 
-CREATE TABLE ORGANIZATION(OrganizationID int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE ORGANIZATION(OrganizationID int(10) unsigned NOT NULL AUTO_INCREMENT, 
 Title varchar(255) not null,
 primary key (OrganizationID)
 );
@@ -47,7 +48,12 @@ title varchar(255) not null,
 website varchar(255) not null,
 primary key (ConferenceID));
 
-
+CREATE TABLE USER_CONFERENCE(
+UserID int(10) unsigned not null,
+ConferenceID int(10) unsigned not null,
+FOREIGN KEY (UserID) REFERENCES USER(UserID),
+FOREIGN KEY (ConferenceID) REFERENCES CONFERENCE(ConferenceID),
+primary key (UserID,ConferenceID));
 
 CREATE TABLE CONFERENCE_CATEGORY(ConferenceCategoryID int(10) unsigned not null AUTO_INCREMENT,
 Title varchar(255) not null,
@@ -84,4 +90,6 @@ conferenceName varchar(255) not null,
 paperTitle varchar(255) not null,
 review varchar(255) not null,
 status varchar(255) not null,
+FOREIGN KEY (UserID) REFERENCES USER(UserID),
+FOREIGN KEY (PaperID) REFERENCES Paper(PaperID),
 primary key (UserID,PaperID));
