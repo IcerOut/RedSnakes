@@ -160,7 +160,7 @@ class Paper(models.Model):
         abstract: varchar(10000)
         title: varchar(255)
     """
-    authorEmail = models.CharField(max_length=255)
+    authorEmail = models.EmailField()
     conference = models.ForeignKey(Conference, on_delete=models.PROTECT)
     conferenceName = models.CharField(max_length=255)
     fileURL = models.CharField(max_length=255)
