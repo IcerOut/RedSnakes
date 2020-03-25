@@ -36,10 +36,8 @@ class User(models.Model):
     affiliation = models.CharField(max_length=255)
     email = models.EmailField()
     fullName = models.CharField(max_length=255)
-    locationX = models.FloatField()
-    locationY = models.FloatField()
-    photoURL = models.CharField(max_length=255)
-    street = models.CharField(max_length=255)
+    userName = models.CharField(max_length=255)
+    webPage = models.CharField(max_length=255)
 
 
     def createAccount(self):
