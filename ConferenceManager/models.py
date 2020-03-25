@@ -71,8 +71,6 @@ class Conference(models.Model):
     Stores the information about a Conference
     Fields:
         -category: Varchar(50)
-        -coordsX: float
-        -coordsY: float
         -deadlineAbstract: date
         -deadlineBiding: date
         -deadlinePaper: date
@@ -88,8 +86,6 @@ class Conference(models.Model):
         -website:Varchar(50)
     """
     category = models.CharField(max_length=50)
-    coordsX = models.FloatField()
-    coordsY = models.FloatField()
     deadlineAbstract = models.DateField()
     deadlineBiding = models.DateField()
     deadlinePaper = models.DateField()
