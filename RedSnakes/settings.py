@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'RedSnakes.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'redsnakes',
+        'USER': 'root',
+        'Password': '',
+        'HOST': '127.0.0.1',
+        'PORT': '10245'
     }
 }
 
