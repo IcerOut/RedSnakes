@@ -193,3 +193,48 @@ class Review:
         return f'Review[User = {self.user}, Paper = {self.paper}, AssignedReviewerEmail = {self.assignedReviewerEmail}, ConferenceName = {self.conferenceName}, Review = {self.review}, status = {self.status}]'
 
     __repr__ = __str__
+
+
+class ChairMember(models.Model):
+    User=models.User;
+    def evaluatePapers(self):
+        pass
+    def chooseSelectionParticipate(self):
+        pass
+
+class Speaker(models.Model):
+    User = models.User;
+    def editPaper(self):
+        pass
+    def chooseSection(self):
+        pass
+
+class Listener(models.Model):
+    User = models.User;
+    def enlistToConference(self):
+        pass
+    def chooseSection(self):
+
+class ScMember(models.Model):
+    ChairMember = models.ChairMember;
+
+class PcMember(models.Model):
+    ChairMember = models.ChairMember;
+    def chooseReviewPaper(self):
+        pass
+
+class Chair(models.Model):
+    ChairMember = models.ChairMember;
+    def askForExtraReview(self):
+        pass
+    def assignReviewPaper(self,paperId):
+        pass
+class CoChair(models.Model):
+    ChairMember = models.ChairMember;
+    def assignReviewPaper(self,paperId):
+        pass
+
+
+
+
+
