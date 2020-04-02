@@ -214,6 +214,7 @@ class Listener(models.Model):
     def enlistToConference(self):
         pass
     def chooseSection(self):
+        pass
 
 class ScMember(models.Model):
     ChairMember = models.ChairMember;
