@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script type="text/javascript" src="scripts.js"></script>
+    <meta charset="UTF-8">
+    <title>Review</title>
+</head>
+<body>
+
+<div class="title">
+    <h1>Paper name</h1>
+</div>
+
+<div class="left-container">
+    <div>
+        <ul>
+            <li>
+                <input type="radio" id="strong-reject" name="evaluation" value="strong-reject"/>
+                <label for="strong-reject">Strong reject</label>
+            </li>
+            <li>
+                <input type="radio" id="weak-reject" name="evaluation" value="weak-reject"/>
+                <label for="weak-reject">Weak reject</label>
+            </li>
+            <li>
+                <input type="radio" id="neutral" name="evaluation" value="neutral"/>
+                <label for="neutral">Neutral</label>
+            </li>
+            <li>
+                <input type="radio" id="weak-accept" name="evaluation" value="weak-accept"/>
+                <label for="weak-accept">Weak accept</label>
+            </li>
+            <li>
+                <input type="radio" id="strong-accept" name="evaluation" value="strong-accept"/>
+                <label for="strong-accept">Strong accept</label>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+    <div>
+        <label for="justification">Justification</label>
+        <br>
+        <textarea id="justification" placeholder="Justification..."></textarea>
+    </div>
+
+    <div>
+        <label for="recommendations">Recommendations</label>
+        <br>
+        <textarea id="recommendations" placeholder="Recommendations..."></textarea>
+    </div>
+
+    <br>
+    <button type="submit" onclick="sendReview()">Submit</button>
+</div>
+
+</body>
+</html>
