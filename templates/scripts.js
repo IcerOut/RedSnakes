@@ -11,7 +11,7 @@ function loadTitle() {
             title.children[0].innerHTML = json["title"];
         }
     };
-    http.open("GET", "api/papers/get?id=" + id);
+    http.open("GET", "api/papers/get?id=" + id, true);
     http.send(null);
 }
 
@@ -38,7 +38,7 @@ function sendReview() {
     let json = JSON.stringify(dict);
 
     let http = new XMLHttpRequest();
-    http.open("POST", "api/review/add?id=" + id);
+    http.open("POST", "api/review/add?id=" + id, true);
     http.send(json);
 }
 
@@ -75,7 +75,7 @@ function getReviews() {
             table.replaceChild(new_tbody, old_tbody);
         }
     };
-    http.open("POST", "api/reviews/getAll");
+    http.open("POST", "api/reviews/getAll", true);
     http.send(null);
 }
 
@@ -118,7 +118,7 @@ function getPapers() {
             table.replaceChild(new_tbody, old_tbody);
         }
     };
-    http.open("GET", "api/papers/getAll");
+    http.open("GET", "api/papers/getAll", true);
     http.send(null);
 }
 
@@ -140,6 +140,84 @@ function sendBidding() {
     let json = JSON.stringify(result);
 
     let http = new XMLHttpRequest();
-    http.open("POST", "api/review/sendbidding");
+    http.open("POST", "api/review/sendbidding", true);
     http.send(json);
+}
+
+function getConferences() {
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let table = document.getElementsByTagName("table")[0];
+            let old_tbody = document.getElementsByTagName("tbody")[0];
+            let new_tbody = document.createElement('tbody');
+
+            let json = jsonParse(this.responseText);
+
+            for(let i = 0; i < json.length; i++) {
+                let conference = json[i];
+
+                let row = new_tbody.insertRow();
+                let cell = row.insertCell();
+                cell.appendChild(document.createTextNode(conference["title"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(conference["description"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(conference["deadline-signup"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(conference["price"]));
+
+                let userType = getUserType();
+
+                let button = document.createElement("a");
+                button.classList.add("button-link");
+                button.innerHTML = "Register";
+
+                switch (userType) {
+                    case "listener":
+                        button.setAttribute("href", "listener-register.html"); //fixme
+                        break;
+                    case "speaker":
+                        button.setAttribute("href", "speaker-register.html"); //fixme
+                        break;
+                    case "chair":
+                        button.setAttribute("href", "chair-register.html"); //fixme
+                        break;
+                    default:
+                        console.log("Invalid user type");
+                }
+
+                cell = row.insertCell();
+                cell.appendChild(button);
+            }
+            table.replaceChild(new_tbody, old_tbody);
+        }
+    };
+    http.open("GET", "ff.php", true);
+    http.send(null);
+}
+
+function showAddConferenceButton() {
+    let userType = getUserType();
+
+    if(userType === "chair") {
+        let button = document.createElement("a");
+        button.setAttribute("href", "add-conference.html"); //fixme
+        button.classList.add("button-link");
+        button.innerHTML = "Add conference";
+
+        let container = document.getElementsByClassName("center-container")[0];
+        container.appendChild(button);
+    }
+}
+
+function getUserType() {
+    let http = new XMLHttpRequest();
+    http.open("GET", "f.php", false);
+    http.send(null);
+
+    let response = http.responseText;
+    let json = jsonParse(response);
+
+    return json["type"];
 }
