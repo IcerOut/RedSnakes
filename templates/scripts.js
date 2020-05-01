@@ -140,7 +140,7 @@ function sendBidding() {
     let json = JSON.stringify(result);
 
     let http = new XMLHttpRequest();
-    http.open("POST", "api/review/sendbidding", true);
+    http.open("POST", "api/review/sendBidding", true);
     http.send(json);
 }
 
@@ -193,7 +193,7 @@ function getConferences() {
             table.replaceChild(new_tbody, old_tbody);
         }
     };
-    http.open("GET", "ff.php", true);
+    http.open("GET", "api/conference/getAll", true);
     http.send(null);
 }
 
@@ -205,6 +205,7 @@ function showAddConferenceButton() {
         button.setAttribute("href", "add-conference.html"); //fixme
         button.classList.add("button-link");
         button.innerHTML = "Add conference";
+        button.setAttribute("style", "margin-left: auto; margin-right: auto; margin-top: 25px");
 
         let container = document.getElementsByClassName("center-container")[0];
         container.appendChild(button);
@@ -213,7 +214,7 @@ function showAddConferenceButton() {
 
 function getUserType() {
     let http = new XMLHttpRequest();
-    http.open("GET", "f.php", false);
+    http.open("GET", "api/user/getUserType", false);
     http.send(null);
 
     let response = http.responseText;
