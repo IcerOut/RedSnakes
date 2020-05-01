@@ -1,4 +1,24 @@
+function loadTitle() {
+    const UrlParams = new URLSearchParams(window.location.search);
+    const id = UrlParams.get("id");
+
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let json = jsonParse(this.responseText);
+
+            let title = document.getElementsByClassName("title")[0];
+            title.children[0].innerHTML = json["title"];
+        }
+    };
+    http.open("GET", "api/papers/get?id=" + id);
+    http.send(null);
+}
+
 function sendReview() {
+    const UrlParams = new URLSearchParams(window.location.search);
+    const id = UrlParams.get("id");
+
     let radioValues = document.getElementsByName("evaluation");
     let selectedValue;
 
@@ -18,7 +38,7 @@ function sendReview() {
     let json = JSON.stringify(dict);
 
     let http = new XMLHttpRequest();
-    http.open("POST", "api/review/add");
+    http.open("POST", "api/review/add?id=" + id);
     http.send(json);
 }
 
