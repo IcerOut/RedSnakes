@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conference</title>
+</head>
+<body>
+    <h1>Conference Management Platform</h1>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+
+
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            </ul>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
+                        <span class="clearfix d-none d-sm-inline-block"> Logout </span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'account_login' %}">
+                        <span class="clearfix d-none d-sm-inline-block"> Login </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+                        <span class="clearfix d-none d-sm-inline-block"> Signup </span>
+                    </a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</nav>
+</body>
+</html>

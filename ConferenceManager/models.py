@@ -195,43 +195,37 @@ class Review:
     __repr__ = __str__
 
 
-class ChairMember(models.Model):
-    User=models.User;
+class ChairMember(User):
     def evaluatePapers(self):
         pass
     def chooseSelectionParticipate(self):
         pass
 
-class Speaker(models.Model):
-    User = models.User;
+class Speaker(User):
     def editPaper(self):
         pass
     def chooseSection(self):
         pass
 
-class Listener(models.Model):
-    User = models.User;
+class Listener(User):
     def enlistToConference(self):
         pass
     def chooseSection(self):
         pass
 
-class ScMember(models.Model):
-    ChairMember = models.ChairMember;
+class ScMember(ChairMember):
+    pass
 
-class PcMember(models.Model):
-    ChairMember = models.ChairMember;
+class PcMember(ChairMember):
     def chooseReviewPaper(self):
         pass
 
-class Chair(models.Model):
-    ChairMember = models.ChairMember;
+class Chair(ChairMember):
     def askForExtraReview(self):
         pass
     def assignReviewPaper(self,paperId):
         pass
-class CoChair(models.Model):
-    ChairMember = models.ChairMember;
+class CoChair(ChairMember):
     def assignReviewPaper(self,paperId):
         pass
 

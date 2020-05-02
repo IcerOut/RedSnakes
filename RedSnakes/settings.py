@@ -37,8 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'ConferenceManager.apps.ConferencemanagerConfig',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'django.contrib.sites',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +59,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'RedSnakes.urls'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 TEMPLATES = [
     {
@@ -80,9 +93,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'redsnakes',
         'USER': 'root',
-        'Password': '',
-        'HOST': '127.0.0.1',
-        'PORT': '10245'
+        # 'Password': '',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '10245'
     }
 }
 
