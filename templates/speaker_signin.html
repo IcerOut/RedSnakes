@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Speaker sign up</title>
+	<link rel="stylesheet" href="upload.css">
+	<script src="upload.js"></script>
+</head>
+<body>
+
+	<div id="upperHalf">
+		<ul id="input">
+			<li><p>Insert conference name here</p></li>
+			<li><input type="text" id="title" placeholder="Title"></li>
+			<li><input type="text" id="authors" placeholder="Authors"></li>
+			<li><input type="text" id="topics" placeholder="Topics"></li>
+			<li><input type="text" id="keywords" placeholder="Keywords"></li>
+		</ul>
+		<button id="reg" class="btn" onclick="speakerRegister()">Register</button>
+	</div>
+
+	<div id="line">
+		<svg version="1.1" id="line_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1200px" height="5px" xml:space="preserve">
+	  		<path class="path2" fill="#01a09e" stroke-width="3" stroke="black" d="M0 0 l1120 0"/>
+		</svg>
+	</div>
+
+	<div>
+		<textarea id="abst" placeholder="Abstract"></textarea>
+		<button id="sendAbstr" onclick="sendAbstract()" class="btn">Send Abstract</button>
+		<p id="deadline">Abstract deadline: </p>
+	</div>
+
+	<div id="line">
+		<svg version="1.1" id="line_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1200px" height="5px" xml:space="preserve">
+	  		<path class="path2" fill="#01a09e" stroke-width="3" stroke="black" d="M0 0 l1120 0"/>
+		</svg>
+	</div>
+
+	<div id="upfileDiv">
+		<form action="/action_page.php">
+	  		<input type="file" class="custom-file-upload" id="myFile" name="filename">
+  			<input type="submit" class="custom-file-upload">
+		</form>
+		<p>Paper deadline: </p>
+	</div>
+
+</body>
+</html>
