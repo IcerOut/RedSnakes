@@ -31,21 +31,60 @@ function loadTitleConference(){
     http.send(null);
 }
 
+function sendListenerInfo()
+{
+    if(document.getElementById("terms").checked == true){
+      
+        const UrlParams = new URLSearchParams(window.location.search);
+        const id = UrlParams.get("id");
+        let http = new XMLHttpRequest();
+
+        let list=[];
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let json = jsonParse(this.responseText);
+            let title=json["title"];
+            let info=document.getElementById("payment").value;
+            let dict={title: title, info: info};
+            alert(info);
+            list.push(dict);
+
+            //we don t know for sure 
+
+        }
+    }
+    let information=JSON.stringify(list);
+    http.open("GET", "api/conference/get?id=" + id, true);
+    http.send(information);
+
+    }
+    else{
+        alert("Agree with terms and coditions first");
+    }
+}
+
 function sendChairInfo(){
     if(document.getElementById("terms").checked == true)
     {
         const UrlParams = new URLSearchParams(window.location.search);
         const id = UrlParams.get("id");
         let http = new XMLHttpRequest();
+    let list=[];
     http.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             let json = jsonParse(this.responseText);
+            
+            let dict={title: json["title"]};
+            list.push(dict);
+
             //we don t know for sure 
 
         }
     }
+    //WE DON T KNOW FOR SURE
+    var title=JSON.stringify(list);
     http.open("GET", "api/conference/get?id=" + id, true);
-    http.send(json);
+    http.send(title);
     }
     else{
         alert("Agree with terms and coditions first");

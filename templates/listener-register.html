@@ -4,24 +4,25 @@
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
          <script type="text/javascript" src="scripts.js"></script>
          <meta charset="UTF-8">
-        <title>Conference Chair Sign up</title>
+        <title>Listener Sign up</title>
 
     </head>
 
-    <body  onload="loadTitleConference()">
+    <body onload="loadTitleConference()">
         <div class="left-container">
-        <div class="title">
-            <h1></h1>
-        </div>
+
+            <div class="title">
+                <h1></h1>
+            </div>
+        <input type="text" id="payment" placeholder="Payment Information...">
+        <br>
+        <br>
         <input type="checkbox" id="terms">
         <label for="terms"> I agree with terms and conditions</label><br>
         <br>
         <br>
+        <button type="submit" onclick="sendListenerInfo()">Register</button>
 
-        <button type="submit" onclick="sendChairInfo()">Register</button>
-
-</div>
-
-
+        </div>
     </body>
 </html>
