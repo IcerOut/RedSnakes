@@ -122,6 +122,49 @@ function getPapers() {
     http.send(null);
 }
 
+function getEvaluationPapers(){
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let table = document.getElementsByTagName("table")[0];
+            let old_tbody = document.getElementsByTagName("tbody")[0];
+            let new_tbody = document.createElement('tbody');
+
+            let json = jsonParse(this.responseText);
+
+            for(let i = 0; i < json.length; i++) {
+                let paper = json[i];
+
+                let row = new_tbody.insertRow();
+                let cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["title"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["abstract"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["conferenceName"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["authorEmail"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["fileUrl"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["timestamp"]));
+
+                let button = document.createElement("a");
+                button.classList.add("button-link");
+                button.innerHTML = "Evaluate";
+
+                button.setAttribute("href", "/api/paper/review?id=" + paper["id"]);
+
+                cell = row.insertCell();
+                cell.appendChild(button);
+            }
+            table.replaceChild(new_tbody, old_tbody);
+        }
+    };
+    http.open("GET", "api/papers/getAll", true);
+    http.send(null);
+}
+
 function sendBidding() {
     let combobox = document.getElementsByTagName("select");
 
