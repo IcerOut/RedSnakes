@@ -14,6 +14,44 @@ function loadTitle() {
     http.open("GET", "api/papers/get?id=" + id, true);
     http.send(null);
 }
+function loadTitleConference(){
+    const UrlParams = new URLSearchParams(window.location.search);
+    const id = UrlParams.get("id");
+
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let json = jsonParse(this.responseText);
+
+            let title = document.getElementsByClassName("title")[0];
+            title.children[0].innerHTML = json["title"];
+        }
+    };
+    http.open("GET", "api/conference/get?id=" + id, true);
+    http.send(null);
+}
+
+function sendChairInfo(){
+    if(document.getElementById("terms").checked == true)
+    {
+        const UrlParams = new URLSearchParams(window.location.search);
+        const id = UrlParams.get("id");
+        let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let json = jsonParse(this.responseText);
+            //we don t know for sure 
+
+        }
+    }
+    http.open("GET", "api/conference/get?id=" + id, true);
+    http.send(json);
+    }
+    else{
+        alert("Agree with terms and coditions first");
+    }
+
+}
 
 function sendReview() {
     const UrlParams = new URLSearchParams(window.location.search);
