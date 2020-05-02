@@ -422,3 +422,39 @@ function getUserType() {
 
     return json["type"];
 }
+
+function speakerRegister()
+{
+    var title = document.getElementById("title").value;
+    var authors = document.getElementById("authors").value;
+    var topics = document.getElementById("topics").value;
+    var keywords = document.getElementById("keywords").value;
+
+    let dict = {
+        title: title,
+        authors: authors,
+        topics: topics,
+        keywords: keywords
+    };
+
+    let json = JSON.stringify(dict);
+
+    let http = new XMLHttpRequest();
+    http.open("POST", "api/speaker/register",true);
+    http.send(json);
+
+};
+
+function sendAbstract()
+{
+    var abstract_content = document.getElementById("abst").value;
+    let dict = {
+        content: abstract_content
+    }
+
+    let json = JSON.stringify(dict);
+
+    let http = new XMLHttpRequest();
+    http.open("POST", "api/speaker/sendAbstract",true);
+    http.send(json);
+}
