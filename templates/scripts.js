@@ -458,3 +458,157 @@ function sendAbstract()
     http.open("POST", "api/speaker/sendAbstract",true);
     http.send(json);
 }
+
+
+
+
+/* split into section */
+
+function initialize(){
+    loadedPapers();
+    loadedChairs();
+    rowHighlight();
+    document.getElementById('arrow').onclick = getSelected;
+    document.getElementById('addSection').onclick=submitSection;
+}
+
+function loadedPapers(){
+    /*
+        Get all available papers and populate papers table;
+    */
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let tablePapers = document.getElementsByTagName('table')[1];
+            let old_tbody = document.getElementsByTagName("tbody")[1];
+            let new_tbody = document.createElement('tbody');
+            let json = jsonParse(this.responseText);
+            for(let i = 0; i < json.length; i++) {
+                let paper = json[i];
+                let row = new_tbody.insertRow();
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["PaperID"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["title"]));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(paper["authorEmail"]));
+            } 
+            table.replaceChild(new_tbody, old_tbody);
+
+        }
+    };
+    http.open("GET", "api/papers/getAll", true);
+    http.send(null);
+}
+
+function loadedChairs(){
+    /*
+        Get all available chairs and populate dropdown select;
+    */
+    let http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            var selectInput = document.getElementById('chairs');
+            let json = jsonParse(this.responseText);
+            for(let i = 0; i < json.length; i++) {
+                let chair = json[i];
+                var option = document.createElement('option');
+                option.appendChild(document.createTextNode(chair["fullName"]));
+                option.value=chair["fullName"];
+                selectInput.appendChild(option);
+            } 
+        }
+    };
+    http.open("GET", "api/users/getAll", true);
+    http.send(null); 
+}
+
+function rowHighlight() {
+    /*
+        Adds on the papers table, on each row, an onclick handler that simply adds a selected attribute
+        ++ hightlight on the selected row
+    */
+    let table = document.getElementsByTagName("table")[1];
+    var rows = table.getElementsByTagName("tr");
+    for (i = 0; i < rows.length; i++) {
+      var currentRow = table.rows[i];
+      var createClickHandler = function(row) {
+        return function() {
+            row.setAttribute('selected', 'true');
+            row.style.color = '#3460b8';
+        };
+      };
+      currentRow.onclick = createClickHandler(currentRow);
+    }
+}
+
+function getSelected(){
+    /*
+        Check for the rows from the Sections table that were selected + move them to Papers
+    */
+    var table = document.getElementsByTagName("table")[1]; 
+    var rows = table.childNodes[3].childNodes; //third child is the tbody
+    for (let i=0;i<rows.length;i++){    
+        if (rows[i].getAttribute('selected')){ //check if selected
+            movePaper(rows[i]);
+            table.deleteRow(rows[i].rowIndex); //deletes the row from the sections table
+        }
+    }
+}
+
+function movePaper(element){
+    /*
+        Got the row itself and the id... need to move to the other table;
+    */
+   let tableSections = document.getElementsByTagName("table")[0];
+   let tbody = document.getElementsByTagName("tbody")[0];
+   let cells = element.cells;
+   let row = tbody.insertRow();
+   for (let i=0;i<cells.length;i++){
+        cell = row.insertCell();
+        cell.appendChild(document.createTextNode(cells[i].innerHTML));
+   }
+}
+
+
+function submitSection(){
+    /*
+        Submit a section by taking the ids of the chosen papers and form data.
+    */
+    var name = document.querySelector('#name').value;
+    var select = document.getElementById('chairs');
+    var chairName = select.options[select.selectedIndex].value;
+
+    let idPapers = []; 
+    var table = document.getElementsByTagName("table")[0]; 
+    var rows = table.childNodes[3].childNodes; 
+    for (let i=1;i<rows.length;i++){    
+        idPapers.push(rows[i].querySelector('td').innerHTML);
+    }
+
+    let parameters = {
+        'name': name,
+        'chairName': chairName,
+        'idPapers': idPapers
+    };
+
+    if (name === ""){
+        alert('Add Section Name');
+        return;
+    }
+    if (chairName === ""){
+        alert("Select Chair!")
+        return;
+    }
+    if (idPapers.length===0){
+        alert("Add Papers to the Section!");
+        return;
+    }
+
+    let json = JSON.stringify(parameters);
+    let http = new XMLHttpRequest();
+    http.open("POST", "api/review/submitSection", true);
+    http.send(json);
+}
+
+/* split into sections done*/

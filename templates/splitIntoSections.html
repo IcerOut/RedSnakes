@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="splitIntoSections.css">
+        <link rel="stylesheet" href="stylesheet.css">
+        <script src="scripts.js"></script>
+    </head>
+    <body onload="initialize()">
+        <section id="lists">
+            <div id="sections">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paper Id</th>
+                            <th>Paper title</th>
+                            <th>Author email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <svg id="arrow" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                width="80" height="80"
+                viewBox="0 0 172 172"
+                style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g><path d="M5.82005,86l66.20495,-66.20495v45.77995h94.6v40.85h-94.6v45.77995z" fill="#ffffff"></path><path d="M70.95,22.3901v42.1099v2.15h2.15h92.45v38.7h-92.45h-2.15v2.15v42.1099l-63.6099,-63.6099l63.6099,-63.6099M73.1,17.2l-68.8,68.8l68.8,68.8v-47.3h94.6v-43h-94.6v-47.3z" fill="#000000"></path></g></g>
+            </svg>     
+            </div>
+            <div id="papers">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paper Id</th>
+                            <th>Paper title</th>
+                            <th>Author email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="inputs">
+            <form>
+                <input type="text" name="name" id="name" placeholder="New Section Name">
+                <select id="chairs" name="chairs">
+                    <option value="" disabled selected hidden>Session Chair</option>
+                </select>
+                <input type="button" name="addSection" id="addSection" value="Add Section">
+            </form>
+        </section>
+    </body>
+</html>
