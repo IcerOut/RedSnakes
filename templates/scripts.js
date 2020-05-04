@@ -38,29 +38,3 @@ function getUserType() {
 
     return json["type"];
 }
-
-
-function sendReviewer() {
-    let combobox = document.getElementsByTagName("select");
-
-    let result = [];
-
-    for (let i = 0; i < combobox.length; i++) {
-        let id = combobox[i].id.substring(16);
-        let choice = combobox[i].value;
-        // let reviewerId = choice.split()
-
-        let dict = {
-            id: id,
-            choice: choice
-        };
-
-        result.push(dict);
-    }
-
-    let json = JSON.stringify(result);
-
-    let http = new XMLHttpRequest();
-    http.open("POST", "api/paper/sendReviewer", true); //fixme
-    http.send(json);
-}
