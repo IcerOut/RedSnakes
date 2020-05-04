@@ -26,7 +26,7 @@
         <!-- Links -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-            </ul>
+            <ul>
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
@@ -41,7 +41,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
-                        <span class="clearfix d-none d-sm-inline-block"> Signup </span>
+                        <span class="clearfix d-none d-sm-inline-block"> Sign-up </span>
                     </a>
                 </li>
             {% endif %}

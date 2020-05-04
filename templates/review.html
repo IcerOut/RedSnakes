@@ -2,11 +2,39 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    <script type="text/javascript" src="scripts.js"></script>
+    <script type="text/javascript" src="scripts.js"></script><!--Used for loadTitle();-->
     <meta charset="UTF-8">
     <title>Review</title>
 </head>
 <body onload="loadTitle()">
+<script>
+    function sendReview() {
+        const UrlParams = new URLSearchParams(window.location.search);
+        const id = UrlParams.get("id");
+
+        let radioValues = document.getElementsByName("evaluation");
+        let selectedValue;
+
+        for (let i = 0; i < radioValues.length; i++) {
+            if (radioValues[i].checked === true) {
+                selectedValue = radioValues[i].value;
+            }
+        }
+
+        let justificationText = document.getElementById("justification").value;
+        let recommendationsText = document.getElementById("recommendations").value;
+
+        let dict = { evaluation: selectedValue,
+            justification: justificationText,
+            recommendations: recommendationsText };
+
+        let json = JSON.stringify(dict);
+
+        let http = new XMLHttpRequest();
+        http.open("POST", "api/review/add?id=" + id, true);
+        http.send(json);
+    }
+</script>
 
 <div class="title">
     <h1></h1>
