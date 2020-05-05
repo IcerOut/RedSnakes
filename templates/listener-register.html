@@ -40,20 +40,37 @@
         }
     }
 </script>
-<div class="left-container">
+<style>
+    form input{
+        display: inline-block;
+    }
 
+    button, input[type="text"]{
+        margin: 10px;
+        min-width: 200px;
+    }
+
+    label{
+        margin-left: 12px;
+    }
+
+    .left-container{
+        margin-top: 12%;
+        margin-left: 30%;
+        max-width: 500px;
+    }
+
+</style>
+<div class="left-container" style="border: 1px solid grey;">
     <div class="title">
         <h1></h1>
     </div>
-    <input type="text" id="payment" placeholder="Payment Information...">
-    <br>
-    <br>
-    <input type="checkbox" id="terms">
-    <label for="terms"> I agree with terms and conditions</label><br>
-    <br>
-    <br>
-    <button type="submit" onclick="sendListenerInfo()">Register</button>
-
+    <form>
+        <input type="text" id="payment" placeholder="Payment Information..."><br>
+        <label for="terms"> I agree with terms and conditions</label>
+        <input type="checkbox" id="terms"><br>
+        <button type="submit" onclick="sendListenerInfo()">Register</button>
+    </form>
 </div>
 </body>
 </html>

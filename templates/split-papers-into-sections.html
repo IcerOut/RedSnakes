@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="splitIntoSections.css"><!--FIXME convert to inline CSS-->
     <link rel="stylesheet" href="stylesheet.css">
     <meta charset="UTF-8">
     <title>Split Papers Into Sections</title>
@@ -153,6 +152,45 @@
         document.getElementById('addSection').onclick = submitSection;
     }
 </script>
+<style>
+    section{
+        display: block;
+        margin-left: 20%;
+    }
+
+    input{
+        display: block;
+        position: relative;
+        width: 250px;
+    }
+    
+    select{
+        margin-top: 5px;
+        width: 250px;
+    }
+
+    input[type="button"]{
+        margin-left: 50px;
+        margin-top: 30px;
+        width: 150px;
+    }
+    
+    #lists div{
+        display: inline-block;
+        position: relative;
+        margin-top: 5%;
+    }
+    #sections, #papers{
+        min-height: 400px;
+        min-width: 100px;
+        }
+
+    #arrow{
+        position: relative;
+        margin-right: 60px;
+        margin-bottom: 100%;
+    }
+</style>
 <section id="lists">
     <div id="sections">
         <table>

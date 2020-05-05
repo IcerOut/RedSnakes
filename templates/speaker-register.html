@@ -42,10 +42,44 @@
         http.send(json);
     }
 </script>
+<style>
+    p{
+        font-size: 15px;
+        margin: 3px;
+        padding: 0;
+    }
+    button, input[type="submit"]{
+        min-width: 150px;
+        margin: 5px;
+    }
+
+    input[type="file"]{
+        min-width: 600px;
+        margin: 5px 5px 15px 5px;
+    }
+
+    #line, #line2{
+        margin-left: 250px;
+    }
+    #upperHalf{
+        margin-left: 40%;
+    }
+
+    #middlePart, #upfileDiv{
+        margin-left: 22%;
+    }
+
+    #sendAbstr{
+        position: relative;
+        bottom: 65px;
+        left: 8px;
+    }
+</style>
+
 
 <div id="upperHalf">
     <ul id="input">
-        <li><p>Insert conference name here</p></li>
+        <li><p>Insert conference name here:</p></li>
         <li><input type="text" id="title" placeholder="Title"></li>
         <li><input type="text" id="authors" placeholder="Authors"></li>
         <li><input type="text" id="topics" placeholder="Topics"></li>
@@ -56,20 +90,21 @@
 
 <div id="line">
     <svg id="line_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-         y="0px" width="1200px" height="5px" xml:space="preserve">
+         y="0px" width="800px" height="5px" xml:space="preserve">
 	  		<path class="path2" fill="#01a09e" stroke-width="3" stroke="black" d="M0 0 l1120 0"/>
 		</svg>
 </div>
 
-<div>
+<div id="middlePart">
     <textarea id="abst" placeholder="Abstract"></textarea>
     <button id="sendAbstr" onclick="sendAbstract()" class="btn">Send Abstract</button>
     <p id="deadline">Abstract deadline: </p>
+
 </div>
 
 <div id="line2">
     <svg id="line_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-         y="0px" width="1200px" height="5px" xml:space="preserve">
+         y="0px" width="800px" height="5px" xml:space="preserve">
 	  		<path class="path2" fill="#01a09e" stroke-width="3" stroke="black" d="M0 0 l1120 0"/>
 		</svg>
 </div>
