@@ -7,3 +7,6 @@ from django.views.generic import View
 
 def home(request):
     return render(request, "home.html")
+
+def conference_list(request):
+    return render(request, "conference-list.html")

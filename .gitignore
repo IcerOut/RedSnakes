@@ -5,3 +5,4 @@ doc/~$ftware Requirements Specification.docx
 doc/~$info.rtf
 env
 ./env
+*.sqlite3

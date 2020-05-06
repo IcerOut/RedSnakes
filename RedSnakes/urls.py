@@ -21,7 +21,7 @@ from ConferenceManager import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^accounts/', include('allauth.urls')),
     path('', views.home, name='home'),
-    url(r'^accounts/', include('allauth.urls'))
-
+    path('conference-list/', views.conference_list, name='conference_list'),
 ]
