@@ -1,15 +1,16 @@
-    <!DOCTYPE html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="navbar.css">
+    <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+
     <title>Conference</title>
 </head>
 <body>
 <div class="navbar">
 
-  <a href="base.html">base</a>
   <a href="conference-list.html">conference list</a>
   <a href="evaluation-results.html">evaluation results</a>
   <a href="submit-new-conference.html">submit conference</a>
@@ -23,13 +24,20 @@
         <a href="review.html">review</a>
         <a href="section-choices.html">section choices</a>
         <a href="split-papers-into-sections.html">split papers into sections</a>
-
     </div>
   </div>
+  <div class = "navbar-right">
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'account_logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'account_login' %}">Login</a>
+        <a href="{% url 'account_signup' %}">Sign-up</a>
+    {% endif %}
+    </div>
 </div>
 
 
-    <div class="mt-5 pt-4">
+    <!-- <div class="mt-5 pt-4">
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -40,37 +48,12 @@
         </div>
         {% endfor %}
         {% endif %}
-    </div>
+    </div> -->
 
 
     <h1>Conference Management Platform</h1>
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
     <div class="container">
-
-        <!-- Links -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-            <ul>
-            {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
-                        <span class="clearfix d-none d-sm-inline-block"> Logout </span>
-                    </a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link waves-effect" href="{% url 'account_login' %}">
-                        <span class="clearfix d-none d-sm-inline-block"> Login </span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
-                        <span class="clearfix d-none d-sm-inline-block"> Sign-up </span>
-                    </a>
-                </li>
-            {% endif %}
-            </ul>
-        </div>
 
     </div>
 </nav>
