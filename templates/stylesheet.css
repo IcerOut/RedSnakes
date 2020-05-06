@@ -2,6 +2,7 @@ body {
     background-color: #2b2b2b;
     color: #a9b7c6;
     font-size: 18px;
+    font-family: 'Tahoma', 'Geneva', sans-serif;
 }
 
 .title{
@@ -38,21 +39,24 @@ li{
     padding: 5px 0;
 }
 
-textarea {
+textarea, input{
     background-color: #3c3c3c;
-    min-width: 600px;
-    min-height: 150px;
     color: #a9b7c6;
     border: 1px solid #1a1a1a;
     padding: 10px;
     box-sizing: border-box;
 }
 
+textarea{
+	min-width: 600px;
+    min-height: 150px;
+}
+
 .left-container{
     padding-left: 30px;
 }
 
-button{
+input[type="submit"], button{
     background: #252525;
     padding: 10px 20px;
     border: 1px solid #1a1a1a;
@@ -61,9 +65,11 @@ button{
     margin-right:auto;
 }
 
-button:hover{
+/* check it out, but i feel it looks better if button and submit look the same
+
+input [type="submit"]:hover, button:hover{
     background-color: #303030;
-}
+} */ 
 
 table {
     border-collapse: collapse;
@@ -92,6 +98,7 @@ option
     background-color: #2b2b2b;
     color: #a9b7c6;
     font-size: 16px;
+	border: 1px solid #1a1a1a;
 }
 
 .button-link{

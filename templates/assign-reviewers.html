@@ -1,29 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Assign Reviewers</title>
-    <script type="text/javascript" src="scripts.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
+
 <body onload="assignReviewers()">
+    <script>
+        function sendReviewer() {
+            let combobox = document.getElementsByTagName("select");
+
+            let result = [];
+
+            for (let i = 0; i < combobox.length; i++) {
+                let id = combobox[i].id.substring(16);
+                let choice = combobox[i].value;
+                // let reviewerId = choice.split()
+
+                let dict = {
+                    id: id,
+                    choice: choice
+                };
+
+                result.push(dict);
+            }
+
+            let json = JSON.stringify(result);
+
+            let http = new XMLHttpRequest();
+            http.open("POST", "api/paper/sendReviewer", true); //fixme
+            http.send(json);
+        }
+
+        function assignReviewers() {
+            let http = new XMLHttpRequest();
+            http.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let table = document.getElementsByTagName("table")[0];
+                    let old_tbody = document.getElementsByTagName("tbody")[0];
+                    let new_tbody = document.createElement('tbody');
+
+                    let json = jsonParse(this.responseText);
+
+                    for (let i = 0; i < json.length; i++) {
+                        let paper = json[i];
+
+                        let row = new_tbody.insertRow();
+                        let cell = row.insertCell();
+                        cell.appendChild(document.createTextNode(paper["title"]));
+                        cell = row.insertCell();
+                        cell.appendChild(document.createTextNode(paper["abstract"]));
+                        cell = row.insertCell();
+                        cell.appendChild(document.createTextNode(paper["conferenceName"]));
+
+                        cell = row.insertCell();
+                        let select = document.createElement("select");
+                        select.id = "selectReviewer-" + paper["id"];
+                        optionsofReviwer(select);
+
+
+                        cell.appendChild(select);
+
+                        let button = document.createElement("a");
+                        button.classList.add("button-link");
+                        button.innerHTML = "Assign";
+                        button.addEventListener("click", sendReviewer);
+
+                        cell = row.insertCell();
+                        cell.appendChild(button);
+                    }
+                    table.replaceChild(new_tbody, old_tbody);
+                }
+            };
+            http.open("GET", "api/papers/getAll", true);
+            http.send(null);
+        }
+
+        function optionsofReviwer(select) {
+            let http2 = new XMLHttpRequest();
+            http2.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let json2 = jsonParse(this.responseText);
+                    for (let i = 0; i < json2.length; i++) {
+                        let reviewer = json[i];
+                        let option = document.createElement("option");
+                        option.text = reviewer["id"] + "." + reviewer["fullName"];
+
+                        select.add(option);
+                    }
+                }
+            };
+            http2.open("POST", "api/user/getAll", true); //todo: get data from paperReviewer
+            http2.send(null);
+
+        }
+    </script>
     <div class="center-container">
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Paper title</th>
-                    <th>Paper abstract</th>
-                    <th>Conference name</th>
-                    <th>Reviewers</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paper title</th>
+                        <th>Paper abstract</th>
+                        <th>Conference name</th>
+                        <th>Reviewers</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </body>
+
 </html>

@@ -2,20 +2,48 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    <script type="text/javascript" src="scripts.js"></script>
+    <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();-->
     <meta charset="UTF-8">
     <title>Evaluation results</title>
 </head>
 <body onload="getReviews()">
 
 <div class="table-container">
+    <script>
+        function getReviews() {
+            let http = new XMLHttpRequest();
+            http.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let table = document.getElementsByTagName("table")[0];
+                    let old_tbody = document.getElementsByTagName("tbody")[0];
+                    let new_tbody = document.createElement('tbody');
+
+                    let json = jsonParse(this.responseText);
+
+                    for (let i = 0; i < json.length; i++) {
+                        let review = json[i];
+                        let row = new_tbody.insertRow();
+                        Object.keys(review).forEach(function (k) {
+                            let text;
+                            let cell = row.insertCell();
+                            text = review[k];
+                            cell.appendChild(document.createTextNode(text));
+                        })
+                    }
+                    table.replaceChild(new_tbody, old_tbody);
+                }
+            };
+            http.open("POST", "api/reviews/getAll", true);
+            http.send(null);
+        }
+    </script>
     <table>
         <thead>
-            <tr>
-                <th>Rating</th>
-                <th>Justifications</th>
-                <th>Recommendations</th>
-            </tr>
+        <tr>
+            <th>Rating</th>
+            <th>Justifications</th>
+            <th>Recommendations</th>
+        </tr>
         </thead>
         <tbody>
         </tbody>

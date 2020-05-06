@@ -1,28 +1,76 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="stylesheet.css">
-         <script type="text/javascript" src="scripts.js"></script>
-         <meta charset="UTF-8">
-        <title>Listener Sign up</title>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();loadTitle();-->
+    <meta charset="UTF-8">
+    <title>Listener Sign up</title>
 
-    </head>
+</head>
 
-    <body onload="loadTitleConference()">
-        <div class="left-container">
+<body onload="loadTitle()">
+<script>
+    function sendListenerInfo() {
+        if (document.getElementById("terms").checked === true) {
 
-            <div class="title">
-                <h1></h1>
-            </div>
-        <input type="text" id="payment" placeholder="Payment Information...">
-        <br>
-        <br>
-        <input type="checkbox" id="terms">
-        <label for="terms"> I agree with terms and conditions</label><br>
-        <br>
-        <br>
+            const UrlParams = new URLSearchParams(window.location.search);
+            const id = UrlParams.get("id");
+            let http = new XMLHttpRequest();
+
+            let list = [];
+            http.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let json = jsonParse(this.responseText);
+                    let title = json["title"];
+                    let info = document.getElementById("payment").value;
+                    let dict = {title: title, info: info};
+                    alert(info);
+                    list.push(dict);
+
+                    //we don t know for sure
+
+                }
+            }
+            let information = JSON.stringify(list);
+            http.open("GET", "api/conference/get?id=" + id, true);
+            http.send(information);
+
+        } else {
+            alert("Agree with terms and coditions first");
+        }
+    }
+</script>
+<style>
+    form input{
+        display: inline-block;
+    }
+
+    button, input[type="text"]{
+        margin: 10px;
+        min-width: 200px;
+    }
+
+    label{
+        margin-left: 12px;
+    }
+
+    .left-container{
+        margin-top: 12%;
+        margin-left: 30%;
+        max-width: 500px;
+    }
+
+</style>
+<div class="left-container" style="border: 1px solid grey;">
+    <div class="title">
+        <h1></h1>
+    </div>
+    <form>
+        <input type="text" id="payment" placeholder="Payment Information..."><br>
+        <label for="terms"> I agree with terms and conditions</label>
+        <input type="checkbox" id="terms"><br>
         <button type="submit" onclick="sendListenerInfo()">Register</button>
-
-        </div>
-    </body>
+    </form>
+</div>
+</body>
 </html>

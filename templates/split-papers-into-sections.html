@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="stylesheet.css">
+    <meta charset="UTF-8">
+    <title>Split Papers Into Sections</title>
+</head>
+<body onload="initialize()">
+<script>
+    function loadedPapers() {
+        /*
+            Get all available papers and populate papers table;
+        */
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let tablePapers = document.getElementsByTagName('table')[1];
+                let old_tbody = document.getElementsByTagName("tbody")[1];
+                let new_tbody = document.createElement('tbody');
+                let json = jsonParse(this.responseText);
+                for (let i = 0; i < json.length; i++) {
+                    let paper = json[i];
+                    let row = new_tbody.insertRow();
+                    let cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["PaperID"]));
+                    cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["title"]));
+                    cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["authorEmail"]));
+                }
+                tablePapers.replaceChild(new_tbody, old_tbody);
+
+            }
+        };
+        http.open("GET", "api/papers/getAll", true);
+        http.send(null);
+    }
+
+    function loadedChairs() {
+        /*
+            Get all available chairs and populate dropdown select;
+        */
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let selectInput = document.getElementById('chairs');
+                let json = jsonParse(this.responseText);
+                for (let i = 0; i < json.length; i++) {
+                    let chair = json[i];
+                    let option = document.createElement('option');
+                    option.appendChild(document.createTextNode(chair["fullName"]));
+                    option.value = chair["fullName"];
+                    selectInput.appendChild(option);
+                }
+            }
+        };
+        http.open("GET", "api/users/getAll", true);
+        http.send(null);
+    }
+
+    function rowHighlight() {
+        /*
+            Adds on the papers table, on each row, an onclick handler that simply adds a selected attribute
+            ++ highlight on the selected row
+        */
+        let table = document.getElementsByTagName("table")[1];
+        let rows = table.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            let currentRow = table.rows[i];
+            let createClickHandler = function (row) {
+                return function () {
+                    row.setAttribute('selected', 'true');
+                    row.style.color = '#3460b8';
+                };
+            };
+            currentRow.onclick = createClickHandler(currentRow);
+        }
+    }
+
+    function movePaper(element) {
+        /*
+            Got the row itself and the id... need to move to the other table;
+        */
+        let tbody = document.getElementsByTagName("tbody")[0];
+        let cells = element.cells;
+        let row = tbody.insertRow();
+        for (let i = 0; i < cells.length; i++) {
+            let cell = row.insertCell();
+            cell.appendChild(document.createTextNode(cells[i].innerHTML));
+        }
+    }
+
+    function getSelected() {
+        /*
+            Check for the rows from the Sections table that were selected + move them to Papers
+        */
+        let table = document.getElementsByTagName("table")[1];
+        let rows = table.childNodes[3].childNodes; //third child is the tbody
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].getAttribute('selected')) { //check if selected
+                movePaper(rows[i]);
+                table.deleteRow(rows[i].rowIndex); //deletes the row from the sections table
+            }
+        }
+    }
+
+    function submitSection() {
+        /*
+            Submit a section by taking the ids of the chosen papers and form data.
+        */
+        let name = document.querySelector('#name').value;
+        let select = document.getElementById('chairs');
+        let chairName = select.options[select.selectedIndex].value;
+
+        let idPapers = [];
+        let table = document.getElementsByTagName("table")[0];
+        let rows = table.childNodes[3].childNodes;
+        for (let i = 1; i < rows.length; i++) {
+            idPapers.push(rows[i].querySelector('td').innerHTML);
+        }
+
+        let parameters = {
+            'name': name,
+            'chairName': chairName,
+            'idPapers': idPapers
+        };
+
+        if (name === "") {
+            alert('Add Section Name');
+            return;
+        }
+        if (chairName === "") {
+            alert("Select Chair!")
+            return;
+        }
+        if (idPapers.length === 0) {
+            alert("Add Papers to the Section!");
+            return;
+        }
+
+        let json = JSON.stringify(parameters);
+        let http = new XMLHttpRequest();
+        http.open("POST", "api/review/submitSection", true);
+        http.send(json);
+    }
+
+    function initialize() {
+        loadedPapers();
+        loadedChairs();
+        rowHighlight();
+        document.getElementById('arrow').onclick = getSelected;
+        document.getElementById('addSection').onclick = submitSection;
+    }
+</script>
+<style>
+    section{
+        display: block;
+        margin-left: 20%;
+    }
+
+    input{
+        display: block;
+        position: relative;
+        width: 250px;
+    }
+    
+    select{
+        margin-top: 5px;
+        width: 250px;
+    }
+
+    input[type="button"]{
+        margin-left: 50px;
+        margin-top: 30px;
+        width: 150px;
+    }
+    
+    #lists div{
+        display: inline-block;
+        position: relative;
+        margin-top: 5%;
+    }
+    #sections, #papers{
+        min-height: 400px;
+        min-width: 100px;
+        }
+
+    #arrow{
+        position: relative;
+        margin-right: 60px;
+        margin-bottom: 100%;
+    }
+</style>
+<section id="lists">
+    <div id="sections">
+        <table>
+            <thead>
+            <tr>
+                <th>Paper Id</th>
+                <th>Paper title</th>
+                <th>Author email</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <svg id="arrow" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+             width="80" height="80"
+             viewBox="0 0 172 172"
+             style=" fill:#000000;">
+            <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+               stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+               font-family="none" font-size="none" style="mix-blend-mode: normal">
+                <path d="M0,172v-172h172v172z" fill="none"></path>
+                <g>
+                    <path d="M5.82005,86l66.20495,-66.20495v45.77995h94.6v40.85h-94.6v45.77995z" fill="#ffffff"></path>
+                    <path d="M70.95,22.3901v42.1099v2.15h2.15h92.45v38.7h-92.45h-2.15v2.15v42.1099l-63.6099,-63.6099l63.6099,-63.6099M73.1,17.2l-68.8,68.8l68.8,68.8v-47.3h94.6v-43h-94.6v-47.3z"
+                          fill="#000000"></path>
+                </g>
+            </g>
+        </svg>
+    </div>
+    <div id="papers">
+        <table>
+            <thead>
+            <tr>
+                <th>Paper Id</th>
+                <th>Paper title</th>
+                <th>Author email</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="inputs">
+    <form>
+        <input type="text" name="name" id="name" placeholder="New Section Name">
+        <select id="chairs" name="chairs">
+            <option value="" disabled selected hidden>Session Chair</option>
+        </select>
+        <input type="button" name="addSection" id="addSection" value="Add Section">
+    </form>
+</section>
+</body>
+</html>

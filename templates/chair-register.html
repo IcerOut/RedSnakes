@@ -1,27 +1,64 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="stylesheet.css">
-         <script type="text/javascript" src="scripts.js"></script>
-         <meta charset="UTF-8">
-        <title>Conference Chair Sign up</title>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script type="text/javascript" src="scripts.js"></script><!--Used for loadTitle();-->
+    <meta charset="UTF-8">
+    <title>Conference Chair Sign up</title>
 
-    </head>
+</head>
 
-    <body  onload="loadTitleConference()">
-        <div class="left-container">
-        <div class="title">
-            <h1></h1>
-        </div>
-        <input type="checkbox" id="terms">
-        <label for="terms"> I agree with terms and conditions</label><br>
-        <br>
-        <br>
+<body onload="loadTitle()">
+<script>
+    function sendChairInfo() {
+        if (document.getElementById("terms").checked === true) {
+            const UrlParams = new URLSearchParams(window.location.search);
+            const id = UrlParams.get("id");
+            let http = new XMLHttpRequest();
+            let list = [];
+            http.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let json = jsonParse(this.responseText);
 
-        <button type="submit" onclick="sendChairInfo()">Register</button>
+                    let dict = {title: json["title"]};
+                    list.push(dict);
+
+                    //we don t know for sure
+
+                }
+            }
+            //WE DON T KNOW FOR SURE
+            let title = JSON.stringify(list);
+            http.open("GET", "api/conference/get?id=" + id, true);
+            http.send(title);
+        } else {
+            alert("Agree with terms and conditions first");
+        }
+
+    }
+</script>
+<style>
+    .left-container{
+        margin-top: 12%;
+        margin-left: 30%;
+        max-width: 500px;
+        border: 1px solid grey;
+    }
+    #up{
+        margin:10px;
+        min-width: 150px;
+    }
+</style>
+<div class="left-container">
+    <div class="title">
+        <h1></h1>
+    </div>
+    <input type="checkbox" id="terms">
+    <label for="terms"> I agree with the terms and conditions</label><br>
+    <button id="up" type="submit" onclick="sendChairInfo()">Register</button>
 
 </div>
 
 
-    </body>
+</body>
 </html>
