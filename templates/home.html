@@ -12,18 +12,18 @@
 <div class="navbar">
 
   <a href='{% url "conference_list" %}'>conference list</a>
-  <a href="evaluation-results.html">evaluation results</a>
-  <a href="submit-new-conference.html">submit conference</a>
+  <a href='{% url "evaluation_results" %}'>evaluation results</a>
+  <a href='{% url "submit_new_conference" %}'>submit conference</a>
   <div class="dropdown">
     <button class="dropbtn">Administrative functions &darr;
     </button>
     <div class="dropdown-content">
-        <a href="assign-reviewers.html">assign reviewers</a>
-        <a href="bidding.html">bidding</a>
-        <a href="evaluation.html">evaluation</a>
-        <a href="review.html">review</a>
-        <a href="section-choices.html">section choices</a>
-        <a href="split-papers-into-sections.html">split papers into sections</a>
+        <a href='{% url "assign_reviewers" %}'>assign reviewers</a>
+        <a href='{% url "bidding" %}'>bidding</a>
+        <a href='{% url "evaluation" %}'>evaluation</a>
+        <a href='{% url "review"%}'>review</a>
+        <a href='{% url "section_choices" %}'>section choices</a>
+        <a href='{% url "split_papers_into_sections" %}'>split papers into sections</a>
     </div>
   </div>
   <div class = "navbar-right">
