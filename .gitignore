@@ -5,6 +5,6 @@ doc/~$ftware Requirements Specification.docx
 doc/~$info.rtf
 *.sqlite3
 *.env
-.env/
+env/
 **/*.pyc
 **/__pycache__
