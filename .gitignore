@@ -3,6 +3,7 @@
 __pycache__
 doc/~$ftware Requirements Specification.docx
 doc/~$info.rtf
-env
-./env
 *.sqlite3
+*.env
+**/*.pyc
+**/__pycache__
