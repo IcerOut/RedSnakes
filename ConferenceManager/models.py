@@ -1,101 +1,148 @@
 from django.db import models
 
+class Login(models.Model):
+    email = models.CharField(max_length=100, primary_key=True)
+    password = models.CharField(max_length=32, null=False)
 
-class Author(models.Model):
-    name = models.CharField(max_length=200)
-    affiliation = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    title = models.CharField(max_length=200)
-    conference = models.ForeignKey('Conference', on_delete=models.PROTECT)
-    section = models.ForeignKey('Section', on_delete=models.PROTECT)
+    def __str__(self):
+        return self.email
 
-
-class PCMember(Author):
-    pass
+    def __unicode__(self):
+        return self.email
 
 
-class PCCoChair(PCMember):
-    pass
+class SteeringCommittee(models.Model):
+    email = models.OneToOneField(Login, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=32, null=False)
+    website = models.CharField(max_length=32, null=False)
+    affiliation = models.CharField(max_length=32, null=False)
+
+    def __str__(self):
+        return self.email
+
+    def __unicode(self):
+        return self.email
+
+
+class Participant(models.Model):
+    email = models.OneToOneField(Login, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=32, null=False)
+    website = models.CharField(max_length=32, null=False)
+    affiliation = models.CharField(max_length=32, null=False)
+
+    def __str__(self):
+        return self.email
+
+    def __unicode(self):
+        return self.email
 
 
 class Conference(models.Model):
-    name = models.CharField(max_length=200)
-    abstractSubmissionDeadline = models.DateField()
-    paperSubmissionDeadline = models.DateField()
-    startDate = models.DateField()
-    endDate = models.DateField()
-    resultsDeadline = models.DateField()
-    scMember = models.ForeignKey('SCMember', on_delete=models.PROTECT)
+    name = models.CharField(max_length=32, null=False)
+    submissionDeadline = models.DateField(null=False)
+    reviewDeadline = models.DateField(null=False)
+    conferenceDate = models.DateField(null=False)
 
-    def assignPaperToReview(self):
-        pass
+    def __str__(self):
+        return self.name
 
-    def assignSessionChair(self):
-        pass
+    def _unicode(self):
+        return self.name
 
 
-EVAL_DEC = [
-    ("AC", "Accepted"),
-    ("NE", "Not evaluate"),
-    ("RE", "Rejected")
-    ]
+class ConferenceAuthor(models.Model):
+    pEmail = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    cId = models.ForeignKey(Conference, on_delete=models.CASCADE)
+    rank = models.CharField(max_length=32, default='listener')
 
-PAPER_KIND = [
-    ("PDF", "pdf"),
-    ("DOCX", "docx"),
-    ("TXT", "text")
-    ]
+    def __str__(self):
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
 
-
-class Paper(models.Model):
-    name = models.CharField(max_length=200)
-    noPages = models.IntegerField()
-    paperKind = models.CharField(max_length=4, choices=PAPER_KIND)
-    evalDecision = models.CharField(max_length=2, choices=EVAL_DEC)
-    conference = models.ForeignKey(Conference, on_delete=models.PROTECT, blank=True, null=True)
-    author = models.ManyToManyField(Author, blank=True, null=True)
+    def __unicode(self):
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
 
 
-class PCMemberPaper(models.Model):
-    pcMember = models.ForeignKey(PCMember, on_delete=models.PROTECT)
-    paper = models.ForeignKey(Paper, on_delete=models.PROTECT)
+class ProgramCommitteeMember(models.Model):
+    pEmail = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    cId = models.ForeignKey(Conference, on_delete=models.CASCADE)
+    rank = models.CharField(max_length=32, default='listener')
+
+    def __str__(self):
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
+
+    def __unicode(self):
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
 
 
-EV_RESULT = [
-    ("SA", "Strong accept"),
-    ("WA", "Weak accept"),
-    ("NE", "Neutral"),
-    ("SR", "Strong reject"),
-    ("WR", "Weak reject")
-    ]
+class ConferenceSession(models.Model):
+    pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    date = models.DateField(null=False)
+    startHour = models.TimeField(null=False)
+    endHour = models.TimeField(null=False)
+    roomNumber = models.IntegerField(null=False)
+
+    def __str__(self):
+        return str(self.pcId) + ' ' + str(self.date) + ' ' + str(self.startHour) + ' ' + str(self.endHour) + ' ' + str(
+            self.roomNumber)
+
+    def __unicode__(self):
+        return str(self.pcId) + ' ' + str(self.date) + ' ' + str(self.startHour) + ' ' + str(self.endHour) + ' ' + str(
+            self.roomNumber)
 
 
-class EvaluationResult(models.Model):
-    rezEv = models.CharField(max_length=2, choices=EV_RESULT)
-    evaluationDate = models.DateField()
-    pcMemberPaper = models.ForeignKey(PCMemberPaper, on_delete=models.PROTECT)
+class ConferenceAuthorSession(models.Model):
+    conferenceAuthorId = models.ForeignKey(ConferenceAuthor, on_delete=models.CASCADE, null=False)
+    conferenceSessionId = models.ForeignKey(ConferenceSession, on_delete=models.CASCADE, null=False)
 
+    def __str__(self):
+        return str(self.conferenceAuthorId) + ' ' + str(self.conferenceSessionId)
 
-class BiddingResult(models.Model):
-    resBid = models.CharField(max_length=200)
-    biddingDate = models.DateField()
-    pcMemberPaper = models.ForeignKey(PCMemberPaper, on_delete=models.PROTECT)
+    def __unicode__(self):
+        return str(self.conferenceAuthorId) + ' ' + str(self.conferenceSessionId)
 
 
 class Abstract(models.Model):
-    keyWords = models.CharField(max_length=200)
-    text = models.TextField()
+    authorId = models.OneToOneField(ConferenceAuthor, on_delete=models.CASCADE, null=False)
+    text = models.CharField(max_length=255, null=False, default='')
+    title = models.CharField(max_length=32, null=False)
+
+    def __str__(self):
+        return str(self.authorId) + ' ' + self.title
+
+    def __unicode__(self):
+        return str(self.authorId) + ' ' + self.title
 
 
-class SCMember(models.Model):
-    name = models.CharField(max_length=200)
-    affiliation = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    title = models.CharField(max_length=200)
+class Paper(models.Model):
+    paperId = models.OneToOneField(Abstract, on_delete=models.CASCADE)
+    path = models.CharField(max_length=255, null=False)
+    accepted = models.BooleanField(null=True)
+    def __str__(self):
+        return str(self.paperId)
+
+    def __unicode__(self):
+        return str(self.paperId)
 
 
-class Section(models.Model):
-    name = models.CharField(max_length=200)
-    scMember = models.OneToOneField(SCMember, on_delete=models.PROTECT, blank=True, null=True)
-    # pcMember = models.OneToOneField(PCMember, on_delete=models.PROTECT, blank=True, null=True)
-    paper = models.ForeignKey(Paper, on_delete=models.PROTECT)
+class Review(models.Model):
+    paperId = models.OneToOneField(Paper, on_delete=models.CASCADE)
+    pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    status = models.CharField(max_length=32, null=False, default='borderline')
+
+    def __str__(self):
+        return str(self.paperId) + ' ' + str(self.pcId) + ' ' + self.status
+
+    def __unicode__(self):
+        return str(self.paperId) + ' ' + str(self.pcId) + ' ' + self.status
+
+
+class Bid(models.Model):
+    abstractId = models.ForeignKey(Abstract, on_delete=models.CASCADE)
+    pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    status = models.BooleanField()
+
+    def __str__(self):
+        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status)
+
+    def __unicode__(self):
+        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status)
