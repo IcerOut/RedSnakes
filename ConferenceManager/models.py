@@ -45,7 +45,7 @@ PAPER_KIND = [
 class Paper(models.Model):
     name = models.CharField(max_length=200)
     noPages = models.IntegerField()
-    paperKind = models.CharField(max_length=3, choices=PAPER_KIND)
+    paperKind = models.CharField(max_length=4, choices=PAPER_KIND)
     evalDecision = models.CharField(max_length=2, choices=EVAL_DEC)
     conference = models.ForeignKey(Conference, on_delete=models.PROTECT)
     author = models.ManyToManyField(Author)
