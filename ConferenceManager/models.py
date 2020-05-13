@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Author(models.Model):
     name = models.CharField(max_length=200)
     affiliation = models.CharField(max_length=200)
@@ -8,11 +9,14 @@ class Author(models.Model):
     conference = models.ForeignKey('Conference', on_delete=models.PROTECT)
     section = models.ForeignKey('Section', on_delete=models.PROTECT)
 
+
 class PCMember(Author):
     pass
 
+
 class PCCoChair(PCMember):
     pass
+
 
 class Conference(models.Model):
     name = models.CharField(max_length=200)
@@ -23,37 +27,39 @@ class Conference(models.Model):
     resultsDeadline = models.DateField()
     scMember = models.ForeignKey('SCMember', on_delete=models.PROTECT)
 
-
     def assignPaperToReview(self):
         pass
 
     def assignSessionChair(self):
         pass
 
+
 EVAL_DEC = [
     ("AC", "Accepted"),
     ("NE", "Not evaluate"),
     ("RE", "Rejected")
-]
+    ]
 
 PAPER_KIND = [
     ("PDF", "pdf"),
     ("DOCX", "docx"),
     ("TXT", "text")
-]
+    ]
+
 
 class Paper(models.Model):
     name = models.CharField(max_length=200)
     noPages = models.IntegerField()
     paperKind = models.CharField(max_length=4, choices=PAPER_KIND)
     evalDecision = models.CharField(max_length=2, choices=EVAL_DEC)
-    conference = models.ForeignKey(Conference, on_delete=models.PROTECT)
-    author = models.ManyToManyField(Author)
+    conference = models.ForeignKey(Conference, on_delete=models.PROTECT, blank=True, null=True)
+    author = models.ManyToManyField(Author, blank=True, null=True)
 
 
 class PCMemberPaper(models.Model):
     pcMember = models.ForeignKey(PCMember, on_delete=models.PROTECT)
     paper = models.ForeignKey(Paper, on_delete=models.PROTECT)
+
 
 EV_RESULT = [
     ("SA", "Strong accept"),
@@ -61,7 +67,8 @@ EV_RESULT = [
     ("NE", "Neutral"),
     ("SR", "Strong reject"),
     ("WR", "Weak reject")
-]
+    ]
+
 
 class EvaluationResult(models.Model):
     rezEv = models.CharField(max_length=2, choices=EV_RESULT)

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 from ConferenceManager import views
 
@@ -31,10 +31,9 @@ urlpatterns = [
     path('evaluation/', views.evaluation, name='evaluation'),
     path('review/', views.review, name='review'),
     path('section-choices/', views.section_choices, name='section_choices'),
-    path('split-papers-into-sections/', views.split_papers_into_sections, name='split_papers_into_sections'),
+    path('split-papers-into-sections/', views.split_papers_into_sections,
+         name='split_papers_into_sections'),
+    path('api/', include(('ConferenceManager.api.urls', 'ConferenceManager'),
+                         namespace='ConferenceManager')),
 
-
-
-
-
-]
+    ]
