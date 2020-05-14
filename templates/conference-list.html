@@ -28,13 +28,13 @@
 
                         let row = new_tbody.insertRow();
                         let cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["title"]));
+                        cell.appendChild(document.createTextNode(conference["name"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["description"]));
+                        cell.appendChild(document.createTextNode(conference["submissionDeadline"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["deadline-signup"]));
+                        cell.appendChild(document.createTextNode(conference["reviewDeadline"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["price"]));
+                        cell.appendChild(document.createTextNode(conference["conferenceDate"]));
 
                         let userType = getUserType();
 
@@ -85,11 +85,11 @@
         <table>
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Deadline</th>
-                <th>Price</th>
-                <th>Register</th>
+                <th>Conference Name</th>
+                <th>Submission Deadline</th>
+                <th>Review Deadline</th>
+                <th>Conference Date</th>
+                <!-- <th>Register</th> -->
             </tr>
             </thead>
             <tbody>

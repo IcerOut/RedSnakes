@@ -3,9 +3,9 @@
 <html lang="en">
 <head>
 	<title>submit conference</title>
-    <script type="text/javascript" src="scripts.js"></script><!--FIXME No JS code-->
+    <!-- <script type="text/javascript" src="../scripts.js"></script>FIXME No JS code -->
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <style>
     form{
@@ -35,64 +35,62 @@
     }
 </style>
 <body>
-<form action="" style="border:1px solid #ccc">
+<form method="POST" id="conf-form" action="" style="border:1px solid #ccc">
+  {% csrf_token %}
   <div class="container">
     <h1>Conference</h1>
     <hr>
     <label for="name"><b>Name</b></label>
     <input type="text" placeholder="Enter Name" id="name" required>
     <br>
-    <label for="Category"><b>Category</b></label>
-    <input  placeholder="Enter Category" id="Category" required>
-<br>
 
-    <label for="deadline paper"><b>Deadline paper</b></label>
-    <input type="date" placeholder="insert deadline paper" id="deadline paper" required>
+    <label for="submissionDeadline"><b>Submission Deadline</b></label>
+    <input type="date" placeholder="insert submission deadline" id="submissionDeadline" required>
     <br>
 
-    <label for="deadline abstract"><b>Deadline abstract</b></label>
-    <input type="date" placeholder="insert deadline abstract" id="deadline abstract" required>
-<br>
-
-    <label for="deadline bidding"><b>Deadline bidding</b></label>
-    <input type="date" placeholder="insert deadline bidding" id="deadline bidding" required>
+    <label for="reviewDeadline"><b>Review Deadline</b></label>
+    <input type="date" placeholder="insert review deadline" id="reviewDeadline" required>
     <br>
 
-     <label for="email"><b>Email</b></label>
-    <input placeholder="Insert email" id="email" required>
+    <label for="conferenceDate"><b>Conference Date</b></label>
+    <input type="date" placeholder="insert conference date" id="conferenceDate" required>
     <br>
-
-     <label for="Description"><b>Description</b></label>
-    <input type="text" placeholder="Insert Description" id="Description" required>
-	<br>
-
-   <label for="start date"><b>Start date</b></label>
-    <input type="date" placeholder="Insert start date" id="start date" required>
-	<br>
-
-    <label for="end date"><b>End date</b></label>
-    <input type="date" placeholder="Insert end date" id="end date" required>
-	<br>
-
-     <label for="ticket fee"><b>Ticket fee</b></label>
-    <input type="number" placeholder="Ticket fee" id="ticket fee" required>
-    <br>
-    <label for="website"><b>Website</b></label>
-    <input type="text" placeholder="Website" id="website" required>
-     <br>
-     <label for="Research topics"><b>Research topics</b></label>
-    <input type="text" placeholder="Research topics" id="Research topics" required>
-    <br>
-
-    <label for="Location url"><b>Location url</b></label>
-    <input type="url" placeholder="Location url" id="Location url" required>
-
-<br>
 
     <div class="clearfix">
       <button type="submit" class="">Submit</button>
     </div>
   </div>
+  <div class="conference">
+
+  </div>
 </form>
 </body>
 </html>
+
+<script>
+$(document).on('submit', '#conf-form',function(e){
+    $.ajax({
+        type:'POST',
+        data:{
+            name:$('#name').val(),
+            submissionDeadline:$('#submissionDeadline').val(),
+            reviewDeadline:$('#reviewDeadline').val(),
+            conferenceDate:$('#conferenceDate').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            document.getElementById("post-form").reset();
+            $(".conference").prepend('<div style="color:white;">'
+                + '<h2> Conference added successfully!</h2>' + 
+                + '<h4>' + json.name + '</h4>' + 
+            '</div>' 
+            )
+        },
+        error : function(xhr,errmsg,err) {
+        console.log(xhr.status + ": " + xhr.responseText); 
+    }
+    });
+});
+
+</script>
