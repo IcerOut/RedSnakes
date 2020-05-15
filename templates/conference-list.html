@@ -4,8 +4,9 @@
 <head>
     <!-- <link rel="stylesheet" type="text/css" href="stylesheet.css"> -->
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
-    
-    <script type="text/javascript" src="scripts.js"></script><!--Used for getUserType();-->
+
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for
+    getUserType();-->
     <meta charset="UTF-8">
     <title>Conferences</title>
 </head>
@@ -28,15 +29,16 @@
 
                         let row = new_tbody.insertRow();
                         let cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["title"]));
+                        cell.appendChild(document.createTextNode(conference["name"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["description"]));
+                        cell.appendChild(document.createTextNode(conference["submissionDeadline"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["deadline-signup"]));
+                        cell.appendChild(document.createTextNode(conference["reviewDeadline"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(conference["price"]));
+                        cell.appendChild(document.createTextNode(conference["conferenceDate"]));
 
-                        let userType = getUserType();
+                        {#let userType = getUserType();#} //FIXME
+                        let userType = 'listener';
 
                         let button = document.createElement("a");
                         button.classList.add("button-link");
@@ -62,12 +64,13 @@
                     table.replaceChild(new_tbody, old_tbody);
                 }
             };
-            http.open("GET", "api/conference/getAll", true);
+            http.open("GET", "../api/conferences/getAll", true);
             http.send(null);
         }
 
         function showAddConferenceButton() {
-            let userType = getUserType();
+            {#let userType = getUserType();#} //FIXME
+            let userType = 'listener';
 
             if (userType === "chair") {
                 let button = document.createElement("a");
@@ -85,11 +88,11 @@
         <table>
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Deadline</th>
-                <th>Price</th>
-                <th>Register</th>
+                <th>Conference Name</th>
+                <th>Submission Deadline</th>
+                <th>Review Deadline</th>
+                <th>Conference Date</th>
+                <!-- <th>Register</th> -->
             </tr>
             </thead>
             <tbody>

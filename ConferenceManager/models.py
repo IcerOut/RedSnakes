@@ -91,8 +91,8 @@ class ConferenceSession(models.Model):
 
 
 class ConferenceAuthorSession(models.Model):
-    conferenceAuthorId = models.ForeignKey(ConferenceAuthor, on_delete=models.CASCADE, null=False)
-    conferenceSessionId = models.ForeignKey(ConferenceSession, on_delete=models.CASCADE, null=False)
+    conferenceAuthorId = models.ForeignKey(ConferenceAuthor, on_delete=models.CASCADE)
+    conferenceSessionId = models.ForeignKey(ConferenceSession, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.conferenceAuthorId) + ' ' + str(self.conferenceSessionId)
@@ -102,7 +102,7 @@ class ConferenceAuthorSession(models.Model):
 
 
 class Abstract(models.Model):
-    authorId = models.OneToOneField(ConferenceAuthor, on_delete=models.CASCADE, null=False)
+    authorId = models.OneToOneField(ConferenceAuthor, on_delete=models.CASCADE)
     text = models.CharField(max_length=255, null=False, default='')
     title = models.CharField(max_length=32, null=False)
 
