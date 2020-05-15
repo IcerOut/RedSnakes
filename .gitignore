@@ -8,3 +8,5 @@ doc/~$info.rtf
 env/
 **/*.pyc
 **/__pycache__
+Pipfile
+Pipfile.lock

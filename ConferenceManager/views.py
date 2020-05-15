@@ -9,7 +9,8 @@ from ConferenceManager.models import *
 
 
 def add_new_conference(request):
-    return render(request, 'submit-new-conference.html')
+    conferences = Conference.objects.all()
+    return render(request, 'submit-new-conference.html', {'conferences': conferences})
 
 
 def home(request):
@@ -22,10 +23,6 @@ def conference_list(request):
 
 def evaluation_results(request):
     return render(request, "evaluation-results.html")
-
-
-# def submit_new_conference(request):
-#     return render(request, "submit-new-conference.html")
 
 def assign_reviewers(request):
     return render(request, "assign-reviewers.html")

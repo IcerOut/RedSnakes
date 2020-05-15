@@ -13,7 +13,9 @@ def conference_list(request):
 
 
 def add_new_conference(request):
-    if request.metod == 'POST':
+    response_data = {}
+
+    if request.method == 'POST':
         name = request.POST.get('name')
         submissionDeadline = request.POST.get('submissionDeadline')
         reviewDeadline = request.POST.get('reviewDeadline')

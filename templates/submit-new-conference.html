@@ -71,9 +71,9 @@
 $(document).on('submit', '#conf-form',function(e){
     $.ajax({
         type:'POST',
+        url: '../api/conferences/add',
         data:{
-            name:$('#name').val(),
-            url: 'api/conferences/add',
+            name:$('#name').val(), 
             submissionDeadline:$('#submissionDeadline').val(),
             reviewDeadline:$('#reviewDeadline').val(),
             conferenceDate:$('#conferenceDate').val(),
