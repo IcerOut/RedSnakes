@@ -4,8 +4,9 @@
 <head>
     <!-- <link rel="stylesheet" type="text/css" href="stylesheet.css"> -->
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
-    
-    <script type="text/javascript" src="scripts.js"></script><!--Used for getUserType();-->
+
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for
+    getUserType();-->
     <meta charset="UTF-8">
     <title>Conferences</title>
 </head>
@@ -36,7 +37,8 @@
                         cell = row.insertCell();
                         cell.appendChild(document.createTextNode(conference["conferenceDate"]));
 
-                        let userType = getUserType();
+                        {#let userType = getUserType();#} //FIXME
+                        let userType = 'listener';
 
                         let button = document.createElement("a");
                         button.classList.add("button-link");
@@ -62,12 +64,13 @@
                     table.replaceChild(new_tbody, old_tbody);
                 }
             };
-            http.open("GET", "api/conference/getAll", true);
+            http.open("GET", "../api/conferences/getAll", true);
             http.send(null);
         }
 
         function showAddConferenceButton() {
-            let userType = getUserType();
+            {#let userType = getUserType();#} //FIXME
+            let userType = 'listener';
 
             if (userType === "chair") {
                 let button = document.createElement("a");

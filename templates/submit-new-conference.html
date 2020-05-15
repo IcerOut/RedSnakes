@@ -73,6 +73,7 @@ $(document).on('submit', '#conf-form',function(e){
         type:'POST',
         data:{
             name:$('#name').val(),
+            url: 'api/conferences/add',
             submissionDeadline:$('#submissionDeadline').val(),
             reviewDeadline:$('#reviewDeadline').val(),
             conferenceDate:$('#conferenceDate').val(),
