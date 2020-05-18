@@ -35,6 +35,14 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
         model = Review
         fields = ('paperId', 'pcId', 'status')
 
+    def create(self, validated_data):
+        review = Review()
+        review.id = validated_data['id']
+        review.paperId = validated_data['paperId']
+        review.pcId = validated_data['pcId']
+        review.status = validated_data['status']
+        return review
+
 
 class BidSerializer(serializers.HyperlinkedModelSerializer):
     abstractId = AbstractSerializer()
