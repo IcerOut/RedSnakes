@@ -15,6 +15,13 @@ class PaperSerializer(serializers.HyperlinkedModelSerializer):
         model = Paper
         fields = ('paperId', 'path', 'accepted')
 
+    def create(self, validated_data):
+        paper = Paper()
+        paper.paperId = validated_data['paperId']
+        paper.path = validated_data['path']
+        paper.accepted = validated_data['accepted']
+        return paper
+
 
 class ProgramCommitteeMemberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -97,6 +104,15 @@ class ConferenceSessionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ConferenceSession
         fields = ['pcId', 'date', 'startHour', 'endHour', 'roomNumber']
+
+    def create(self, validated_data):
+        sess = ConferenceSession()
+        sess.pcId = validated_data['pcId']
+        sess.date = validated_data['date']
+        sess.startHour = validated_data['startHour']
+        sess.endHour = validated_data['endHour']
+        sess.roomNumber = validated_data['roomNumber']
+        return sess
 
 
 class ConferenceAuthorSessionSerializer(serializers.HyperlinkedModelSerializer):
