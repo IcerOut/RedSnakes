@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
-from .models import Abstract, Bid, Conference, ConferenceAuthorSession, ConferenceSession, Paper, \
-    ProgramCommitteeMember, \
-    Review
+from .models import Abstract, Bid, Conference, ConferenceAuthor, ConferenceAuthorSession, \
+    ConferenceSession, Login, Paper, Participant, ProgramCommitteeMember, Review
 
 
 class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
@@ -23,7 +22,31 @@ class ProgramCommitteeMemberSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('pEmail', 'cId', 'rank')
 
 
+class LoginSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Login
+        fields = ('email', 'password')
+
+
+class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
+    email = LoginSerializer()
+
+    class Meta:
+        model = Participant
+        fields = ('email', 'name', 'website', 'affiliation')
+
+
+class ConferenceAuthorSerializer(serializers.HyperlinkedModelSerializer):
+    pEmail = ParticipantSerializer()
+
+    class Meta:
+        model = ConferenceAuthor
+        fields = ('pEmail', 'cId', 'rank')
+
+
 class AbstractSerializer(serializers.HyperlinkedModelSerializer):
+    authorId = ConferenceAuthorSerializer()
+
     class Meta:
         model = Abstract
         fields = ('authorId', 'text', 'title')
