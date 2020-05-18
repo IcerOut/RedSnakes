@@ -27,5 +27,8 @@ class PapersService(MainService):
         return paper_json
 
     def sendAbstract(self, abstract_json):
-        abstract = serializers.AbstractSerializer(abstract)
+        serializer = serializers.AbstractSerializer(data=abstract_json)
+        if not serializer.is_valid():
+            raise ValueError('Invalid JSON!')
+        abstract = serializer.create(serializer.validated_data)
         return abstract
