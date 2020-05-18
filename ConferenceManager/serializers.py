@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import Abstract, Bid, Conference, Paper, ProgramCommitteeMember, Review, Login, Participant, \
-    ConferenceAuthor
+from .models import Abstract, Bid, Conference, ConferenceAuthor, ConferenceAuthorSession, \
+    ConferenceSession, Login, Paper, Participant, ProgramCommitteeMember, Review
 
 
 class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
@@ -89,3 +89,20 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
         bid.pcId = validated_data['pcId']
         bid.status = validated_data['status']
         return bid
+
+
+class ConferenceSessionSerializer(serializers.HyperlinkedModelSerializer):
+    pcId = ProgramCommitteeMemberSerializer()
+
+    class Meta:
+        model = ConferenceSession
+        fields = ['pcId', 'date', 'startHour', 'endHour', 'roomNumber']
+
+
+class ConferenceAuthorSessionSerializer(serializers.HyperlinkedModelSerializer):
+    conferenceAuthorId = ConferenceAuthorSerializer()
+    conferenceSessionId = ConferenceSessionSerializer()
+
+    class Meta:
+        model = ConferenceAuthorSession
+        fields = ['conferenceAuthorId', 'conferenceSessionId']
