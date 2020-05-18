@@ -3,7 +3,7 @@ from RedSnakes.Service.MainService import MainService
 
 class ConferenceService(MainService):
     def __init__(self):
-        super()
+        super().__init__()
 
     def add(self, entity):
         pass
