@@ -35,8 +35,8 @@ class ReviewService(MainService):
         serializer = serializers.BidSerializer(data=bid)
         if not serializer.is_valid():
             raise ValueError('Invalid JSON!')
-        new_review = serializer.create(serializer.validated_data)
-        Bid.save(new_review)
+        new_bid = serializer.create(serializer.validated_data)
+        Bid.save(new_bid)
 
     def add_section(self, section, papers):
         serializer_section = serializers.ConferenceSessionSerializer(data=section)
