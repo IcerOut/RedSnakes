@@ -26,6 +26,13 @@ class AbstractSerializer(serializers.HyperlinkedModelSerializer):
         model = Abstract
         fields = ('authorId', 'text', 'title')
 
+    def create(self, validated_data):
+        abstract = Abstract()
+        abstract.authorId = validated_data['authorId']
+        abstract.text = validated_data['text']
+        abstract.title = validated_data['title']
+        return abstract
+
 
 class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     pcId = ProgramCommitteeMemberSerializer()
@@ -37,7 +44,6 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         review = Review()
-        review.id = validated_data['id']
         review.paperId = validated_data['paperId']
         review.pcId = validated_data['pcId']
         review.status = validated_data['status']
@@ -51,3 +57,10 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bid
         fields = ('abstractId', 'pcId', 'status')
+
+    def create(self, validated_data):
+        bid = Bid()
+        bid.abstractId = validated_data['abstractId']
+        bid.pcId = validated_data['pcId']
+        bid.status = validated_data['status']
+        return bid
