@@ -31,4 +31,4 @@ class PapersService(MainService):
         if not serializer.is_valid():
             raise ValueError('Invalid JSON!')
         abstract = serializer.create(serializer.validated_data)
-        return abstract
+        Abstract.save(abstract)
