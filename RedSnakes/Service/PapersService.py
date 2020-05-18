@@ -1,3 +1,5 @@
+from ConferenceManager import serializers
+from ConferenceManager.models import Paper, Abstract
 from RedSnakes.Service.MainService import MainService
 
 
@@ -15,4 +17,15 @@ class PapersService(MainService):
         pass
 
     def getAll(self):
-        pass
+        papers = Paper.objects.all().order_by('paperId')
+        papers_json = serializers.PaperSerializer(papers, many=True)
+        return papers_json
+
+    def getById(self, paper_id: int):
+        paper = Paper.objects.get(pk=paper_id)
+        paper_json = serializers.PaperSerializer(paper)
+        return paper_json
+
+    def sendAbstract(self, abstract_json):
+        abstract = serializers.AbstractSerializer(abstract)
+        return abstract
