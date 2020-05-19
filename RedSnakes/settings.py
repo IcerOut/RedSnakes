@@ -33,7 +33,6 @@ STATICFILES_DIRS = [
 ]
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -57,6 +56,8 @@ INSTALLED_APPS = [
 SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_SIGNUP_FORM_CLASS = 'ConferenceManager.forms.SignupForm'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

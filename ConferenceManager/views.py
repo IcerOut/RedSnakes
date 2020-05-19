@@ -7,7 +7,6 @@ from django.shortcuts import render
 from ConferenceManager import serializers
 from ConferenceManager.models import *
 
-
 def add_new_conference(request):
     conferences = Conference.objects.all()
     return render(request, 'submit-new-conference.html', {'conferences': conferences})

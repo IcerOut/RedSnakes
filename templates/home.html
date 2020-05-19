@@ -12,7 +12,13 @@
 <div class="navbar">
   <a href='{% url "conference_list" %}'>conference list</a>
   <a href='{% url "evaluation_results" %}'>evaluation results</a>
-  <a href='{% url "submit_new_conference" %}'>submit conference</a>
+  {% if request.user.is_authenticated %}
+    {% if request.user.first_name == "Steering" %}
+        <a href='{% url "submit_new_conference" %}'>submit conference</a>
+    {% endif %}
+  {% endif %}
+
+
   <div class="dropdown">
     <button class="dropbtn">Administrative functions &darr;
     </button>
@@ -51,8 +57,13 @@
 
 
     <h1>Conference Management Platform</h1>
+    
+    {% if request.user.is_authenticated %}
+            <h3>Hello {{ user.username }} -> {{user.first_name}}</h3>
+        {% endif %}
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
     <div class="container">
+        
 
     </div>
 </nav>
