@@ -9,6 +9,14 @@ class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
         model = Conference
         fields = ('name', 'submissionDeadline', 'reviewDeadline', 'conferenceDate')
 
+    def create(self, validated_data):
+        conference = Conference()
+        conference.name = validated_data['name']
+        conference.submissionDeadline = validated_data['submissionDeadline']
+        conference.reviewDeadline = validated_data['reviewDeadline']
+        conference.conferenceDate = validated_data['conferenceDate']
+        return conference
+
 
 class PaperSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
