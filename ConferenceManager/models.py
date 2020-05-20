@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 
-
 class Login(models.Model):
     email = models.CharField(max_length=100, primary_key=True)
     password = models.CharField(max_length=32, null=False)
