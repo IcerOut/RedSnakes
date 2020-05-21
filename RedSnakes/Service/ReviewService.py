@@ -27,6 +27,7 @@ class ReviewService(MainService):
         return reviews_json
 
     def get_by_id(self, review_id: int):
+        # FIXME Possibly unused?
         review = Review.objects.get(pk=review_id)
         review_json = serializers.ReviewSerializer(review)
         return review_json
