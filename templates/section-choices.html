@@ -2,70 +2,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>section choices</title>
-    <script type="text/javascript" src="scripts.js"></script><!--FIXME No JS code-->
+    <title>section choices</title>
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--FIXME No JS code-->
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
-        <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
 
 </head>
 
-<body>
+<body onload="getConferences();">
 
-  <style>
-    form{
-      margin: 100px 400px;
-      max-width: 500px;
-    }
-    button{
-      margin:5px;
-      min-width: 150px;
-      margin-left: 150px;
-    }
-    h1{
-      margin-left: 80px;
-    }
-  </style>
+<script>
+    function getConferences() {
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let ul = document.getElementById("section-list");
 
-  <div class="navbar">
-  <a href='{% url "conference_list" %}'>Conference List</a>
-  <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
-  {% if request.user.is_authenticated %}
-    {% if request.user.first_name != "Listener" %}
-        <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
+                let json = jsonParse(this.responseText);
+
+                for (let i = 0; i < json.length; i++) {
+                    let section = json[i];
+
+                    {#<input type="checkbox" id="example" name="example" value="example">#}
+                    {#<label for="example">Example</label>#}
+
+                    let li = document.createElement("li")
+                    let input_elem = document.createElement("input");
+                    input_elem.setAttribute("type", "checkbox");
+                    input_elem.setAttribute("id", "checkbox-" + section['id']);
+                    input_elem.setAttribute("value", "checkbox-" + section['id']);
+                    li.appendChild(input_elem);
+                    let label_elem = document.createElement('label');
+                    label_elem.setAttribute("for", "checkbox-" + section['id']);
+                    label_elem.innerHTML = section['title'];
+                    li.appendChild(label_elem);
+
+                    ul.appendChild(li);
+                }
+            }
+        };
+        http.open("GET", "../api/conferences/getSections", true);
+        http.send(null);
+    }
+</script>
+
+<style>
+    form {
+        margin: 100px 400px;
+        max-width: 500px;
+    }
+
+    button {
+        min-width: 150px;
+        margin: 5px 5px 5px 150px;
+    }
+
+    h1 {
+        margin-left: 80px;
+    }
+</style>
+
+<div class="navbar">
+    <a href='{% url "conference_list" %}'>Conference List</a>
+    <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
+    {% if request.user.is_authenticated %}
+        {% if request.user.first_name != "Listener" %}
+            <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
+        {% endif %}
     {% endif %}
-  {% endif %}
-          <div class="dropdown">
-            <button class="dropbtn">Administrative functions &darr;
-            </button>
-            <div class="dropdown-content">
-                <a href='{% url "assign_reviewers" %}'>Assign Reviewers</a>
-                <a href='{% url "bidding" %}'>Bidding</a>
-                <a href='{% url "evaluation" %}'>Evaluation</a>
-                <a href='{% url "review"%}'>Review</a>
-                <a href='{% url "section_choices" %}'>Section Choices</a>
-                <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
-            </div>
+    <div class="dropdown">
+        <button class="dropbtn">Administrative functions &darr;
+        </button>
+        <div class="dropdown-content">
+            <a href='{% url "assign_reviewers" %}'>Assign Reviewers</a>
+            <a href='{% url "bidding" %}'>Bidding</a>
+            <a href='{% url "evaluation" %}'>Evaluation</a>
+            <a href='{% url "review" %}'>Review</a>
+            <a href='{% url "section_choices" %}'>Section Choices</a>
+            <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
+        </div>
 
-  </div>
-  <div class = "navbar-right">
+    </div>
+    <div class="navbar-right">
         {% if request.user.is_authenticated %}
-        <a href="{% url 'account_logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'account_login' %}">Login</a>
-        <a href="{% url 'account_signup' %}">Sign-up</a>
-    {% endif %}
+            <a href="{% url 'account_logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'account_login' %}">Login</a>
+            <a href="{% url 'account_signup' %}">Sign-up</a>
+        {% endif %}
     </div>
 </div>
-<form action="" style="border:1px solid #ccc">
-  <div class="container">
-    <h1>Section choices</h1>
-    <hr>
-    <input type="checkbox" id="example" name="example" value="example">
-    <label for="example">Example</label><br>
-    <div class="clearfix">
-      <button type="submit" class="">Submit</button>
+<form method="POST" action="../api/conferences/sendSectionChoices" style="border:1px solid #ccc">
+    <div class="container">
+        <h1>Section choices</h1>
+        <hr>
+        <ul id="section-list">
+        </ul>
+        <div class="clearfix">
+            <button type="submit" class="">Submit</button>
+        </div>
     </div>
-  </div>
 </form>
 </body>
 </html>

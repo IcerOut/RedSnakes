@@ -81,6 +81,7 @@ class ProgramCommitteeMember(models.Model):
 
 class ConferenceSession(models.Model):
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, null=False)
     date = models.DateField(null=False)
     startHour = models.TimeField(null=False)
     endHour = models.TimeField(null=False)
