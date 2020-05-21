@@ -19,8 +19,12 @@ body {
   margin: 0;
   height: 100vh;
     background-image: url("/static/media/room.jpg");
-    background-size: 1300px;
+    {#background-size: 1300px;#}
     background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 p{
@@ -161,26 +165,27 @@ p{
 
     <h1>Conference Management Platform</h1>
 
-
+{% if request.user.is_authenticated %}
     <div class="container">
       <div class="card">
         <div class="front">
           <div>
-              {% if request.user.is_authenticated %}
+
                   You are logged as: </br>
                   <p>{{ user.username }}</p>
-              {% endif %}
+
           </div>
         </div>
         <div class="back">
             <div>
-            {% if request.user.is_authenticated %}
+
                  {{ user.first_name }} Member
-                   {% endif %}
+
             </div>
         </div>
         </div>
       </div>
+ {% endif %}
 
 {#    {% if request.user.is_authenticated %}#}
 {#            <h3>Hello {{ user.username }} -> {{user.first_name}}</h3>#}
