@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
-    <script type="text/javascript" src="scripts.js"></script><!--Used for loadTitle();-->
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for
+    loadTitle();-->
     <meta charset="UTF-8">
     <title>Review</title>
 </head>
@@ -25,14 +26,17 @@
         let justificationText = document.getElementById("justification").value;
         let recommendationsText = document.getElementById("recommendations").value;
 
-        let dict = { evaluation: selectedValue,
+        let dict = {
+            paperId: id,
+            pcId: {{ user.id }},
+            status: selectedValue,
             justification: justificationText,
             recommendations: recommendationsText };
 
         let json = JSON.stringify(dict);
 
         let http = new XMLHttpRequest();
-        http.open("POST", "api/review/add?id=" + id, true);
+        http.open("POST", "../api/reviews/add", true);
         http.send(json);
     }
 </script>

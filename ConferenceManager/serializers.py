@@ -74,9 +74,7 @@ class AbstractSerializer(serializers.HyperlinkedModelSerializer):
         return abstract
 
 
-class ReviewSerializer(serializers.HyperlinkedModelSerializer):
-    pcId = ProgramCommitteeMemberSerializer()
-    paperId = PaperSerializer()
+class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review

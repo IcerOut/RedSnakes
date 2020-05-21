@@ -1,3 +1,5 @@
+import json
+
 from ConferenceManager import serializers
 from ConferenceManager.models import Abstract, Bid, ConferenceAuthor, ConferenceAuthorSession, \
     ConferenceSession, Review
@@ -9,9 +11,10 @@ class ReviewService(MainService):
         super().__init__()
 
     def add(self, review):
+        review = json.loads(review)
         serializer = serializers.ReviewSerializer(data=review)
         if not serializer.is_valid():
-            raise ValueError('Invalid JSON!')
+            raise ValueError('Invalid JSON!', serializer.errors)
         new_review = serializer.create(serializer.validated_data)
         Review.save(new_review)
 
