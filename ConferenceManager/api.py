@@ -1,8 +1,6 @@
 from django.http import HttpResponse, JsonResponse
-
 from ConferenceManager import serializers
 from ConferenceManager.models import Conference
-
 
 def conference_list(request):
     if request.method == 'GET':
@@ -11,10 +9,8 @@ def conference_list(request):
         return JsonResponse(conferences_json.data, safe=False)
     return HttpResponse(status=405)
 
-
 def add_new_conference(request):
     response_data = {}
-
     if request.method == 'POST':
         name = request.POST.get('name')
         submissionDeadline = request.POST.get('submissionDeadline')

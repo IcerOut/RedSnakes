@@ -66,11 +66,10 @@
 </form>
 </body>
 </html>
-
 <script>
 $(document).on('submit', '#conf-form',function(e){
     $.ajax({
-        type:'POST',
+        type: 'POST',
         url: '../api/conferences/add',
         data:{
             name:$('#name').val(), 
@@ -92,6 +91,7 @@ $(document).on('submit', '#conf-form',function(e){
         console.log(xhr.status + ": " + xhr.responseText); 
     }
     });
+
 });
 
 </script>

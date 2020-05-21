@@ -1,12 +1,12 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
   }
-  
+
   .navbar {
     overflow: hidden;
     background-color: #333;
   }
-  
+
   .navbar a {
     float: left;
     font-size: 16px;
@@ -15,7 +15,7 @@ body {
     padding: 14px 16px;
     text-decoration: none;
   }
-  
+
   .dropdown {
     float: left;
     overflow: hidden;
