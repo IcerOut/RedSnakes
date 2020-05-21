@@ -27,5 +27,9 @@ urlpatterns = [
     path('api/papers/add', api.add_new_paper, name='add_new_paper'),
     path('api/papers/getAll', api.get_all_papers, name='get_all_papers'),
     path('api/papers/get?id=', api.find_paper, name='find_paper'),
-    path('api/papers/sendAbstract', api.add_new_abstract, name='add_new_abstract')
+    path('api/papers/sendAbstract', api.add_new_abstract, name='add_new_abstract'),
+
+    path('api/reviews/add', api.add_new_review, name='add_new_review'),
+    path('api/reviews/getAll', api.get_all_reviews, name='get_all_reviews'),
+    path('api/reviews/sendBidding', api.add_new_bid, name='add_new_bid')
 ]

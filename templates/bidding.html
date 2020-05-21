@@ -63,8 +63,9 @@
             let choice = combobox[i].value;
 
             let dict = {
-                id: id,
-                choice: choice
+                pcId: {{ user.id }},
+                abstractId: id,
+                status: choice === 'review'
             };
 
             result.push(dict);
@@ -73,7 +74,7 @@
         let json = JSON.stringify(result);
 
         let http = new XMLHttpRequest();
-        http.open("POST", "api/reviews/sendBidding", true);
+        http.open("POST", "../api/reviews/sendBidding", true);
         http.send(json);
     }
 </script>

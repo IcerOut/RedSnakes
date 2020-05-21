@@ -36,11 +36,13 @@ class ReviewService(MainService):
         pass
 
     def add_bid(self, bid):
-        serializer = serializers.BidSerializer(data=bid)
+        bid = json.loads(bid)
+        serializer = serializers.BidSerializer(data=bid, many=True)
         if not serializer.is_valid():
-            raise ValueError('Invalid JSON!')
-        new_bid = serializer.create(serializer.validated_data)
-        Bid.save(new_bid)
+            raise ValueError('Invalid JSON!', serializer.errors)
+        new_bids = serializer.create(serializer.validated_data)
+        for bid in new_bids:
+            Bid.save(bid)
 
     def add_section(self, section, papers):
         serializer_section = serializers.ConferenceSessionSerializer(data=section)
