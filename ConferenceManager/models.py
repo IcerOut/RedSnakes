@@ -130,7 +130,7 @@ class Paper(models.Model):
 
 
 class Review(models.Model):
-    paperId = models.OneToOneField(Paper, on_delete=models.CASCADE)
+    paperId = models.ForeignKey(Paper, on_delete=models.CASCADE)
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
     status = models.CharField(max_length=32, null=False, default='borderline')
 
