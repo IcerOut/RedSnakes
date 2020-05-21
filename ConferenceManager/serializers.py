@@ -60,7 +60,7 @@ class PaperSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Paper
-        fields = ('paperId', 'path', 'accepted')
+        fields = ('id', 'paperId', 'path', 'accepted')
 
     def create(self, validated_data):
         paper = Paper()
@@ -108,8 +108,6 @@ class FullReviewSerializer(serializers.ModelSerializer):
 
 
 class BidSerializer(serializers.ModelSerializer):
-    abstractId = AbstractSerializer()
-    pcId = ProgramCommitteeMemberSerializer()
 
     class Meta:
         model = Bid
@@ -128,7 +126,7 @@ class ConferenceSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConferenceSession
-        fields = ['pcId', 'date', 'startHour', 'endHour', 'roomNumber']
+        fields = ['id', 'title', 'pcId', 'date', 'startHour', 'endHour', 'roomNumber']
 
     def create(self, validated_data):
         sess = ConferenceSession()

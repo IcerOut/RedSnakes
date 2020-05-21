@@ -81,6 +81,7 @@ class ProgramCommitteeMember(models.Model):
 
 class ConferenceSession(models.Model):
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, null=False)
     date = models.DateField(null=False)
     startHour = models.TimeField(null=False)
     endHour = models.TimeField(null=False)
@@ -130,7 +131,7 @@ class Paper(models.Model):
 
 
 class Review(models.Model):
-    paperId = models.OneToOneField(Paper, on_delete=models.CASCADE)
+    paperId = models.ForeignKey(Paper, on_delete=models.CASCADE)
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
     status = models.CharField(max_length=32, null=False, default='borderline')
 

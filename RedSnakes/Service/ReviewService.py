@@ -27,6 +27,7 @@ class ReviewService(MainService):
         return reviews_json
 
     def get_by_id(self, review_id: int):
+        # FIXME Possibly unused?
         review = Review.objects.get(pk=review_id)
         review_json = serializers.ReviewSerializer(review)
         return review_json
@@ -35,11 +36,23 @@ class ReviewService(MainService):
         pass
 
     def add_bid(self, bid):
-        serializer = serializers.BidSerializer(data=bid)
+        bid = json.loads(bid)
+        serializer = serializers.BidSerializer(data=bid, many=True)
         if not serializer.is_valid():
-            raise ValueError('Invalid JSON!')
-        new_bid = serializer.create(serializer.validated_data)
-        Bid.save(new_bid)
+            raise ValueError('Invalid JSON!', serializer.errors)
+        new_bids = serializer.create(serializer.validated_data)
+        for bid in new_bids:
+            # If the bid for the same paper and PCmember already exists, update it
+            # Otherwise, add a new Bid
+            try:
+                bid_in_db = Bid.objects.get(abstractId=bid.abstractId, pcId=bid.pcId)
+            except Exception:
+                bid_in_db = False
+            if bid_in_db is not False:
+                bid_in_db.status = bid.status
+                bid_in_db.save()
+            else:
+                Bid.save(bid)
 
     def add_section(self, section, papers):
         serializer_section = serializers.ConferenceSessionSerializer(data=section)

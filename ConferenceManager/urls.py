@@ -22,5 +22,15 @@ urlpatterns = [
     path('api/conferences/getAll', api.conference_list, name='api_conference_list'),
     path('api/conferences/add', api.add_new_conference, name='add_new_conference'),
     path('api/conferences/get?id=', api.get_conference_by_id, name='get_conference_by_id'),
-    path('api/conferences/signUp', api.sign_up, name='sign_up')
+    path('api/conferences/signUp', api.sign_up, name='sign_up'),
+    path('api/conferences/getSections', api.get_all_sections, name='get_all_sections'),
+
+    path('api/papers/add', api.add_new_paper, name='add_new_paper'),
+    path('api/papers/getAll', api.get_all_papers, name='get_all_papers'),
+    path('api/papers/get?id=', api.find_paper, name='find_paper'),
+    path('api/papers/sendAbstract', api.add_new_abstract, name='add_new_abstract'),
+
+    path('api/reviews/add', api.add_new_review, name='add_new_review'),
+    path('api/reviews/getAll', api.get_all_reviews, name='get_all_reviews'),
+    path('api/reviews/sendBidding', api.add_new_bid, name='add_new_bid')
 ]
