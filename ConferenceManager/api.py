@@ -1,6 +1,9 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from ConferenceManager import serializers
+from ConferenceManager.models import Conference
+from RedSnakes.Service.ReviewService import ReviewService
 from ConferenceManager.models import Conference, ConferenceAuthor, Participant
 
 
@@ -32,6 +35,28 @@ def add_new_conference(request):
                 )
         return JsonResponse(response_data)
     return HttpResponse(status=405)
+
+@csrf_exempt
+def add_new_review(request: HttpRequest):
+    if request.method == 'POST':
+        try:
+            ReviewService().add(request.body.decode('utf-8'))
+            return HttpResponse(status=200)
+        except Exception as e:
+            return HttpResponse(e, status=400)
+    else:
+        return HttpResponse(status=405)
+
+@csrf_exempt
+def get_all_reviews(request: HttpRequest):
+    if request.method == 'GET':
+        try:
+            reviews = ReviewService().getAll()
+            return JsonResponse(reviews.data, safe=False)
+        except Exception as e:
+            return HttpResponse(e, status=400)
+    else:
+        return HttpResponse(status=405)
 
 
 def get_conference_by_id(request):
