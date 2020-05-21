@@ -108,8 +108,6 @@ class FullReviewSerializer(serializers.ModelSerializer):
 
 
 class BidSerializer(serializers.ModelSerializer):
-    abstractId = AbstractSerializer()
-    pcId = ProgramCommitteeMemberSerializer()
 
     class Meta:
         model = Bid
