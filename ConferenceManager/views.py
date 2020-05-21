@@ -1,7 +1,7 @@
 import json
 
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render
 from django.contrib.auth.models import User
 
 
@@ -13,15 +13,6 @@ from ConferenceManager.models import *
 
 def user_list(request):
     users = User.objects.all()
-    # form = request.POST
-    # if request.method == 'POST':
-    #     select_user = get_object_or_404(User, pk=request.POST.get('user_id'))
-    #     # user.user = select_user
-    #     user.save()
-
-    # context = {
-    #     "users": User.objects.all()
-    # }
     return render(request, 'split-papers-into-sections.html', {'users':users})
 
 def add_new_conference(request):
