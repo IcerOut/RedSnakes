@@ -265,11 +265,18 @@
 </section>
 
 <section id="inputs">
-    <form>
+    <form method="POST">
         <input type="text" name="name" id="name" placeholder="New Section Name">
         <select id="chairs" name="chairs">
             <option value="" disabled selected hidden>Session Chair</option>
+            {% for user in users %}
+                {% if user.first_name == "Chair" %}
+                    <option>{{ user.username }}</option>
+                {% endif %}
+            {% endfor %}
         </select>
+
+
         <input type="button" name="addSection" id="addSection" value="Add Section">
     </form>
 </section>
