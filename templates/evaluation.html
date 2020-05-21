@@ -42,7 +42,7 @@
                     button.classList.add("button-link");
                     button.innerHTML = "Evaluate";
 
-                    button.setAttribute("href", "../review/?id=");
+                    button.setAttribute("href", "../review/?id=" + paper["id"]);
 
                     cell = row.insertCell();
                     cell.appendChild(button);
