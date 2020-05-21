@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from ConferenceManager import serializers
 from ConferenceManager.models import Conference
 from RedSnakes.Service.ReviewService import ReviewService
+from ConferenceManager.models import Conference, ConferenceAuthor, Participant
 
 
 def conference_list(request):
@@ -56,3 +57,32 @@ def get_all_reviews(request: HttpRequest):
             return HttpResponse(e, status=400)
     else:
         return HttpResponse(status=405)
+
+
+def get_conference_by_id(request):
+    if request.method == 'GET':
+        conference_id = request.GET.get('id')
+        conference = Conference.objects.get(pk=conference_id)
+        conference_json = serializers.ConferenceSerializer(data=conference)
+        return JsonResponse(conference_json, safe=False)
+    return HttpResponse(status=405)
+
+
+def sign_up(request):
+    if request.metho == 'POST':
+        conference_id = request.POST.get('conference_id')
+        conference = Conference.objects.get(pk=conference_id)
+        participant_id = request.POST.get('participant_id')
+        participant = Participant.objects.get(pk=participant_id)
+        ConferenceAuthor.objects.create(
+            pEmail=participant.email,
+            cId=conference.pk
+        )
+        response_data = {
+            'pEmail': participant.email,
+            'cId': conference_id
+        }
+        return JsonResponse(response_data)
+    return HttpResponse(status=405)
+
+
