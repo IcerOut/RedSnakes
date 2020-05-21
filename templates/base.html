@@ -7,12 +7,15 @@
 {#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
 
   <style>
-* {
-    margin: 0;
-    padding: 0;
-}
+    * {
+        margin: 0;
+        padding: 0;
+    }
 html {
     height: 100%;
+    width: 1000px;
+    color: #a9b7c6;
+       height: 100%;
     width: 1000px;
     background-color: hsla(200,40%,30%,.4);
     background-image:
@@ -25,22 +28,19 @@ html {
     animation: animateSun 50s infinite linear;
     color: #a9b7c6;
 }
-
-@keyframes animateSun{
-    from {background-position: 0 0, 0 0;}
-    to {background-position: 10px 10%, 100% 0;}
-}
-
 body{
     height: 300px;
     width: 350px;
     margin-left: 450px;
     margin-top: 100px;
-    background-color: rgb(138, 136, 136,0.3);
     border: 1px solid black;
     color: #a9b7c6;
 }
 
+@keyframes animateSun{
+    from {background-position: 0 0, 0 0;}
+    to {background-position: 10px 10%, 100% 0;}
+}
 h5 {
     padding: 7px;
     color: white;
@@ -71,7 +71,7 @@ input[type="submit"], button{
     margin-right:auto;
 }
 input[type="submit"]:hover{
-    background-color: rgb(3, 80, 3);
+    background-color: #214283;
 }
 
 
@@ -85,6 +85,8 @@ input[type="submit"]:hover{
 #upnav a{
     color: #a9b7c6;
 }
+
+
 
   </style>
 
@@ -122,5 +124,6 @@ input[type="submit"]:hover{
     {% endblock %}
     {% block extra_body %}
     {% endblock %}
+
   </body>
 </html>

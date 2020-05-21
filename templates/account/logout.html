@@ -2,12 +2,25 @@
 
 {% load i18n %}
 
+<style>
+
+input {
+    border-radius: 4px;
+}
+
+.container{
+     background-color: #303030;
+ }
+
+</style>
+
+
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
 
 <div class="container">
-  <div class="col-sm-6 col-sm-offset-3">
+{#  <div class="col-sm-6 col-sm-offset-3">#}
 <h1>{% trans "Sign Out" %}</h1>
 
 <p>{% trans 'Are you sure you want to sign out?' %}</p>
