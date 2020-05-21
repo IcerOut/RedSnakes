@@ -4,7 +4,7 @@ from .models import Abstract, Bid, Conference, ConferenceAuthor, ConferenceAutho
     ConferenceSession, Login, Paper, Participant, ProgramCommitteeMember, Review
 
 
-class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
+class ConferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conference
         fields = ('name', 'submissionDeadline', 'reviewDeadline', 'conferenceDate')
@@ -18,32 +18,13 @@ class ConferenceSerializer(serializers.HyperlinkedModelSerializer):
         return conference
 
 
-class PaperSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Paper
-        fields = ('paperId', 'path', 'accepted')
-
-    def create(self, validated_data):
-        paper = Paper()
-        paper.paperId = validated_data['paperId']
-        paper.path = validated_data['path']
-        paper.accepted = validated_data['accepted']
-        return paper
-
-
-class ProgramCommitteeMemberSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = ProgramCommitteeMember
-        fields = ('pEmail', 'cId', 'rank')
-
-
-class LoginSerializer(serializers.HyperlinkedModelSerializer):
+class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login
         fields = ('email', 'password')
 
 
-class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
+class ParticipantSerializer(serializers.ModelSerializer):
     email = LoginSerializer()
 
     class Meta:
@@ -51,7 +32,7 @@ class ParticipantSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('email', 'name', 'website', 'affiliation')
 
 
-class ConferenceAuthorSerializer(serializers.HyperlinkedModelSerializer):
+class ConferenceAuthorSerializer(serializers.ModelSerializer):
     pEmail = ParticipantSerializer()
 
     class Meta:
@@ -59,7 +40,7 @@ class ConferenceAuthorSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('pEmail', 'cId', 'rank')
 
 
-class AbstractSerializer(serializers.HyperlinkedModelSerializer):
+class AbstractSerializer(serializers.ModelSerializer):
     authorId = ConferenceAuthorSerializer()
 
     class Meta:
@@ -74,7 +55,45 @@ class AbstractSerializer(serializers.HyperlinkedModelSerializer):
         return abstract
 
 
+class PaperSerializer(serializers.ModelSerializer):
+    paperId = AbstractSerializer()
+
+    class Meta:
+        model = Paper
+        fields = ('paperId', 'path', 'accepted')
+
+    def create(self, validated_data):
+        paper = Paper()
+        paper.paperId = validated_data['paperId']
+        paper.path = validated_data['path']
+        paper.accepted = validated_data['accepted']
+        return paper
+
+
+class ProgramCommitteeMemberSerializer(serializers.ModelSerializer):
+    pEmail = ParticipantSerializer()
+
+    class Meta:
+        model = ProgramCommitteeMember
+        fields = ('pEmail', 'cId', 'rank')
+
+
 class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('paperId', 'pcId', 'status')
+
+    def create(self, validated_data):
+        review = Review()
+        review.paperId = validated_data['paperId']
+        review.pcId = validated_data['pcId']
+        review.status = validated_data['status']
+        return review
+
+
+class FullReviewSerializer(serializers.ModelSerializer):
+    paperId = PaperSerializer()
+    pcId = ProgramCommitteeMemberSerializer()
 
     class Meta:
         model = Review
@@ -88,7 +107,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         return review
 
 
-class BidSerializer(serializers.HyperlinkedModelSerializer):
+class BidSerializer(serializers.ModelSerializer):
     abstractId = AbstractSerializer()
     pcId = ProgramCommitteeMemberSerializer()
 
@@ -104,7 +123,7 @@ class BidSerializer(serializers.HyperlinkedModelSerializer):
         return bid
 
 
-class ConferenceSessionSerializer(serializers.HyperlinkedModelSerializer):
+class ConferenceSessionSerializer(serializers.ModelSerializer):
     pcId = ProgramCommitteeMemberSerializer()
 
     class Meta:
@@ -121,7 +140,7 @@ class ConferenceSessionSerializer(serializers.HyperlinkedModelSerializer):
         return sess
 
 
-class ConferenceAuthorSessionSerializer(serializers.HyperlinkedModelSerializer):
+class ConferenceAuthorSessionSerializer(serializers.ModelSerializer):
     conferenceAuthorId = ConferenceAuthorSerializer()
     conferenceSessionId = ConferenceSessionSerializer()
 

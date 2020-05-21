@@ -23,7 +23,7 @@ class ReviewService(MainService):
 
     def getAll(self):
         reviews = Review.objects.all().order_by('paperId')
-        reviews_json = serializers.ReviewSerializer(reviews, many=True)
+        reviews_json = serializers.FullReviewSerializer(reviews, many=True)
         return reviews_json
 
     def get_by_id(self, review_id: int):

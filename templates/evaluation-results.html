@@ -4,7 +4,7 @@
 <head>
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
-    <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();-->
+        <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for jsonParse();-->
     <meta charset="UTF-8">
     <title>Evaluation results</title>
 </head>
@@ -54,26 +54,29 @@
                     for (let i = 0; i < json.length; i++) {
                         let review = json[i];
                         let row = new_tbody.insertRow();
-                        Object.keys(review).forEach(function (k) {
-                            let text;
-                            let cell = row.insertCell();
-                            text = review[k];
-                            cell.appendChild(document.createTextNode(text));
-                        })
+                        let cell = row.insertCell();
+                        let text = review['paperId']['paperId']['title'];
+                        cell.appendChild(document.createTextNode(text));
+                        cell = row.insertCell();
+                        text = review['pcId']['pEmail']['name'];
+                        cell.appendChild(document.createTextNode(text));
+                        cell = row.insertCell();
+                        text = review['status'];
+                        cell.appendChild(document.createTextNode(text));
                     }
                     table.replaceChild(new_tbody, old_tbody);
                 }
             };
-            http.open("POST", "api/reviews/getAll", true);
+            http.open("GET", "../api/reviews/getAll", true);
             http.send(null);
         }
     </script>
     <table>
         <thead>
         <tr>
-            <th>Rating</th>
-            <th>Justifications</th>
-            <th>Recommendations</th>
+            <th>Paper</th>
+            <th>PC Member</th>
+            <th>Evaluation</th>
         </tr>
         </thead>
         <tbody>

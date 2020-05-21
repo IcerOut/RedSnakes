@@ -45,3 +45,14 @@ def add_new_review(request: HttpRequest):
             return HttpResponse(e, status=400)
     else:
         return HttpResponse(status=405)
+
+@csrf_exempt
+def get_all_reviews(request: HttpRequest):
+    if request.method == 'GET':
+        try:
+            reviews = ReviewService().getAll()
+            return JsonResponse(reviews.data, safe=False)
+        except Exception as e:
+            return HttpResponse(e, status=400)
+    else:
+        return HttpResponse(status=405)
