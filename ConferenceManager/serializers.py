@@ -60,7 +60,7 @@ class PaperSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Paper
-        fields = ('paperId', 'path', 'accepted')
+        fields = ('id', 'paperId', 'path', 'accepted')
 
     def create(self, validated_data):
         paper = Paper()
