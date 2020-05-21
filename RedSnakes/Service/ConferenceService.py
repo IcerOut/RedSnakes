@@ -1,5 +1,5 @@
 from ConferenceManager import serializers
-from ConferenceManager.models import Conference
+from ConferenceManager.models import Conference, ConferenceAuthor, Participant
 from RedSnakes.Service.MainService import MainService
 
 
@@ -7,7 +7,7 @@ class ConferenceService(MainService):
     def __init__(self):
         super().__init__()
 
-    def signUp(self, entity):
+    def add(self, entity):
         conference_serializer = serializers.ConferenceSerializer(data=entity)
         if not conference_serializer.is_valid():
             raise ValueError("Invalid JSON")
@@ -20,13 +20,29 @@ class ConferenceService(MainService):
     def delete(self, entity):
         pass
 
+    def signUp(self, participant, conference):
+        conference_serializer = serializers.Conference(data=conference)
+        participant_serializer = serializers.Participant(data=participant)
+
+        if not participant_serializer.is_valid() or not conference_serializer.is_valid():
+            raise ValueError("Invalid JSON")
+
+        cid = conference.pk
+        email = participant.email
+        author = ConferenceAuthor(pEmail=email, cId=cid)
+
+        conference_author_serializer = serializers.ConferenceAuthor(data=author)
+        ConferenceAuthor.save(author)
+
+        return conference_author_serializer
+
     def get_by_id(self, conference_id: int):
         conference = Conference.objects.get(pk=conference_id)
-        conference_json = serializers.ConferenceSerializer(conference)
-        return conference_json
+        conference_serializer = serializers.ConferenceSerializer(conference)
+        return conference_serializer
 
     def getAll(self):
         conferences = Conference.objects.all().order_by('name')
-        conferences_json = serializers.ConferenceSerializer(conferences, many=True)
-        return conferences_json
+        conferences_serializer = serializers.ConferenceSerializer(conferences, many=True)
+        return conferences_serializer
 

@@ -1,6 +1,5 @@
-from django.conf.urls import url
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+
 from ConferenceManager import api, views
 
 urlpatterns = [
@@ -13,13 +12,20 @@ urlpatterns = [
     path('evaluation/', views.evaluation, name='evaluation'),
     path('review/', views.review, name='review'),
     path('section-choices/', views.section_choices, name='section_choices'),
-    path('split-papers-into-sections/', views.split_papers_into_sections, name='split_papers_into_sections'),
+    path('split-papers-into-sections/', views.split_papers_into_sections,
+         name='split_papers_into_sections'),
 
     path('chair-register/', views.chair_register, name='chair_register'),
     path('speaker-register/', views.speaker_register, name='speaker_register'),
-    path('listner-register/', views.listener_register, name='listener_register'),
-
+    path('listener-register/', views.listener_register, name='listener_register'),
 
     path('api/conferences/getAll', api.conference_list, name='api_conference_list'),
     path('api/conferences/add', api.add_new_conference, name='add_new_conference'),
+    path('api/conferences/get?id=', api.get_conference_by_id, name='get_conference_by_id'),
+    path('api/conferences/signUp', api.sign_up, name='sign_up'),
+
+    path('api/papers/add', api.add_new_paper, name='add_new_paper'),
+    path('api/papers/getAll', api.get_all_papers, name='get_all_papers'),
+    path('api/papers/get?id=', api.find_paper, name='find_paper'),
+    path('api/papers/sendAbstract', api.add_new_abstract, name='add_new_abstract')
 ]

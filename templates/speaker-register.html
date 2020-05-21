@@ -26,7 +26,7 @@
         let json = JSON.stringify(dict);
 
         let http = new XMLHttpRequest();
-        http.open("POST", "api/speaker/register", true);
+        http.open("POST", "../api/speaker/register", true);
         http.send(json);
 
     }
@@ -40,7 +40,7 @@
         let json = JSON.stringify(dict);
 
         let http = new XMLHttpRequest();
-        http.open("POST", "api/speaker/sendAbstract", true);
+        http.open("POST", "../api/papers/sendAbstract", true);
         http.send(json);
     }
 </script>
