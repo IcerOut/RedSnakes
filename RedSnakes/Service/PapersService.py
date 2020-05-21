@@ -1,3 +1,5 @@
+import json
+
 from ConferenceManager import serializers
 from ConferenceManager.models import Paper, Abstract
 from RedSnakes.Service.MainService import MainService
@@ -8,7 +10,12 @@ class PapersService(MainService):
         super().__init__()
 
     def add(self, entity):
-        pass
+        paper = json.loads(entity)
+        serializer = serializers.PaperSerializer(data=paper)
+        if not serializer.is_valid():
+            raise ValueError('Invalid JSON!', serializer.errors)
+        new_paper = serializer.create(serializer.validated_data)
+        Paper.save(new_paper)
 
     def update(self, entity):
         pass
@@ -27,8 +34,10 @@ class PapersService(MainService):
         return paper_json
 
     def sendAbstract(self, abstract_json):
+        abstract_json = json.loads(abstract_json)
         serializer = serializers.AbstractSerializer(data=abstract_json)
         if not serializer.is_valid():
-            raise ValueError('Invalid JSON!')
+            raise ValueError('Invalid JSON!', serializer.errors)
         abstract = serializer.create(serializer.validated_data)
         Abstract.save(abstract)
+        return abstract

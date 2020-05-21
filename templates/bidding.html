@@ -4,7 +4,7 @@
 <head>
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
-    <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();-->
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for jsonParse();-->
     <meta charset="UTF-8">
     <title>Bidding</title>
 </head>
@@ -25,9 +25,9 @@
 
                     let row = new_tbody.insertRow();
                     let cell = row.insertCell();
-                    cell.appendChild(document.createTextNode(paper["title"]));
+                    cell.appendChild(document.createTextNode(paper["paperId"]["title"]));
                     cell = row.insertCell();
-                    cell.appendChild(document.createTextNode(paper["abstract"]));
+                    cell.appendChild(document.createTextNode(paper["paperId"]["text"]));
 
                     cell = row.insertCell();
                     let select = document.createElement("select");
@@ -49,7 +49,7 @@
                 table.replaceChild(new_tbody, old_tbody);
             }
         };
-        http.open("GET", "api/papers/getAll", true);
+        http.open("GET", "../api/papers/getAll", true);
         http.send(null);
     }
 
