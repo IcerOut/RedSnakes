@@ -31,6 +31,12 @@
                     cell.appendChild(document.createTextNode(paper["paperId"]["title"]));
                     cell = row.insertCell();
                     cell.appendChild(document.createTextNode(paper["paperId"]["authorId"]["pEmail"]["email"]["email"]));
+                    row.addEventListener('click', function(){
+
+                        this.setAttribute('selected', 'true');
+                        this.style.color = '#ffffff';
+                        this.style.textShadow = '#a9b7c6';
+                    });
                 }
                 tablePapers.replaceChild(new_tbody, old_tbody);
 
@@ -62,24 +68,6 @@
         http.send(null);
     }
 
-    function rowHighlight() {
-        /*
-            Adds on the papers table, on each row, an onclick handler that simply adds a selected attribute
-            ++ highlight on the selected row
-        */
-        let table = document.getElementsByTagName("table")[1];
-        let rows = table.getElementsByTagName("tr");
-        for (let i = 0; i < rows.length; i++) {
-            let currentRow = table.rows[i];
-            let createClickHandler = function (row) {
-                return function () {
-                    row.setAttribute('selected', 'true');
-                    row.style.color = '#3460b8';
-                };
-            };
-            currentRow.onclick = createClickHandler(currentRow);
-        }
-    }
 
     function movePaper(element) {
         /*
@@ -151,7 +139,6 @@
     function initialize() {
         loadedPapers();
         loadedChairs();
-        rowHighlight();
         document.getElementById('arrow').onclick = getSelected;
         document.getElementById('addSection').onclick = submitSection;
     }
