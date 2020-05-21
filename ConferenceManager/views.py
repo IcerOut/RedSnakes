@@ -20,6 +20,15 @@ def conference_list(request):
     return render(request, "conference-list.html")
 
 
+def chair_register(request):
+    return render(request, "chair-register.html")
+
+def speaker_register(request):
+    return render(request, "speaker-register.html")
+
+def listener_register(request):
+    return render(request, "listener-register.html")
+
 def evaluation_results(request):
     return render(request, "evaluation-results.html")
 

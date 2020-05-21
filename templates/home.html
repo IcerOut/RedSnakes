@@ -117,7 +117,7 @@ p{
   <a href='{% url "conference_list" %}'>Conference List</a>
   <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
   {% if request.user.is_authenticated %}
-    {% if request.user.first_name == "Steering" %}
+    {% if request.user.first_name != "Listener" %}
         <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
     {% endif %}
   {% endif %}

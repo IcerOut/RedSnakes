@@ -5,8 +5,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="stylesheet.css"> -->
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
 
-    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for
-    getUserType();-->
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script>
     <meta charset="UTF-8">
     <title>Conferences</title>
 </head>
@@ -37,22 +36,22 @@
                         cell = row.insertCell();
                         cell.appendChild(document.createTextNode(conference["conferenceDate"]));
 
-                        {#let userType = getUserType();#} //FIXME
-                        let userType = 'listener';
+                        let userType = "{{request.user.first_name}}";
+                        console.log(userType);
 
                         let button = document.createElement("a");
                         button.classList.add("button-link");
                         button.innerHTML = "Register";
 
                         switch (userType) {
-                            case "listener":
-                                button.setAttribute("href", "listener-register.html");
+                            case "Listener":
+                                button.setAttribute("href", "{% url 'listener_register' %}");
                                 break;
-                            case "speaker":
-                                button.setAttribute("href", "speaker-register.html");
+                            case "Speaker":
+                                button.setAttribute("href", "{% url 'speaker_register' %}");
                                 break;
-                            case "chair":
-                                button.setAttribute("href", "chair-register.html");
+                            case "Chair":
+                                button.setAttribute("href", "{% url 'chair_register' %}");
                                 break;
                             default:
                                 console.log("Invalid user type");
@@ -69,12 +68,12 @@
         }
 
         function showAddConferenceButton() {
-            {#let userType = getUserType();#} //FIXME
-            let userType = 'listener';
+            let userType = "{{request.user.first_name}}";
+            console.log(userType);
 
-            if (userType === "chair") {
+            if (userType === "Chair") {
                 let button = document.createElement("a");
-                button.setAttribute("href", "add-conference.html"); //fixme
+                button.setAttribute("href", "{% url 'submit_new_conference' %}"); 
                 button.classList.add("button-link");
                 button.innerHTML = "Add conference";
                 button.setAttribute("style", "margin-left: auto; margin-right: auto; margin-top: 25px");
@@ -92,16 +91,14 @@
                 <th>Submission Deadline</th>
                 <th>Review Deadline</th>
                 <th>Conference Date</th>
-                <!-- <th>Register</th> -->
+                <th>Register</th>
             </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
     </div>
-
     <!--button style="margin-top: 30px" type="submit">Add conference</button-->
 </div>
-
 </body>
 </html>
