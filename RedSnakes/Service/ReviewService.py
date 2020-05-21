@@ -42,7 +42,17 @@ class ReviewService(MainService):
             raise ValueError('Invalid JSON!', serializer.errors)
         new_bids = serializer.create(serializer.validated_data)
         for bid in new_bids:
-            Bid.save(bid)
+            # If the bid for the same paper and PCmember already exists, update it
+            # Otherwise, add a new Bid
+            try:
+                bid_in_db = Bid.objects.get(abstractId=bid.abstractId, pcId=bid.pcId)
+            except Exception:
+                bid_in_db = False
+            if bid_in_db is not False:
+                bid_in_db.status = bid.status
+                bid_in_db.save()
+            else:
+                Bid.save(bid)
 
     def add_section(self, section, papers):
         serializer_section = serializers.ConferenceSessionSerializer(data=section)
