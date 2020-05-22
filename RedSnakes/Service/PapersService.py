@@ -57,17 +57,19 @@ class PapersService(MainService):
         serializer = serializers.BidSerializer(data=bid, many=True)
         if not serializer.is_valid():
             raise ValueError('Invalid JSON!', serializer.errors)
+        print(serializer.validated_data)
         new_bids = serializer.create(serializer.validated_data)
         for bid in new_bids:
             bid_in_db = Bid.objects.get(abstractId=bid.abstractId, pcId=bid.pcId)
             bid_in_db.chosenToReview = True
             bid_in_db.save()
 
-    def getBidsForOnePaper(self, id):
+    def getBidsForOnePaper(self, abstract_id):
         bids = Bid.objects.all().order_by('abstractId')
+        abstract = Abstract.objects.get(pk=abstract_id)
         paperBids = []
         for bid in bids:
-            if bid.abstractId == id and bid.chosenToReview is True:
+            if bid.abstractId == abstract and bid.status is True and not bid.chosenToReview:
                 paperBids.append(bid)
-        bids_json = serializers.BidSerializer(paperBids, many=True)
+        bids_json = serializers.FullBidSerializer(paperBids, many=True)
         return bids_json

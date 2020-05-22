@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Assign Reviewers</title>
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for jsonParse();-->
      <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
@@ -18,13 +19,15 @@
             let result = [];
 
             for (let i = 0; i < combobox.length; i++) {
-                let id = combobox[i].id.substring(16);
-                let choice = combobox[i].value;
+                let id = combobox[i].id;
+                let option = combobox[i].options[combobox[i].selectedIndex];
                 // let reviewerId = choice.split()
 
                 let dict = {
-                    id: id,
-                    choice: choice
+                    abstractId: id,
+                    pcId: option.id,
+                    status: true,
+                    chosenToReview: true
                 };
 
                 result.push(dict);
@@ -60,7 +63,7 @@
 
                         cell = row.insertCell();
                         let select = document.createElement("select");
-                        select.id = "selectReviewer-" + paper["id"];
+                        select.id = paper["paperId"]["id"];
                         optionsOfReviewer(select);
 
                         cell.appendChild(select);
@@ -88,13 +91,14 @@
                     for (let i = 0; i < json.length; i++) {
                         let reviewer = json[i];
                         let option = document.createElement("option");
-                        option.text = reviewer["id"] + "." + reviewer["fullName"];
+                        option.text = reviewer["pcId"]["pEmail"]["name"];
+                        option.id = reviewer["pcId"]["id"];
 
                         select.add(option);
                     }
                 }
             };
-            http.open("POST", "../api/papers/getReviewers", true); //todo: get data from paperReviewer
+            http.open("GET", "../api/papers/getReviewers/?abstract_id=" + select.id, true);
             http.send(null);
 
         }

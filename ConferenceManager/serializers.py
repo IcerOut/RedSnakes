@@ -45,7 +45,7 @@ class AbstractSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Abstract
-        fields = ('authorId', 'text', 'title')
+        fields = ('id', 'authorId', 'text', 'title')
 
     def create(self, validated_data):
         abstract = Abstract()
@@ -75,7 +75,7 @@ class ProgramCommitteeMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProgramCommitteeMember
-        fields = ('pEmail', 'cId', 'rank')
+        fields = ('id', 'pEmail', 'cId', 'rank')
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -112,6 +112,20 @@ class FullReviewSerializer(serializers.ModelSerializer):
 
 
 class BidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bid
+        fields = ('abstractId', 'pcId', 'status')
+
+    def create(self, validated_data):
+        bid = Bid()
+        bid.abstractId = validated_data['abstractId']
+        bid.pcId = validated_data['pcId']
+        bid.status = validated_data['status']
+        return bid
+
+
+class FullBidSerializer(serializers.ModelSerializer):
+    pcId = ProgramCommitteeMemberSerializer()
 
     class Meta:
         model = Bid

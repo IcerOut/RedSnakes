@@ -223,7 +223,7 @@ def file_upload(request: HttpRequest):
 
 
 @csrf_exempt
-def send_reviewer(request) :
+def send_reviewer(request):
     if request.method == 'POST':
         try:
             paperService = PapersService()
@@ -239,9 +239,9 @@ def send_reviewer(request) :
 def get_reviewers(request):
     if request.method == 'GET':
         try:
-            id = request.GET.get('id')
+            abstract = request.GET.get('abstract_id')
             paperService = PapersService()
-            bids = paperService.getBidsForOnePaper(id)
+            bids = paperService.getBidsForOnePaper(abstract)
             return JsonResponse(bids.data, safe=False)
         except Exception as e:
             return HttpResponse(e, status=400)
