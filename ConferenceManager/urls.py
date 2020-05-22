@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/conferences/signUp', api.sign_up, name='sign_up'),
     path('api/file_upload', api.file_upload, name='file_upload'),
     path('api/conferences/getSections', api.get_all_sections, name='get_all_sections'),
+    path('api/review/submitSection', api.add_section, name='add_section'),
 
     path('api/papers/add', api.add_new_paper, name='add_new_paper'),
     path('api/papers/getAll', api.get_all_papers, name='get_all_papers'),
