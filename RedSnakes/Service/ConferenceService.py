@@ -1,5 +1,10 @@
+import json
+from datetime import date, datetime
+
 from ConferenceManager import serializers
-from ConferenceManager.models import Conference, ConferenceAuthor, ConferenceSession
+from ConferenceManager.models import Abstract, Conference, ConferenceAuthor, \
+    ConferenceAuthorSession, ConferenceSession, \
+    Paper, Participant, ProgramCommitteeMember
 from RedSnakes.Service.MainService import MainService
 
 
@@ -50,3 +55,21 @@ class ConferenceService(MainService):
         sections = ConferenceSession.objects.all().order_by('date')
         sections_json = serializers.ConferenceSessionSerializer(sections, many=True)
         return sections_json
+
+    def add_section(self, section_json):
+        section = json.loads(section_json)
+        title = section['title']
+        chair_name = section['chairName']
+        chair = Participant.objects.get(name=chair_name)
+        pcId = ProgramCommitteeMember.objects.get(pEmail=chair)
+        newSession = ConferenceSession(title=title, pcId=pcId, date=date.today(),
+                                       startHour=datetime.now(), endHour=datetime.now(),
+                                       roomNumber='999')  # FIXME
+        newSession.save()
+        for paper_id in section['idPapers']:
+            abstract_id = Paper.objects.get(id=paper_id).id
+            authorId = Abstract.objects.get(id=abstract_id).id
+            newConferenceAuthorSession = ConferenceAuthorSession(
+                conferenceAuthorId=ConferenceAuthor.objects.get(id=authorId),
+                conferenceSessionId=newSession)
+            newConferenceAuthorSession.save()

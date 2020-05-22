@@ -33,7 +33,7 @@
             let json = JSON.stringify(result);
 
             let http = new XMLHttpRequest();
-            http.open("POST", "api/paper/sendReviewer", true); //fixme
+            http.open("POST", "../api/papers/sendReviewer", true);
             http.send(json);
         }
 
@@ -52,17 +52,16 @@
 
                         let row = new_tbody.insertRow();
                         let cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(paper["title"]));
+                        cell.appendChild(document.createTextNode(paper["paperId"]["title"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(paper["abstract"]));
+                        cell.appendChild(document.createTextNode(paper["paperId"]["text"]));
                         cell = row.insertCell();
-                        cell.appendChild(document.createTextNode(paper["conferenceName"]));
+                        cell.appendChild(document.createTextNode(paper["paperId"]["authorId"]["cId"]["name"]));
 
                         cell = row.insertCell();
                         let select = document.createElement("select");
                         select.id = "selectReviewer-" + paper["id"];
-                        optionsofReviwer(select);
-
+                        optionsOfReviewer(select);
 
                         cell.appendChild(select);
 
@@ -77,16 +76,16 @@
                     table.replaceChild(new_tbody, old_tbody);
                 }
             };
-            http.open("GET", "api/papers/getAll", true);
+            http.open("GET", "../api/papers/getAll", true);
             http.send(null);
         }
 
-        function optionsofReviwer(select) {
-            let http2 = new XMLHttpRequest();
-            http2.onreadystatechange = function () {
+        function optionsOfReviewer(select) {
+            let http = new XMLHttpRequest();
+            http.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
-                    let json2 = jsonParse(this.responseText);
-                    for (let i = 0; i < json2.length; i++) {
+                    let json = jsonParse(this.responseText);
+                    for (let i = 0; i < json.length; i++) {
                         let reviewer = json[i];
                         let option = document.createElement("option");
                         option.text = reviewer["id"] + "." + reviewer["fullName"];
@@ -95,8 +94,8 @@
                     }
                 }
             };
-            http2.open("POST", "api/user/getAll", true); //todo: get data from paperReviewer
-            http2.send(null);
+            http.open("POST", "../api/papers/getReviewers", true); //todo: get data from paperReviewer
+            http.send(null);
 
         }
     </script>

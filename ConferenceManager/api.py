@@ -192,3 +192,4 @@ def file_upload(request: HttpRequest):
         name = fs.save ( uploaded_file.name , uploaded_file )
         context['url'] = fs.url ( name )
     return render ( request , 'speaker-register.html' , context )
+
