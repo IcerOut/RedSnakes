@@ -5,21 +5,50 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
+
+    <style>
+        h1{
+            margin-left: 120px;
+        }
+        input {
+            border-radius: 4px;
+        }
+
+
+        .container{
+             background-color: #303030;
+         }
+
+        #registerButton
+        {
+            width: 265px;
+            margin-left: 50px;
+            margin-top: 7px;
+        }
+
+         #registerButton:hover{
+            background-color: #214283;
+        }
+
+        #alreadyAccount{
+            margin-left: 14px;
+        }
+</style>
+
 <div class="container">
-  <div class="col-sm-6 col-sm-offset-3">
-<h1>{% trans "Sign Up" %}</h1>
+    {#  <div class="col-sm-6 col-sm-offset-3">#}
+    <h1>{% trans "Register" %}</h1>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+    <p id="alreadyAccount">{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <button id="registerButton" type="submit">{% trans "Register" %} &raquo;</button>
+    </form>
   </div>
-</div>
 
 {% endblock %}

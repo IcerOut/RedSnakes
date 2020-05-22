@@ -2,10 +2,18 @@ import json
 
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth.models import User
+
 
 # Create your views here.
+from django.template import RequestContext
+
 from ConferenceManager import serializers
 from ConferenceManager.models import *
+
+def user_list(request):
+    users = User.objects.all()
+    return render(request, 'split-papers-into-sections.html', {'users':users})
 
 def add_new_conference(request):
     conferences = Conference.objects.all()
@@ -53,4 +61,5 @@ def section_choices(request):
 
 
 def split_papers_into_sections(request):
-    return render(request, "split-papers-into-sections.html")
+    users = User.objects.all()
+    return render(request, "split-papers-into-sections.html", {'users':users})

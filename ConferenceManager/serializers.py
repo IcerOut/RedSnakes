@@ -126,7 +126,7 @@ class ConferenceSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConferenceSession
-        fields = ['pcId', 'date', 'startHour', 'endHour', 'roomNumber']
+        fields = ['id', 'title', 'pcId', 'date', 'startHour', 'endHour', 'roomNumber']
 
     def create(self, validated_data):
         sess = ConferenceSession()

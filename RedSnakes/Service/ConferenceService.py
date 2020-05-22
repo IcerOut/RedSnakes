@@ -1,5 +1,5 @@
 from ConferenceManager import serializers
-from ConferenceManager.models import Conference, ConferenceAuthor, Participant
+from ConferenceManager.models import Conference, ConferenceAuthor, ConferenceSession
 from RedSnakes.Service.MainService import MainService
 
 
@@ -46,3 +46,7 @@ class ConferenceService(MainService):
         conferences_serializer = serializers.ConferenceSerializer(conferences, many=True)
         return conferences_serializer
 
+    def get_all_sections(self):
+        sections = ConferenceSession.objects.all().order_by('date')
+        sections_json = serializers.ConferenceSessionSerializer(sections, many=True)
+        return sections_json

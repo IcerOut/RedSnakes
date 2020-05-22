@@ -5,6 +5,7 @@
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for jsonParse();-->
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <meta charset="UTF-8">
     <title>Split Papers Into Sections</title>
 </head>
@@ -31,6 +32,12 @@
                     cell.appendChild(document.createTextNode(paper["paperId"]["title"]));
                     cell = row.insertCell();
                     cell.appendChild(document.createTextNode(paper["paperId"]["authorId"]["pEmail"]["email"]["email"]));
+                    row.addEventListener('click', function(){
+
+                        this.setAttribute('selected', 'true');
+                        this.style.color = '#ffffff';
+                        this.style.textShadow = '#a9b7c6';
+                    });
                 }
                 tablePapers.replaceChild(new_tbody, old_tbody);
 
@@ -62,24 +69,6 @@
         http.send(null);
     }
 
-    function rowHighlight() {
-        /*
-            Adds on the papers table, on each row, an onclick handler that simply adds a selected attribute
-            ++ highlight on the selected row
-        */
-        let table = document.getElementsByTagName("table")[1];
-        let rows = table.getElementsByTagName("tr");
-        for (let i = 0; i < rows.length; i++) {
-            let currentRow = table.rows[i];
-            let createClickHandler = function (row) {
-                return function () {
-                    row.setAttribute('selected', 'true');
-                    row.style.color = '#3460b8';
-                };
-            };
-            currentRow.onclick = createClickHandler(currentRow);
-        }
-    }
 
     function movePaper(element) {
         /*
@@ -151,7 +140,6 @@
     function initialize() {
         loadedPapers();
         loadedChairs();
-        rowHighlight();
         document.getElementById('arrow').onclick = getSelected;
         document.getElementById('addSection').onclick = submitSection;
     }
@@ -197,13 +185,15 @@
     }
 </style>
 <div class="navbar">
+  <a href='{% url "home" %}'><img src="{% static 'favicon.ico' %}" height="25" width="25"></a>
   <a href='{% url "conference_list" %}'>Conference List</a>
-  <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
   {% if request.user.is_authenticated %}
-    {% if request.user.first_name != "Listener" %}
-        <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
+    <a href='{% url "section_choices" %}'>Section Choices</a>
+    {% if request.user.first_name == "Speaker" or request.user.first_name == "Chair"%}
+      <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
     {% endif %}
-  {% endif %}
+      {% if request.user.first_name == "Chair" %}
+        <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
           <div class="dropdown">
             <button class="dropbtn">Administrative functions &darr;
             </button>
@@ -212,11 +202,12 @@
                 <a href='{% url "bidding" %}'>Bidding</a>
                 <a href='{% url "evaluation" %}'>Evaluation</a>
                 <a href='{% url "review"%}'>Review</a>
-                <a href='{% url "section_choices" %}'>Section Choices</a>
                 <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
             </div>
+          </div>
+    {% endif %}
+  {% endif %}
 
-  </div>
   <div class = "navbar-right">
         {% if request.user.is_authenticated %}
         <a href="{% url 'account_logout' %}">Logout</a>
@@ -275,11 +266,18 @@
 </section>
 
 <section id="inputs">
-    <form>
+    <form method="POST">
         <input type="text" name="name" id="name" placeholder="New Section Name">
         <select id="chairs" name="chairs">
             <option value="" disabled selected hidden>Session Chair</option>
+            {% for user in users %}
+                {% if user.first_name == "Chair" %}
+                    <option>{{ user.username }}</option>
+                {% endif %}
+            {% endfor %}
         </select>
+
+
         <input type="button" name="addSection" id="addSection" value="Add Section">
     </form>
 </section>
