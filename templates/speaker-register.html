@@ -142,9 +142,9 @@
 </div>
 
 <div id="upfileDiv">
-    <form action="/api/file/upload">
-        <input type="file" class="custom-file-upload" id="myFile" name="filename">
-        <input type="submit" class="custom-file-upload">
+    <form method="post" action="../api/file_upload" enctype="multipart/form-data">        
+        <input type="file" name="mile">
+        <input type="submit">
     </form>
     <p>Paper deadline:</p>
 </div>
