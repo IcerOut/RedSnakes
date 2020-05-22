@@ -123,6 +123,7 @@ class Paper(models.Model):
     paperId = models.OneToOneField(Abstract, on_delete=models.CASCADE)
     path = models.CharField(max_length=255, null=False)
     accepted = models.BooleanField(null=True)
+
     def __str__(self):
         return str(self.paperId)
 
@@ -148,9 +149,10 @@ class Bid(models.Model):
     abstractId = models.ForeignKey(Abstract, on_delete=models.CASCADE)
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
     status = models.BooleanField()
+    chosenToReview = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status)
+        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status) + ' ' + str(self.chosenToReview)
 
     def __unicode__(self):
-        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status)
+        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status) + ' ' + str(self.chosenToReview)

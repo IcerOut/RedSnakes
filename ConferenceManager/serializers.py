@@ -115,13 +115,14 @@ class BidSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bid
-        fields = ('abstractId', 'pcId', 'status')
+        fields = ('abstractId', 'pcId', 'status', 'chosenToReview')
 
     def create(self, validated_data):
         bid = Bid()
         bid.abstractId = validated_data['abstractId']
         bid.pcId = validated_data['pcId']
         bid.status = validated_data['status']
+        bid.chosenToReview = validated_data['chosenToReview']
         return bid
 
 

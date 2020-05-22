@@ -33,6 +33,8 @@ urlpatterns = [
          name='get_all_papers_not_in_sections'),
     path('api/papers/get?id=', api.find_paper, name='find_paper'),
     path('api/papers/sendAbstract', api.add_new_abstract, name='add_new_abstract'),
+    path('api/papers/sendReviewer', api.send_reviewer, name='send_reviewer'),
+    path('api/papers/getReviewers', api.get_reviewers, name='get_reviewers'),
 
     path('api/reviews/add', api.add_new_review, name='add_new_review'),
     path('api/reviews/getAll', api.get_all_reviews, name='get_all_reviews'),
