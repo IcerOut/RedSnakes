@@ -11,10 +11,6 @@ from django.template import RequestContext
 from ConferenceManager import serializers
 from ConferenceManager.models import *
 
-def user_list(request):
-    users = User.objects.all()
-    return render(request, 'split-papers-into-sections.html', {'users':users})
-
 def add_new_conference(request):
     conferences = Conference.objects.all()
     return render(request, 'submit-new-conference.html', {'conferences': conferences})
