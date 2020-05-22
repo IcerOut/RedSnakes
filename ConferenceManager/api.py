@@ -12,9 +12,9 @@ from RedSnakes.Service.ReviewService import ReviewService
 
 def conference_list(request):
     if request.method == 'GET':
-        conferences = Conference.objects.all()
-        conferences_json = serializers.ConferenceSerializer(conferences, many=True)
-        return JsonResponse(conferences_json.data, safe=False)
+        service = ConferenceService()
+        conferences = service.getAll()
+        return JsonResponse(conferences.data, safe=False)
     return HttpResponse(status=405)
 
 
