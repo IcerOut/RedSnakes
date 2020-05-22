@@ -81,13 +81,15 @@ class ProgramCommitteeMemberSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ('paperId', 'pcId', 'status')
+        fields = ('paperId', 'pcId', 'status', 'justification', 'recommendations')
 
     def create(self, validated_data):
         review = Review()
         review.paperId = validated_data['paperId']
         review.pcId = validated_data['pcId']
         review.status = validated_data['status']
+        review.justification = validated_data['justification']
+        review.recommendations = validated_data['recommendations']
         return review
 
 
@@ -97,13 +99,15 @@ class FullReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ('paperId', 'pcId', 'status')
+        fields = ('paperId', 'pcId', 'status', 'justification', 'recommendations')
 
     def create(self, validated_data):
         review = Review()
         review.paperId = validated_data['paperId']
         review.pcId = validated_data['pcId']
         review.status = validated_data['status']
+        review.justification = validated_data['justification']
+        review.recommendations = validated_data['recommendations']
         return review
 
 

@@ -134,6 +134,8 @@ class Review(models.Model):
     paperId = models.ForeignKey(Paper, on_delete=models.CASCADE)
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
     status = models.CharField(max_length=32, null=False, default='borderline')
+    justification = models.CharField(max_length=5000, null=False, default='-')
+    recommendations = models.CharField(max_length=5000, null=False, default='-')
 
     def __str__(self):
         return str(self.paperId) + ' ' + str(self.pcId) + ' ' + self.status
