@@ -94,24 +94,12 @@
     <div class="clearfix">
       <button type="submit" class="">Submit</button>
     </div>
-
-    <div id="conference" visible='no'>
-      <h2>Conference added successfully!</h2>
-    </div>
-
   </div>
 
 </form>
 </body>
 </html>
 <script>
-$(document).ready(function() {
-  if($("#conference").attr("visible") == "no"){
-      $("#conference").hide();
-      console.log("hide");
-  }
-  })
-
 $(document).on('submit', '#conf-form',function(e){
     $.ajax({
         type: 'POST',
@@ -125,7 +113,6 @@ $(document).on('submit', '#conf-form',function(e){
             action: 'post'
         },
         success:function(){
-            $("#conference").show();
             window.location.href = "{% url 'conference_list' %}";
             document.getElementById("post-form").reset();
         },
