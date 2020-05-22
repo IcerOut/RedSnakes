@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from ConferenceManager import serializers
 from ConferenceManager.models import Conference , ConferenceAuthor , Participant
+from RedSnakes.Service.ConferenceService import ConferenceService
 from RedSnakes.Service.PapersService import PapersService
 from RedSnakes.Service.ReviewService import ReviewService
 
@@ -89,6 +90,16 @@ def add_new_bid(request: HttpRequest):
     else:
         return HttpResponse(status=405)
 
+@csrf_exempt
+def get_all_sections(request: HttpRequest):
+    if request.method == 'GET':
+        try:
+            reviews = ConferenceService().get_all_sections()
+            return JsonResponse(reviews.data, safe=False)
+        except Exception as e:
+            return HttpResponse(e, status=400)
+    else:
+        return HttpResponse(status=405)
 
 def get_conference_by_id(request):
     if request.method == 'GET':
