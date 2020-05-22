@@ -4,6 +4,7 @@
 <head>
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for
     loadTitle();-->
     <meta charset="UTF-8">
@@ -50,7 +51,7 @@
 </style>
 
 <div class="navbar">
-  <a href='{% url "home" %}'>Red Snakes</a>
+  <a href='{% url "home" %}'><img src="{% static 'favicon.ico' %}" height="25" width="25"></a>
   <a href='{% url "conference_list" %}'>Conference List</a>
   {% if request.user.is_authenticated %}
     <a href='{% url "section_choices" %}'>Section Choices</a>
