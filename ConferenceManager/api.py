@@ -167,6 +167,18 @@ def get_all_papers(request: HttpRequest):
     else:
         return HttpResponse(status=405)
 
+@csrf_exempt
+def get_all_papers_not_in_sections(request: HttpRequest):
+    if request.method == 'GET':
+        try:
+            paperService = PapersService()
+            papers = paperService.getAllNotInSections()
+            return JsonResponse(papers.data, safe=False)
+        except Exception as e:
+            return HttpResponse(e, status=400)
+    else:
+        return HttpResponse(status=405)
+
 
 @csrf_exempt
 def add_new_paper(request: HttpRequest):

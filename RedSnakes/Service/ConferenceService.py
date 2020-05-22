@@ -62,14 +62,20 @@ class ConferenceService(MainService):
         chair_name = section['chairName']
         chair = Participant.objects.get(name=chair_name)
         pcId = ProgramCommitteeMember.objects.get(pEmail=chair)
-        newSession = ConferenceSession(title=title, pcId=pcId, date=date.today(),
-                                       startHour=datetime.now(), endHour=datetime.now(),
-                                       roomNumber='999')  # FIXME
-        newSession.save()
+        if ConferenceSession.objects.filter(title=title).count() == 0:
+            newSession = ConferenceSession(title=title, pcId=pcId, date=date.today(),
+                                           startHour=datetime.now(), endHour=datetime.now(),
+                                           roomNumber='999')  # FIXME
+            newSession.save()
+        else:
+            newSession = ConferenceSession.objects.get(title=title)
         for paper_id in section['idPapers']:
             abstract_id = Paper.objects.get(id=paper_id).id
             authorId = Abstract.objects.get(id=abstract_id).id
-            newConferenceAuthorSession = ConferenceAuthorSession(
-                conferenceAuthorId=ConferenceAuthor.objects.get(id=authorId),
-                conferenceSessionId=newSession)
-            newConferenceAuthorSession.save()
+            if ConferenceAuthorSession.objects.filter(
+                    conferenceAuthorId=ConferenceAuthor.objects.get(id=authorId),
+                    conferenceSessionId=newSession).count() == 0:
+                newConferenceAuthorSession = ConferenceAuthorSession(
+                        conferenceAuthorId=ConferenceAuthor.objects.get(id=authorId),
+                        conferenceSessionId=newSession)
+                newConferenceAuthorSession.save()

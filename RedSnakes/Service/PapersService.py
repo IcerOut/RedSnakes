@@ -1,7 +1,7 @@
 import json
 
 from ConferenceManager import serializers
-from ConferenceManager.models import Paper, Abstract
+from ConferenceManager.models import Abstract, ConferenceAuthorSession, Paper
 from RedSnakes.Service.MainService import MainService
 
 
@@ -26,6 +26,16 @@ class PapersService(MainService):
     def getAll(self):
         papers = Paper.objects.all().order_by('paperId')
         papers_json = serializers.PaperSerializer(papers, many=True)
+        return papers_json
+
+    def getAllNotInSections(self):
+        papers = Paper.objects.all().order_by('paperId')
+        filtered_papers = []
+        for paper in papers:
+            if ConferenceAuthorSession.objects.filter(
+                    conferenceAuthorId=paper.paperId.authorId).count() == 0:
+                filtered_papers.append(paper)
+        papers_json = serializers.PaperSerializer(filtered_papers, many=True)
         return papers_json
 
     def getById(self, paper_id: int):

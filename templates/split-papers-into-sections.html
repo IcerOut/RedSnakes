@@ -43,7 +43,7 @@
 
             }
         };
-        http.open("GET", "../api/papers/getAll", true);
+        http.open("GET", "../api/papers/getAllNotInSections", true);
         http.send(null);
     }
 
@@ -135,6 +135,8 @@
         let http = new XMLHttpRequest();
         http.open("POST", "../api/review/submitSection", true);
         http.send(json);
+
+        loadedPapers();
     }
 
     function initialize() {
