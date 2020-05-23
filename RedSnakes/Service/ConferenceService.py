@@ -63,9 +63,7 @@ class ConferenceService(MainService):
         chair = Participant.objects.get(name=chair_name)
         pcId = ProgramCommitteeMember.objects.get(pEmail=chair)
         if ConferenceSession.objects.filter(title=title).count() == 0:
-            newSession = ConferenceSession(title=title, pcId=pcId, date=date.today(),
-                                           startHour=datetime.now(), endHour=datetime.now(),
-                                           roomNumber='999')  # FIXME
+            newSession = ConferenceSession(title=title, pcId=pcId)
             newSession.save()
         else:
             newSession = ConferenceSession.objects.get(title=title)
