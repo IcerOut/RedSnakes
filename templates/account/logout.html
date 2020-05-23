@@ -2,7 +2,19 @@
 
 {% load i18n %}
 
-<style>
+
+
+{% block head_title %}{% trans "Sign Out" %}{% endblock %}
+
+{% block content %}
+
+
+    <style>
+
+h1, p{
+    margin-left: 5%;
+
+}
 
 input {
     border-radius: 4px;
@@ -12,12 +24,13 @@ input {
      background-color: #303030;
  }
 
+#sbm{
+    min-width: 200px;
+    margin-left: 4%;
+ }
+
 </style>
 
-
-{% block head_title %}{% trans "Sign Out" %}{% endblock %}
-
-{% block content %}
 
 <div class="container">
 {#  <div class="col-sm-6 col-sm-offset-3">#}
@@ -30,7 +43,7 @@ input {
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
   {% endif %}
-  <button type="submit">{% trans 'Sign Out' %}</button>
+  <button id="sbm" type="submit">{% trans 'Sign Out' %}</button>
 </form>
   </div>
 </div>

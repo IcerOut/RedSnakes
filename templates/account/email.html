@@ -5,6 +5,38 @@
 {% block head_title %}{% trans "E-mail Addresses" %}{% endblock %}
 
 {% block content %}
+
+
+    <style>
+    h1{
+        margin: 2px;
+    }
+   input, label{
+      display: block;
+       margin: 0;
+    }
+    input[type="radio"]{
+        width: initial;
+        margin: initial;
+    }
+    button{
+        min-width: 264px;
+    }
+
+    .buttonHolder{
+        margin: 2px;
+    }
+    .ctrlHolder *{
+        display: block;
+    }
+     .ctrlHolder span{
+         text-align: right;
+         font-size: 17px;
+         color: red;
+     }
+
+
+    </style>
     <h1>{% trans "E-mail Addresses" %}</h1>
 {% if user.emailaddress_set.all %}
 <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
@@ -15,9 +47,8 @@
 
   {% for emailaddress in user.emailaddress_set.all %}
 <div class="ctrlHolder">
-      <label for="email_radio_{{forloop.counter}}" class="{% if emailaddress.primary %}primary_email{%endif%}">
-
-      <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
+    <label for="email_radio_{{forloop.counter}}" class="{% if emailaddress.primary %}primary_email{%endif%}">
+        <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
 
 {{ emailaddress.email }}
     {% if emailaddress.verified %}
@@ -31,9 +62,9 @@
   {% endfor %}
 
 <div class="buttonHolder">
-      <button class="secondaryAction" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
-      <button class="secondaryAction" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
-      <button class="primaryAction" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
+      <button class="secondaryAction" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button> <br/>
+      <button class="secondaryAction" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button> <br/>
+      <button class="primaryAction" type="submit" name="action_remove" >{% trans 'Remove' %}</button><br/>
 </div>
 
 </fieldset>

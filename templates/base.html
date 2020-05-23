@@ -31,9 +31,12 @@ html {
 body{
     height: 300px;
     width: 350px;
-    margin-left: 450px;
-    margin-top: 100px;
-    border: 1px solid black;
+    {#margin-left: 450px;#}
+    {#margin-top: 100px;#}
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: #a9b7c6;
 }
 
@@ -70,11 +73,9 @@ input[type="submit"], button{
     margin-left:auto;
     margin-right:auto;
 }
-input[type="submit"]:hover{
+input[type="submit"]:hover, button:hover{
     background-color: #214283;
 }
-
-
 #upnav li{
     display: inline-block;
     padding: 5px;
@@ -86,12 +87,12 @@ input[type="submit"]:hover{
     color: #a9b7c6;
 }
 
-
+.errorlist{
+    color:red;
+    list-style-type: none;
+}
 
   </style>
-
-
-
 
   </head>
   <body>
