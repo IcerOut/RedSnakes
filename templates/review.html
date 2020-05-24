@@ -5,6 +5,7 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for
     loadTitle();-->
     <meta charset="UTF-8">
@@ -37,9 +38,23 @@
 
         let json = JSON.stringify(dict);
 
-        let http = new XMLHttpRequest();
-        http.open("POST", "../api/reviews/add", true);
-        http.send(json);
+        {#let http = new XMLHttpRequest();#}
+        {#http.open("POST", "../api/reviews/add", true);#}
+        {#http.send(json);#}
+       $.ajax({
+        type: 'POST',
+        url: '../api/reviews/add',
+        data:json,
+        success:function(){
+            window.location.href = "{% url 'evaluation_results' %}";
+
+        },
+        error : function(xhr,errmsg,err) {
+        console.log(xhr.status + ": " + xhr.responseText);
+    }
+    });
+
+
     }
 </script>
 <style>
