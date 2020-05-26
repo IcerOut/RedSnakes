@@ -41,7 +41,7 @@ class ConferenceAuthorSerializer(serializers.ModelSerializer):
 
 
 class AbstractSerializer(serializers.ModelSerializer):
-    authorId = ConferenceAuthorSerializer()
+    #authorId = ConferenceAuthorSerializer()
 
     class Meta:
         model = Abstract

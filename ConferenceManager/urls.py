@@ -24,6 +24,8 @@ urlpatterns = [
     path('api/conferences/get?id=', api.get_conference_by_id, name='get_conference_by_id'),
     path('api/conferences/signUp', api.sign_up, name='sign_up'),
     path('api/file_upload', api.file_upload, name='file_upload'),
+    path('api/speaker/registerr', api.speaker_registerr, name='speaker_registerr'),
+    #path('api/speaker/register/register', api.speaker_register, name='speaker_register'),
     path('api/conferences/getSections', api.get_all_sections, name='get_all_sections'),
     path('api/review/submitSection', api.add_section, name='add_section'),
 

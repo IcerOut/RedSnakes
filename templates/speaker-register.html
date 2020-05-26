@@ -19,7 +19,7 @@
 
         let dict = {
             title: title,
-            authors: authors,
+            authorId: authors,
             topics: topics,
             keywords: keywords
         };
@@ -27,7 +27,7 @@
         let json = JSON.stringify(dict);
 
         let http = new XMLHttpRequest();
-        http.open("POST", "../api/speaker/register", true);
+        http.open("POST", "../api/speaker/registerr", true);
         http.send(json);
 
     }
@@ -36,9 +36,12 @@
         let abstract_content = document.getElementById("abst").value;
         let dict = {
             content: abstract_content
+            title: 
         }
 
         let json = JSON.stringify(dict);
+
+        console.log(json);
 
         let http = new XMLHttpRequest();
         http.open("POST", "../api/papers/sendAbstract", true);
@@ -132,7 +135,11 @@
 </div>
 
 <div id="middlePart">
-    <textarea id="abst" placeholder="Abstract"></textarea>
+    <ul>
+    <li><textarea id="abst" placeholder="Abstract"></textarea></li>
+    <li><input type="text" id="title2" placeholder="Title" name=""></li>
+
+    </ul>
     <button id="sendAbstr" onclick="sendAbstract()" class="btn">Send Abstract</button>
     <p id="deadline">Abstract deadline: </p>
 

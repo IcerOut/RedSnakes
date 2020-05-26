@@ -1,7 +1,7 @@
 import json
 
 from ConferenceManager import serializers
-from ConferenceManager.models import Abstract, Bid, ConferenceAuthorSession, Paper
+from ConferenceManager.models import Abstract , Bid , ConferenceAuthorSession , Paper , ConferenceAuthor , Participant
 from RedSnakes.Service.MainService import MainService
 
 
@@ -44,13 +44,27 @@ class PapersService(MainService):
         return paper_json
 
     def sendAbstract(self, abstract_json):
+
+        print("sendAbstract --- entered")
+        print(abstract_json)
         abstract_json = json.loads(abstract_json)
-        serializer = serializers.AbstractSerializer(data=abstract_json)
-        if not serializer.is_valid():
+        #serializer = serializers.AbstractSerializer(data=abstract_json)
+        participant = Participant.objects.get(name=abstract_json['authorId'])
+        authorId = ConferenceAuthor.objects.get(pEmail=participant)
+        print(authorId)
+
+        a = Abstract(authorId=authorId, text = "empty", title=abstract_json['title'])
+        a.save()
+
+        '''if not serializer.is_valid():
+            print("Serializer --- entered")
+            print(serializer.errors)
             raise ValueError('Invalid JSON!', serializer.errors)
         abstract = serializer.create(serializer.validated_data)
-        Abstract.save(abstract)
-        return abstract
+        print("HERE2")
+        Abstract.save()
+        return abstract'''
+
 
     def assignReviewer(self, bid):
         bid = json.loads(bid)
