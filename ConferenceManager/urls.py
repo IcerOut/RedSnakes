@@ -24,6 +24,9 @@ urlpatterns = [
     path('api/conferences/get?id=', api.get_conference_by_id, name='get_conference_by_id'),
     path('api/conferences/signUp', api.sign_up, name='sign_up'),
     path('api/file_upload', api.file_upload, name='file_upload'),
+    path('api/speaker/registerr', api.speaker_registerr, name='speaker_registerr'),
+
+    #path('api/speaker/register/register', api.speaker_register, name='speaker_register'),
     path('api/conferences/getSections', api.get_all_sections, name='get_all_sections'),
     path('api/review/submitSection', api.add_section, name='add_section'),
     path('api/conferences/sendSectionChoices', api.section_choice, name='section_choice'),
@@ -33,7 +36,9 @@ urlpatterns = [
     path('api/papers/getAllNotInSections', api.get_all_papers_not_in_sections,
          name='get_all_papers_not_in_sections'),
     path('api/papers/get?id=', api.find_paper, name='find_paper'),
+
     path('api/papers/sendAbstract', api.add_new_abstract, name='add_new_abstract'),
+
     path('api/papers/sendReviewer', api.send_reviewer, name='send_reviewer'),
     path('api/papers/getReviewers/', api.get_reviewers, name='get_reviewers'),
 
