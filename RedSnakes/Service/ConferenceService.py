@@ -52,7 +52,7 @@ class ConferenceService(MainService):
         return conferences_serializer
 
     def get_all_sections(self):
-        sections = ConferenceSession.objects.all().order_by('date')
+        sections = ConferenceSession.objects.all()
         sections_json = serializers.ConferenceSessionSerializer(sections, many=True)
         return sections_json
 
