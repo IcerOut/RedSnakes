@@ -77,3 +77,13 @@ class ConferenceService(MainService):
                         conferenceAuthorId=ConferenceAuthor.objects.get(id=authorId),
                         conferenceSessionId=newSession)
                 newConferenceAuthorSession.save()
+
+    def choose_section(self, conferenceAuthorId, conferenceSessionId):
+        # authorId = ConferenceAuthor.objects.get(pk=conferenceAuthor['conferenceAuthorId'])
+        # conferenceSessionId = ConferenceSession.objects.get(pk=conferenceSession['id'])
+        author = ConferenceAuthor.objects.get(pk=conferenceAuthorId)
+        conferenceSession = ConferenceSession.objects.get(pk=conferenceSessionId)
+
+        conferenceAuthorSession = ConferenceAuthorSession(conferenceAuthorId=author,
+                                                          conferenceSessionId=conferenceSession)
+        conferenceAuthorSession.save()

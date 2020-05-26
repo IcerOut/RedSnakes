@@ -27,7 +27,7 @@
                     {#<input type="checkbox" id="example" name="example" value="example">#}
                     {#<label for="example">Example</label>#}
 
-                    let li = document.createElement("li")
+                    let li = document.createElement("li");
                     let input_elem = document.createElement("input");
                     input_elem.setAttribute("type", "checkbox");
                     input_elem.setAttribute("id", "checkbox-" + section['id']);
@@ -44,6 +44,43 @@
         };
         http.open("GET", "../api/conferences/getSections", true);
         http.send(null);
+    }
+
+    function submit_choices() {
+        {#alert("submit");#}
+
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let json_response = jsonParse(this.responseText);
+                // for each checked checkbox
+                //      id = elemId.splitBy('checkbox-')[1] -> to get section id
+                //      sessionIds.append(id)
+
+                let ids = [];
+                var checkboxes = document.querySelectorAll("[id^=checkbox-");
+                for (var checkbox of checkboxes) {
+                    if (checkbox.checked) {
+                        let sectionId = checkbox.id.split("checkbox-")[1];
+                        alert(sectionId);
+                        ids.push(sectionId);
+                    }
+                }
+
+                let conferenceAuthorId = "getTheIdSomehow";
+                let data = {
+                    'conferenceAuthorId': conferenceAuthorId,
+                    'conferenceSessionIds': ids
+                };
+
+                let json = JSON.stringify(data);
+
+                {#alert(this.responseText);#}
+                http.open("POST", "../api/conferences/sendSectionChoices", true);
+                http.send(json);
+            }
+        };
+
     }
 </script>
 
@@ -102,14 +139,14 @@
       {% endif %}
       </div>
   </div>
-<form method="POST" action="../api/conferences/sendSectionChoices" style="border:1px solid #ccc">
+<form style="border:1px solid #ccc">
     <div class="container">
         <h1>Section choices</h1>
         <hr>
         <ul id="section-list">
         </ul>
         <div class="clearfix">
-            <button type="submit" class="">Submit</button>
+            <button onclick="submit_choices()" class="">Submit</button>
         </div>
     </div>
 </form>
