@@ -6,6 +6,7 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script>
     <meta charset="UTF-8">
@@ -15,6 +16,18 @@
     .center-container{
         margin-top: 10px;
     }
+
+    #layout-errors {
+        margin-left: 42%;
+        font-size: 10px;
+        font-style: italic;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+
 </style>
 <body onload="getConferences(); showAddConferenceButton()">
 
@@ -103,10 +116,24 @@
                     
                     }
                     table.replaceChild(new_tbody, old_tbody);
+                    $('#errors').html('');
+                    $('#errors').append("succesfully loaded papers");
+                    setTimeout(fade_out, 5000);
+
+                }
+                if (this.readyState === 4 && this.status !== 200) {
+                    $('#errors').html('');
+                    $("#errors").append(this.responseText);
+                    $('#errors').css('color','red');
+                    setTimeout(fade_out, 5000);
                 }
             };
             http.open("GET", "../api/conferences/getAll", true);
             http.send(null);
+        }
+
+        function fade_out() {
+            $("#errors").fadeOut().empty();
         }
 
         function showAddConferenceButton() {
@@ -143,6 +170,11 @@
         </table>
     </div>
     <!--button style="margin-top: 30px" type="submit">Add conference</button-->
+
 </div>
+
+    <div id="layout-errors">
+        <p id="errors"></p>
+    </div>
 </body>
 </html>

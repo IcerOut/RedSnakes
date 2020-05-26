@@ -36,8 +36,6 @@
                     cell.appendChild(document.createTextNode(paper["paperId"]["authorId"]["pEmail"]["email"]["email"]));
                     cell = row.insertCell();
                     cell.appendChild(document.createTextNode(paper["fileUrl"]));
-                    cell = row.insertCell();
-                    cell.appendChild(document.createTextNode(paper["timestamp"]));
 
                     let button = document.createElement("a");
                     button.classList.add("button-link");
@@ -98,8 +96,7 @@
                 <th>Conference name</th>
                 <th>Author email</th>
                 <th>File URL</th>
-                <th>Timestamp</th>
-                <th></th>
+
             </tr>
             </thead>
             <tbody>

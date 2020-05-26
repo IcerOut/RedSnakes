@@ -6,6 +6,8 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <meta charset="UTF-8">
     <title>Split Papers Into Sections</title>
 </head>
@@ -133,10 +135,21 @@
 
         let json = JSON.stringify(parameters);
         let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status !== 200) {
+                    $('#errors').html('');
+                    $("#errors").append(this.responseText);
+                    $('#errors').css("color","red");
+                    setTimeout(fade_out, 5000);
+                }
+            }
         http.open("POST", "../api/review/submitSection", true);
         http.send(json);
+        //loadedPapers();
+    }
 
-        loadedPapers();
+    function fade_out() {
+        $("#errors").fadeOut().empty();
     }
 
     function initialize() {
@@ -184,6 +197,16 @@
         position: relative;
         margin-right: 60px;
         margin-bottom: 100%;
+    }
+
+    #layout-errors {
+        margin-left: 42%;
+        font-size: 10px;
+        font-style: italic;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        text-align: center;
     }
 </style>
 <div class="navbar">
@@ -283,5 +306,8 @@
         <input type="button" name="addSection" id="addSection" value="Add Section">
     </form>
 </section>
+<div id="layout-errors">
+    <p id="errors"></p>
+</div>
 </body>
 </html>

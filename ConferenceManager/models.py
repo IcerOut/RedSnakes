@@ -82,19 +82,12 @@ class ProgramCommitteeMember(models.Model):
 class ConferenceSession(models.Model):
     pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=False)
-    date = models.DateField(null=False)
-    startHour = models.TimeField(null=False)
-    endHour = models.TimeField(null=False)
-    roomNumber = models.IntegerField(null=False)
 
     def __str__(self):
-        return str(self.pcId) + ' ' + str(self.date) + ' ' + str(self.startHour) + ' ' + str(self.endHour) + ' ' + str(
-            self.roomNumber)
+        return str(self.pcId) + ' ' + str(self.title)
 
     def __unicode__(self):
-        return str(self.pcId) + ' ' + str(self.date) + ' ' + str(self.startHour) + ' ' + str(self.endHour) + ' ' + str(
-            self.roomNumber)
-
+        return str(self.pcId) + ' ' + str(self.title)
 
 class ConferenceAuthorSession(models.Model):
     conferenceAuthorId = models.ForeignKey(ConferenceAuthor, on_delete=models.CASCADE)

@@ -52,7 +52,7 @@ class ConferenceService(MainService):
         return conferences_serializer
 
     def get_all_sections(self):
-        sections = ConferenceSession.objects.all().order_by('date')
+        sections = ConferenceSession.objects.all()
         sections_json = serializers.ConferenceSessionSerializer(sections, many=True)
         return sections_json
 
@@ -63,9 +63,7 @@ class ConferenceService(MainService):
         chair = Participant.objects.get(name=chair_name)
         pcId = ProgramCommitteeMember.objects.get(pEmail=chair)
         if ConferenceSession.objects.filter(title=title).count() == 0:
-            newSession = ConferenceSession(title=title, pcId=pcId, date=date.today(),
-                                           startHour=datetime.now(), endHour=datetime.now(),
-                                           roomNumber='999')  # FIXME
+            newSession = ConferenceSession(title=title, pcId=pcId)
             newSession.save()
         else:
             newSession = ConferenceSession.objects.get(title=title)
