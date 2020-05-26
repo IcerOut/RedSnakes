@@ -12,7 +12,15 @@
 
 <script>
     function speakerRegister() {
+
+        console.log("Entered speakerRegister");
+
         let title = document.getElementById("title").value;
+        if(title=="")
+        {
+            document.getElementById("elem").style.display="block";
+            return;
+        }
         let authors = document.getElementById("authors").value;
         let topics = document.getElementById("topics").value;
         let keywords = document.getElementById("keywords").value;
@@ -33,10 +41,18 @@
     }
 
     function sendAbstract() {
+
+        let title = document.getElementById("title").value;
+        if(title=="")
+        {
+            document.getElementById("elem").style.display="block";
+            return;
+        }
+
         let abstract_content = document.getElementById("abst").value;
         let dict = {
-            content: abstract_content
-            title: 
+            content: abstract_content,
+            title: title
         }
 
         let json = JSON.stringify(dict);
@@ -119,12 +135,13 @@
 <div id="upperHalf">
     <ul id="input">
         <li><p>Insert conference name here:</p></li>
-        <li><input type="text" id="title" placeholder="Title"></li>
+        <li><input type="text" id="title" placeholder="Title (must be added)"></li>
+        <li id="elem" style="display: none; color: red"><p>Title must be added!</p></li>
         <li><input type="text" id="authors" placeholder="Authors"></li>
         <li><input type="text" id="topics" placeholder="Topics"></li>
         <li><input type="text" id="keywords" placeholder="Keywords"></li>
     </ul>
-    <button id="reg" class="btn" onclick="speakerRegister()">Register</button>
+    <button id="reg" class="btn" onclick="speakerRegister();">Register</button>
 </div>
 
 <div id="line">
@@ -137,7 +154,7 @@
 <div id="middlePart">
     <ul>
     <li><textarea id="abst" placeholder="Abstract"></textarea></li>
-    <li><input type="text" id="title2" placeholder="Title" name=""></li>
+    <!--<li><input type="text" id="title2" placeholder="Title" name=""></li>-->
 
     </ul>
     <button id="sendAbstr" onclick="sendAbstract()" class="btn">Send Abstract</button>

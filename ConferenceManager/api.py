@@ -230,6 +230,21 @@ def speaker_registerr(request: HttpRequest):
         return HttpResponse ( status=405 )
 
 @csrf_exempt
+def add_new_abstract(request: HttpRequest):
+    if request.method == 'POST':
+        try:
+            paperService = PapersService()
+            paperService.assign_title(request.body.decode('utf-8'))
+            return HttpResponse(status=200)
+        except Exception as e:
+            print("ERROR?")
+            print(e)
+            return HttpResponse(e, status=400)
+    else:
+        return HttpResponse(status=405)
+
+
+@csrf_exempt
 def file_upload(request: HttpRequest):
     context = {}
     if request.method == 'POST':

@@ -43,8 +43,17 @@ class PapersService(MainService):
         paper_json = serializers.PaperSerializer(paper)
         return paper_json
 
-    def sendAbstract(self, abstract_json):
+    def assign_title(self, content_json):
+        print("assign_title --- entered")
+        print(content_json)
+        content_json = json.loads(content_json)
+        abstract = Abstract.objects.get(title=content_json['title'])
 
+        Abstract.objects.filter(title=content_json['title']).update(text=content_json['content'])
+
+        print(abstract)
+
+    def sendAbstract(self, abstract_json):
         print("sendAbstract --- entered")
         print(abstract_json)
         abstract_json = json.loads(abstract_json)
