@@ -41,7 +41,7 @@ class ConferenceAuthorSerializer(serializers.ModelSerializer):
 
 
 class AbstractSerializer(serializers.ModelSerializer):
-    authorId = ConferenceAuthorSerializer()
+    #authorId = ConferenceAuthorSerializer()
 
     class Meta:
         model = Abstract
@@ -145,15 +145,11 @@ class ConferenceSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ConferenceSession
-        fields = ['id', 'title', 'pcId', 'date', 'startHour', 'endHour', 'roomNumber']
+        fields = ['id', 'title', 'pcId']
 
     def create(self, validated_data):
         sess = ConferenceSession()
         sess.pcId = validated_data['pcId']
-        sess.date = validated_data['date']
-        sess.startHour = validated_data['startHour']
-        sess.endHour = validated_data['endHour']
-        sess.roomNumber = validated_data['roomNumber']
         return sess
 
 

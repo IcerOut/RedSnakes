@@ -52,7 +52,7 @@ class ConferenceService(MainService):
         return conferences_serializer
 
     def get_all_sections(self):
-        sections = ConferenceSession.objects.all().order_by('date')
+        sections = ConferenceSession.objects.all()
         sections_json = serializers.ConferenceSessionSerializer(sections, many=True)
         return sections_json
 
@@ -77,3 +77,13 @@ class ConferenceService(MainService):
                         conferenceAuthorId=ConferenceAuthor.objects.get(id=authorId),
                         conferenceSessionId=newSession)
                 newConferenceAuthorSession.save()
+
+    def choose_section(self, conferenceAuthorId, conferenceSessionId):
+        # authorId = ConferenceAuthor.objects.get(pk=conferenceAuthor['conferenceAuthorId'])
+        # conferenceSessionId = ConferenceSession.objects.get(pk=conferenceSession['id'])
+        author = ConferenceAuthor.objects.get(pk=conferenceAuthorId)
+        conferenceSession = ConferenceSession.objects.get(pk=conferenceSessionId)
+
+        conferenceAuthorSession = ConferenceAuthorSession(conferenceAuthorId=author,
+                                                          conferenceSessionId=conferenceSession)
+        conferenceAuthorSession.save()
