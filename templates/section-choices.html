@@ -54,44 +54,35 @@
         let http = new XMLHttpRequest();
         http.onreadystatechange = purge;
 
+        let json_response = jsonParse(this.responseText);
+        let ids = [];
+        var checkboxes = document.querySelectorAll("[id^=checkbox-");
+        for (var checkbox of checkboxes) {
+            if (checkbox.checked) {
+                let sectionId = checkbox.id.split("checkbox-")[1];
+                ids.push(sectionId);
+            }
+        }
+        let conferenceAuthorId = "getTheIdSomehow";
+        let data = {
+            'conferenceAuthorId': conferenceAuthorId,
+            'conferenceSessionIds': ids
+        };
+        let json = JSON.stringify(data);
         function purge() {
             if (this.readyState === 4 && this.status === 200) {
-                let json_response = jsonParse(this.responseText);
-                // for each checked checkbox
-                //      id = elemId.splitBy('checkbox-')[1] -> to get section id
-                //      sessionIds.append(id)
-
-                let ids = [];
-                var checkboxes = document.querySelectorAll("[id^=checkbox-");
-                for (var checkbox of checkboxes) {
-                    if (checkbox.checked) {
-                        let sectionId = checkbox.id.split("checkbox-")[1];
-                        alert(sectionId);
-                        ids.push(sectionId);
-                    }
-                }
-
-                let conferenceAuthorId = "getTheIdSomehow";
-                let data = {
-                    'conferenceAuthorId': conferenceAuthorId,
-                    'conferenceSessionIds': ids
-                };
-
-                let json = JSON.stringify(data);
                 $('#errors').html('');
                 $("#errors").append("Success!");
                 setTimeout(fade_out, 5000);
-                {#alert(this.responseText);#}
-                http.open("POST", "../api/conferences/sendSectionChoices", true);
-                http.send(json);
             }
-            if (this.readyState === 4 && this.status !== 200) {
+            else {//(this.readyState === 4 && this.status !== 200) {
                 $('#errors').html('');
-                $("#errors").append(xhr.status + ": " + xhr.responseText);
-                $('#errors').css("color", "red");
+                $("#errors").append("Successfully submitted sections.");
                 setTimeout(fade_out, 5000);
             }
         }
+        http.open("POST", "../api/conferences/sendSectionChoices", true);
+        http.send(json);
 
     }
 

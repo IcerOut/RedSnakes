@@ -115,7 +115,7 @@ def add_section(request: HttpRequest):
     else:
         return HttpResponse ( status=405 )
 
-
+@csrf_exempt
 def get_conference_by_id(request):
     if request.method == 'GET':
         print("get_conference_by_id --- entered")
@@ -125,6 +125,7 @@ def get_conference_by_id(request):
         return JsonResponse ( conference_json , safe=False )
     return HttpResponse ( status=405 )
 
+@csrf_exempt
 def listener_register(request):
     print ( "listener_register --- entered" )
 
@@ -136,6 +137,7 @@ def listener_register(request):
         return JsonResponse(conference_json, safe=False)
     return HttpResponse(status=405)
 
+@csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
         conference_id = request.POST.get ( 'conference_id' )
@@ -222,25 +224,38 @@ def add_new_paper(request: HttpRequest):
             return HttpResponse ( e , status=400 )
     else:
         return HttpResponse ( status=405 )
-
+#
+#
+# @csrf_exempt
+# def add_new_abstract(request: HttpRequest):
+#     if request.method == 'POST':
+#         try:
+#             print ( "HERE" )
+#             paperService = PapersService ()
+#             print ( request.body.decode ( 'utf-8' ) )
+#             abstract = paperService.sendAbstract ( request.body.decode ( 'utf-8' ) )
+#             paperService.add ( abstract )
+#             return HttpResponse ( status=200 )
+#         except Exception as e:
+#             print ( "ERROR?" )
+#             print(e)
+#             return HttpResponse ( e , status=400 )
+#     else:
+#         return HttpResponse ( status=405 )
 
 @csrf_exempt
 def add_new_abstract(request: HttpRequest):
     if request.method == 'POST':
         try:
-            print ( "HERE" )
-            paperService = PapersService ()
-            print ( request.body.decode ( 'utf-8' ) )
-            abstract = paperService.sendAbstract ( request.body.decode ( 'utf-8' ) )
-            paperService.add ( abstract )
-            return HttpResponse ( status=200 )
+            paperService = PapersService()
+            paperService.assign_title(request.body.decode('utf-8'))
+            return HttpResponse(status=200)
         except Exception as e:
-            print ( "ERROR?" )
+            print("ERROR?")
             print(e)
-            return HttpResponse ( e , status=400 )
+            return HttpResponse(e, status=400)
     else:
-        return HttpResponse ( status=405 )
-
+        return HttpResponse(status=405)
 
 @csrf_exempt
 def speaker_registerr(request: HttpRequest):
@@ -258,19 +273,7 @@ def speaker_registerr(request: HttpRequest):
     else:
         return HttpResponse ( status=405 )
 
-@csrf_exempt
-def add_new_abstract(request: HttpRequest):
-    if request.method == 'POST':
-        try:
-            paperService = PapersService()
-            paperService.assign_title(request.body.decode('utf-8'))
-            return HttpResponse(status=200)
-        except Exception as e:
-            print("ERROR?")
-            print(e)
-            return HttpResponse(e, status=400)
-    else:
-        return HttpResponse(status=405)
+
 
 
 @csrf_exempt

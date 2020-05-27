@@ -48,9 +48,7 @@ class PapersService(MainService):
         print(content_json)
         content_json = json.loads(content_json)
         abstract = Abstract.objects.get(title=content_json['title'])
-
         Abstract.objects.filter(title=content_json['title']).update(text=content_json['content'])
-
         print(abstract)
 
     def sendAbstract(self, abstract_json):
@@ -61,9 +59,15 @@ class PapersService(MainService):
         participant = Participant.objects.get(name=abstract_json['authorId'])
         authorId = ConferenceAuthor.objects.get(pEmail=participant)
         print(authorId)
-
         a = Abstract(authorId=authorId, text = "empty", title=abstract_json['title'])
         a.save()
+        p=Paper(paperId=a, path="snails.pdf", accepted=False)
+        p.save()
+        #FIXME maybe
+
+        # paperId = models.OneToOneField(Abstract, on_delete=models.CASCADE)
+        # path = models.CharField(max_length=255, null=False)
+        # accepted = models.BooleanField(null=True)
 
         '''if not serializer.is_valid():
             print("Serializer --- entered")

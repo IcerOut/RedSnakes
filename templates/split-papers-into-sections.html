@@ -136,18 +136,9 @@
         let json = JSON.stringify(parameters);
         let http = new XMLHttpRequest();
         http.onreadystatechange = purge;
-
         function purge() {
-                if (this.readyState === 4 && this.status === 200) {
-                    loadedPapers();
-                    window.location.href = "{% url 'section_choice' %}";
-                }
-
-            if (this.readyState === 4 && this.status !== 200) {
-                $('#errors').html('');
-                $("#errors").append(this.responseText);
-                $('#errors').css("color", "red");
-                setTimeout(fade_out, 5000);
+            if (this.readyState === 4) {
+                window.location.href = "../section-choices";
             }
         }
 

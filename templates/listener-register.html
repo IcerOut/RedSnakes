@@ -47,12 +47,10 @@ function loadTitle() {
                     let title = json["title"];
                     let info = document.getElementById("payment").value;
                     let dict = {title: title, info: info};
-
-
                     list.push(dict);
                     window.location.href = "{% url 'conference_list' %}";
                 }
-                if (this.readyState === 4 && this.status !== 200) {
+                else{ // (this.readyState === 4 && this.status !== 200) {
                     window.location.href = "{% url 'conference_list' %}";
                 }
 
@@ -125,7 +123,7 @@ function loadTitle() {
     {% endif %}
     </div>
 </div>
-<div class="left-container" style="border: 1px solid grey;">
+<div class="left-container" style="border: 1px solid #808080;">
     <div class="title">
         <h1></h1>
     </div>
