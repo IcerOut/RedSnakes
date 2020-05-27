@@ -38,7 +38,11 @@
             let http = new XMLHttpRequest();
             let list = [];
 
-            alert("Successfuly sent!");
+             $('#errors').html('');
+            $('#errors').append("Successfully registered!");
+            setTimeout(fade_out, 5000);
+
+
 
             http.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
@@ -58,8 +62,8 @@
         }
 
     }
-            function fade_out() {
-            $("#errors").fadeOut().empty();
+    function fade_out() {
+            $('#errors').html('');
         }
 </script>
 <style>

@@ -89,7 +89,7 @@
                     }
                     table.replaceChild(new_tbody, old_tbody);
                     $('#errors').html('');
-                    $('#errors').append("successfully loaded reviews");
+                    $('#errors').append("Successfully loaded reviews!");
                     setTimeout(fade_out, 5000);
                 }
                  if (this.readyState === 4 && this.status !== 200) {
@@ -103,7 +103,7 @@
             http.send(null);
         }
         function fade_out() {
-            $("#errors").fadeOut().empty();
+            $('#errors').html('');
         }
     </script>
     <table>

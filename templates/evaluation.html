@@ -62,7 +62,7 @@
                 }
                 table.replaceChild(new_tbody, old_tbody);
                     $('#errors').html('');
-                    $('#errors').append("successfully loaded papers");
+                    $('#errors').append("Successfully loaded papers!");
                     setTimeout(fade_out, 5000);
 
             }
@@ -78,7 +78,7 @@
         http.send(null);
     }
             function fade_out() {
-            $("#errors").fadeOut().empty();
+            $('#errors').html('');
         }
 </script>
 <div class="navbar">
