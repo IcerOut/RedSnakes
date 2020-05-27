@@ -15,6 +15,22 @@
 
 <body onload="loadTitle()">
 <script>
+
+
+    function loadTitle() {
+    // Function used by multiple modules
+
+    console.log("loadTitle --- entered");
+
+    const UrlParams = new URLSearchParams(window.location.search);
+    const name = UrlParams.get("name");
+
+    let title = document.getElementsByClassName("title")[0];
+    title.children[0].innerHTML = name;
+
+}
+
+
     function sendChairInfo() {
         if (document.getElementById("terms").checked === true) {
             const UrlParams = new URLSearchParams(window.location.search);
@@ -24,20 +40,20 @@
             http.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let json = jsonParse(this.responseText);
+
                     let dict = {title: json["title"]};
                     list.push(dict);
 
                     //we don t know for sure
                     $('#errors').html('');
-                    $('#errors').append("Successfully registered");
+                    $('#errors').append("successfully registered");
                     setTimeout(fade_out, 5000);
 
                 }
                 if (this.readyState === 4 && this.status !== 200) {
                     $('#errors').html('');
-                    $('#errors').append("Successfully registered");
-                    //$('#errors').css('color','red');
-                    //FIXME
+                    $("#errors").append(this.responseText);
+                    $('#errors').css('color','red');
                     setTimeout(fade_out, 5000);
                 }
             }

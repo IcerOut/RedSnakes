@@ -15,6 +15,21 @@
 
 <body onload="loadTitle()">
 <script>
+
+function loadTitle() {
+    // Function used by multiple modules
+
+    console.log("loadTitle --- entered");
+
+    const UrlParams = new URLSearchParams(window.location.search);
+    const name = UrlParams.get("name");
+
+
+    let title = document.getElementsByClassName("title")[0];
+    title.children[0].innerHTML = name;
+
+}
+
     function sendListenerInfo() {
         if (document.getElementById("terms").checked === true) {
 
@@ -32,6 +47,8 @@
                     let title = json["title"];
                     let info = document.getElementById("payment").value;
                     let dict = {title: title, info: info};
+
+
                     list.push(dict);
                     window.location.href = "{% url 'conference_list' %}";
                 }
