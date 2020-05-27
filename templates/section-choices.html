@@ -80,7 +80,7 @@
                 let json = JSON.stringify(data);
                 $('#errors').html('');
                 $("#errors").append("Success!");
-
+                setTimeout(fade_out, 5000);
                 {#alert(this.responseText);#}
                 http.open("POST", "../api/conferences/sendSectionChoices", true);
                 http.send(json);

@@ -36,8 +36,10 @@ function loadTitle() {
             const UrlParams = new URLSearchParams(window.location.search);
             const id = UrlParams.get("id");
 
-            alert("Successfully sent!");
-
+            //alert("Successfully sent!");
+            $('#errors').html('');
+            $('#errors').append("Successfully registered!");
+            setTimeout(fade_out, 5000);
 
             console.log(id);
 
@@ -77,7 +79,7 @@ function loadTitle() {
     }
 
     function fade_out() {
-        $("#errors").fadeOut().empty();
+        $('#errors').html('');
     }
 </script>
 <style>
