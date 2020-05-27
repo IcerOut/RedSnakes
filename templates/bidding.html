@@ -75,6 +75,9 @@
         http.open("GET", "../api/papers/getAll", true);
         http.send(null);
     }
+        function fade_out() {
+            $("#errors").fadeOut().empty();
+        }
 
     function sendBidding() {
         let combobox = document.getElementsByTagName("select");
