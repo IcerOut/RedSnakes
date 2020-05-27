@@ -78,6 +78,8 @@
                 };
 
                 let json = JSON.stringify(data);
+                $('#errors').html('');
+                $("#errors").append("Success!");
 
                 {#alert(this.responseText);#}
                 http.open("POST", "../api/conferences/sendSectionChoices", true);
