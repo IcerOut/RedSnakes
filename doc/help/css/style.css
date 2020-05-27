@@ -1,0 +1,34 @@
+.arrowBorderRight{
+    /* border-bottom: 5px solid #6A0136; */
+
+}
+.arrowBorderRight:after{
+    content:'';
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-right: 25px solid #6A0136;
+    border-left: 50px solid transparent;
+    border-top: 50px solid transparent;
+}
+
+.img-fluid {
+    margin-bottom: 30px !important;
+    border: 2px solid rgba(100, 100, 100, 0.37);
+}
+
+.under-class {
+    border-bottom: 2px solid rgba(93, 92, 92, 0.274);
+}
+
+.setupTutorial {
+    border: 2px solid rgba(128, 128, 128, 0.397) !important;
+}
+
+.setupTutorialText {
+    margin-left: 3em;
+    background-color: rgba(161, 160, 160, 0.335);
+}

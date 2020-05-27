@@ -78,7 +78,9 @@
                 };
 
                 let json = JSON.stringify(data);
-
+                $('#errors').html('');
+                $("#errors").append("Success!");
+                setTimeout(fade_out, 5000);
                 {#alert(this.responseText);#}
                 http.open("POST", "../api/conferences/sendSectionChoices", true);
                 http.send(json);
@@ -94,7 +96,7 @@
     }
 
     function fade_out() {
-        $("#errors").fadeOut().empty();
+        $('#errors').html('');
     }
 </script>
 
@@ -137,7 +139,6 @@
                   <a href='{% url "assign_reviewers" %}'>Assign Reviewers</a>
                   <a href='{% url "bidding" %}'>Bidding</a>
                   <a href='{% url "evaluation" %}'>Evaluation</a>
-                  <a href='{% url "review"%}'>Review</a>
                   <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
               </div>
             </div>
