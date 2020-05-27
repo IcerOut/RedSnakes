@@ -6,6 +6,8 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <meta charset="UTF-8">
 </head>
 <body>
@@ -16,7 +18,7 @@
         console.log("Entered speakerRegister");
 
         let title = document.getElementById("title").value;
-        if(title=="")
+        if(title==="")
         {
             document.getElementById("elem").style.display="block";
             return;
@@ -35,6 +37,13 @@
         let json = JSON.stringify(dict);
 
         let http = new XMLHttpRequest();
+        http.onreadystatechange = purge;
+        function purge() {
+            if (this.readyState === 4 && this.status === 200) {
+                    //FIXME maybe
+            }
+        }
+
         http.open("POST", "../api/speaker/registerr", true);
         http.send(json);
 
@@ -43,7 +52,7 @@
     function sendAbstract() {
 
         let title = document.getElementById("title").value;
-        if(title=="")
+        if(title==="")
         {
             document.getElementById("elem").style.display="block";
             return;
@@ -60,6 +69,7 @@
         console.log(json);
 
         let http = new XMLHttpRequest();
+
         http.open("POST", "../api/papers/sendAbstract", true);
         http.send(json);
     }
@@ -158,7 +168,6 @@
 
     </ul>
     <button id="sendAbstr" onclick="sendAbstract()" class="btn">Send Abstract</button>
-    <p id="deadline">Abstract deadline: </p>
 
 </div>
 
@@ -174,8 +183,6 @@
         <input type="file" name="mile" accept="application/pdf" />
         <input type="submit">
     </form>
-    <p>Paper deadline:</p>
 </div>
-
 </body>
 </html>

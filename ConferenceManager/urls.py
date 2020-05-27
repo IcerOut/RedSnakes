@@ -29,6 +29,7 @@ urlpatterns = [
     #path('api/speaker/register/register', api.speaker_register, name='speaker_register'),
     path('api/conferences/getSections', api.get_all_sections, name='get_all_sections'),
     path('api/review/submitSection', api.add_section, name='add_section'),
+    path('api/conferences/sendSectionChoices', api.section_choice, name='section_choice'),
 
     path('api/papers/add', api.add_new_paper, name='add_new_paper'),
     path('api/papers/getAll', api.get_all_papers, name='get_all_papers'),

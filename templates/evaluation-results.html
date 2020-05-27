@@ -6,10 +6,23 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!--Used for jsonParse();-->
     <meta charset="UTF-8">
     <title>Evaluation results</title>
 </head>
+<style>
+        #layout-errors {
+        margin-left: 42%;
+        font-size: 10px;
+        font-style: italic;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        text-align: center;
+    }
+</style>
 <body onload="getReviews()">
 <div class="navbar">
     <a href='{% url "home" %}'><img src="{% static 'favicon.ico' %}" height="25" width="25"></a>
@@ -76,10 +89,22 @@
                         cell.appendChild(document.createTextNode(text));
                     }
                     table.replaceChild(new_tbody, old_tbody);
+                    $('#errors').html('');
+                    $('#errors').append("successfully loaded reviews");
+                    setTimeout(fade_out, 5000);
+                }
+                 if (this.readyState === 4 && this.status !== 200) {
+                    $('#errors').html('');
+                    $("#errors").append(this.responseText);
+                    $('#errors').css('color','red');
+                    setTimeout(fade_out, 5000);
                 }
             };
             http.open("GET", "../api/reviews/getAll", true);
             http.send(null);
+        }
+        function fade_out() {
+            $("#errors").fadeOut().empty();
         }
     </script>
     <table>
@@ -96,6 +121,9 @@
         </tbody>
     </table>
 </div>
+    <div id="layout-errors">
+        <p id="errors"></p>
+    </div>
 
 </body>
 </html>

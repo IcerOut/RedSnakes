@@ -89,6 +89,7 @@ class ConferenceSession(models.Model):
     def __unicode__(self):
         return str(self.pcId) + ' ' + str(self.title)
 
+
 class ConferenceAuthorSession(models.Model):
     conferenceAuthorId = models.ForeignKey(ConferenceAuthor, on_delete=models.CASCADE)
     conferenceSessionId = models.ForeignKey(ConferenceSession, on_delete=models.CASCADE)

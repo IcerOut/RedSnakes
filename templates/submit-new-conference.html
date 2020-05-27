@@ -113,7 +113,7 @@ $(document).on('submit', '#conf-form',function(e){
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
             action: 'post'
         },
-        success:function(){
+        success: function(){
             window.location.href = "{% url 'conference_list' %}";
             document.getElementById("post-form").reset();
         },
@@ -123,5 +123,7 @@ $(document).on('submit', '#conf-form',function(e){
     });
 
 });
-
+   function fade_out() {
+        $("#errors").fadeOut().empty();
+    }
 </script>

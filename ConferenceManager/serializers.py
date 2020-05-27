@@ -34,6 +34,7 @@ class ParticipantSerializer(serializers.ModelSerializer):
 
 class ConferenceAuthorSerializer(serializers.ModelSerializer):
     pEmail = ParticipantSerializer()
+    cId = ConferenceSerializer()
 
     class Meta:
         model = ConferenceAuthor
@@ -41,7 +42,7 @@ class ConferenceAuthorSerializer(serializers.ModelSerializer):
 
 
 class AbstractSerializer(serializers.ModelSerializer):
-    #authorId = ConferenceAuthorSerializer()
+    authorId = ConferenceAuthorSerializer()
 
     class Meta:
         model = Abstract

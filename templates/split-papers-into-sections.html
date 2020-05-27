@@ -135,18 +135,27 @@
 
         let json = JSON.stringify(parameters);
         let http = new XMLHttpRequest();
-        http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status !== 200) {
-                    $('#errors').html('');
-                    $("#errors").append(this.responseText);
-                    $('#errors').css("color","red");
-                    setTimeout(fade_out, 5000);
+        http.onreadystatechange = purge;
+
+        function purge() {
+                if (this.readyState === 4 && this.status === 200) {
+                    loadedPapers();
+                    window.location.href = "{% url 'section_choice' %}";
                 }
+
+            if (this.readyState === 4 && this.status !== 200) {
+                $('#errors').html('');
+                $("#errors").append(this.responseText);
+                $('#errors').css("color", "red");
+                setTimeout(fade_out, 5000);
             }
+        }
+
         http.open("POST", "../api/review/submitSection", true);
         http.send(json);
-        //loadedPapers();
     }
+
+
 
     function fade_out() {
         $("#errors").fadeOut().empty();
@@ -201,7 +210,7 @@
 
     #layout-errors {
         margin-left: 42%;
-        font-size: 10px;
+        font-size: 12px;
         font-style: italic;
         max-width: 200px;
         max-height: 100px;

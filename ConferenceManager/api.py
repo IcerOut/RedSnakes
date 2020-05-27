@@ -154,11 +154,28 @@ def sign_up(request):
     return HttpResponse ( status=405 )
 
 
+# def sign_up(request):
+#     if request.method == 'POST':
+#         conference_id = request.POST.get('conference_id')
+#         conference = Conference.objects.get(pk=conference_id)
+#         participant_id = request.POST.get('participant_id')
+#         participant = Participant.objects.get(pk=participant_id)
+#         ConferenceAuthor.objects.create(
+#             pEmail=participant.email,
+#             cId=conference.pk
+#         )
+#         response_data = {
+#             'pEmail': participant.email,
+#             'cId': conference_id
+#         }
+#         return JsonResponse(response_data)
+#     return HttpResponse(status=405)
+
+@csrf_exempt
 def find_paper(request):
-    print("find_paper --- entered")
     if request.method == 'GET':
         try:
-            paper_id = request.POST.get ( 'id' )
+            paper_id = request.GET.get ( 'id' )
             paper = Conference.objects.get ( pk=paper_id )
             paper_json = serializers.PaperSerializer ( data=paper )
             return JsonResponse ( paper_json , safe=False )
@@ -293,3 +310,15 @@ def get_reviewers(request):
             return HttpResponse ( e , status=400 )
     else:
         return HttpResponse ( status=405 )
+
+
+@csrf_exempt
+def section_choice(request):
+    if request.method == 'POST':
+        service = ConferenceService()
+        json = request.body.decode('utf-8')
+        conferenceAuthorId = json['conferenceAuthorId']
+        conferenceSessionIds = json['conferenceSessionIds']
+        for conferenceSessionId in conferenceSessionIds:
+            service.choose_section(conferenceAuthorId, conferenceSessionId) # or something like this anyways
+

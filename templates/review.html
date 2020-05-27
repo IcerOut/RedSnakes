@@ -47,15 +47,21 @@
         data:json,
         success:function(){
             window.location.href = "{% url 'evaluation_results' %}";
-
         },
         error : function(xhr,errmsg,err) {
-        console.log(xhr.status + ": " + xhr.responseText);
+            {
+                $('#errors').html('');
+                $("#errors").append(xhr.status + ": " + xhr.responseText);
+                $('#errors').css("color", "red");
+                setTimeout(fade_out, 5000);
+            }
+         }
+        });
     }
-    });
-
-
+    function fade_out() {
+        $("#errors").fadeOut().empty();
     }
+
 </script>
 <style>
     .left-container{
@@ -147,6 +153,8 @@
     <br>
     <button type="submit" onclick="sendReview()">Submit</button>
 </div>
-
+<div id="layout-errors">
+    <p id="errors"></p>
+</div>
 </body>
 </html>

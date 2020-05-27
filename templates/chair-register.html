@@ -6,8 +6,9 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for loadTitle();-->
-
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <title>Conference Chair Sign up</title>
 
 </head>
@@ -34,12 +35,11 @@
         if (document.getElementById("terms").checked === true) {
             const UrlParams = new URLSearchParams(window.location.search);
             const id = UrlParams.get("id");
+            let http = new XMLHttpRequest();
+            let list = [];
 
             alert("Successfuly sent!");
 
-
-            let http = new XMLHttpRequest();
-            let list = [];
             http.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let json = jsonParse(this.responseText);
@@ -49,11 +49,18 @@
 
                 }
             }
+            //WE DON T KNOW FOR SURE
+            let title = JSON.stringify(list);
+            http.open("GET", "api/conference/get?id=" + id, true);
+            http.send(title);
         } else {
             alert("Agree with terms and conditions first");
         }
 
     }
+            function fade_out() {
+            $("#errors").fadeOut().empty();
+        }
 </script>
 <style>
     .left-container{
@@ -66,6 +73,15 @@
         margin-top: 5%;
         margin-bottom: 5%;
         min-width: 150px;
+    }
+    #layout-errors {
+        margin-left: 42%;
+        font-size: 10px;
+        font-style: italic;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        text-align: center;
     }
 </style>
 
@@ -111,6 +127,10 @@
     <button id="up" type="submit" onclick="sendChairInfo()">Register</button>
 
 </div>
+
+    <div id="layout-errors">
+        <p id="errors"></p>
+    </div>
 
 
 </body>
