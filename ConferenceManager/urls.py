@@ -1,5 +1,4 @@
-from django.urls import path
-
+from django.urls import path, re_path
 from ConferenceManager import api, views
 
 urlpatterns = [
@@ -15,9 +14,10 @@ urlpatterns = [
     path('split-papers-into-sections/', views.split_papers_into_sections,
          name='split_papers_into_sections'),
 
-    path('chair-register/', views.chair_register, name='chair_register'),
+    re_path(r'chair-register/.*', views.chair_register, name='chair_register'),
     path('speaker-register/', views.speaker_register, name='speaker_register'),
-    path('listener-register/', views.listener_register, name='listener_register'),
+    re_path(r'listener-register/.*', views.listener_register, name='listener_register'),
+    path('api/user/listener-register', api.listener_register, name='listener_register_api'),
 
     path('api/conferences/getAll', api.conference_list, name='api_conference_list'),
     path('api/conferences/add', api.add_new_conference, name='add_new_conference'),

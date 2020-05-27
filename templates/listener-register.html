@@ -5,7 +5,7 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();loadTitle();-->
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script>
     <meta charset="UTF-8">
     <title>Listener Sign up</title>
 
@@ -13,11 +13,32 @@
 
 <body onload="loadTitle()">
 <script>
+
+function loadTitle() {
+    // Function used by multiple modules
+
+    console.log("loadTitle --- entered");
+
+    const UrlParams = new URLSearchParams(window.location.search);
+    const name = UrlParams.get("name");
+
+
+    let title = document.getElementsByClassName("title")[0];
+    title.children[0].innerHTML = name;
+
+}
+
     function sendListenerInfo() {
         if (document.getElementById("terms").checked === true) {
 
             const UrlParams = new URLSearchParams(window.location.search);
             const id = UrlParams.get("id");
+
+            alert("Successfully sent!");
+
+
+            console.log(id);
+
             let http = new XMLHttpRequest();
 
             let list = [];
@@ -27,15 +48,14 @@
                     let title = json["title"];
                     let info = document.getElementById("payment").value;
                     let dict = {title: title, info: info};
-                    alert(info);
-                    list.push(dict);
 
-                    //we don t know for sure
+
+                    list.push(dict);
 
                 }
             }
             let information = JSON.stringify(list);
-            http.open("GET", "api/conference/get?id=" + id, true);
+            http.open("GET", "api/user/listener-register", true);
             http.send(information);
 
         } else {

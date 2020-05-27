@@ -7,7 +7,7 @@ from .models import Abstract, Bid, Conference, ConferenceAuthor, ConferenceAutho
 class ConferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conference
-        fields = ('name', 'submissionDeadline', 'reviewDeadline', 'conferenceDate')
+        fields = ('id', 'name', 'submissionDeadline', 'reviewDeadline', 'conferenceDate')
 
     def create(self, validated_data):
         conference = Conference()

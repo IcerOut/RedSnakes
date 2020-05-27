@@ -118,12 +118,23 @@ def add_section(request: HttpRequest):
 
 def get_conference_by_id(request):
     if request.method == 'GET':
+        print("get_conference_by_id --- entered")
         conference_id = request.GET.get ( 'id' )
         conference = Conference.objects.get ( pk=conference_id )
         conference_json = serializers.ConferenceSerializer ( data=conference )
         return JsonResponse ( conference_json , safe=False )
     return HttpResponse ( status=405 )
 
+def listener_register(request):
+    print ( "listener_register --- entered" )
+
+    if request.method == 'GET':
+        print("listener_register --- entered")
+        conf_id = request.GET.get('id')
+        conference = Conference.objects.get(pk=conf_id)
+        conference_json = serializers.ConferenceSerializer(data=conference)
+        return JsonResponse(conference_json, safe=False)
+    return HttpResponse(status=405)
 
 def sign_up(request):
     if request.method == 'POST':
@@ -144,9 +155,10 @@ def sign_up(request):
 
 
 def find_paper(request):
+    print("find_paper --- entered")
     if request.method == 'GET':
         try:
-            paper_id = request.GET.get ( 'id' )
+            paper_id = request.POST.get ( 'id' )
             paper = Conference.objects.get ( pk=paper_id )
             paper_json = serializers.PaperSerializer ( data=paper )
             return JsonResponse ( paper_json , safe=False )

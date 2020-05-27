@@ -83,6 +83,9 @@
 
                         let row = new_tbody.insertRow();
                         let cell = row.insertCell();
+
+
+
                         cell.appendChild(document.createTextNode(conference["name"]));
                         cell = row.insertCell();
                         cell.appendChild(document.createTextNode(conference["submissionDeadline"]));
@@ -99,13 +102,16 @@
 
                         switch (userType) {
                             case "Listener":
-                                button.setAttribute("href", "{% url 'listener_register' %}");
+                                const u = '../listener-register/?name='+conference['name'];
+                                console.log(u);
+                                button.setAttribute("href", u);
                                 break;
                             case "Speaker":
                                 button.setAttribute("href", "{% url 'speaker_register' %}");
                                 break;
                             case "Chair":
-                                button.setAttribute("href", "{% url 'chair_register' %}");
+                                const w = '../chair-register/?name='+conference['name'];
+                                button.setAttribute("href", w);
                                 break;
                             default:
                                 console.log("Invalid user type");

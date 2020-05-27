@@ -1,7 +1,12 @@
 function loadTitle() {
     // Function used by multiple modules
+
+    console.log("loadTitle --- entered");
+
     const UrlParams = new URLSearchParams(window.location.search);
     const id = UrlParams.get("id");
+
+    console.log(id);
 
     let http = new XMLHttpRequest();
     http.onreadystatechange = function () {

@@ -6,6 +6,7 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for loadTitle();-->
+
     <meta charset="UTF-8">
     <title>Conference Chair Sign up</title>
 
@@ -13,10 +14,30 @@
 
 <body onload="loadTitle()">
 <script>
+
+
+    function loadTitle() {
+    // Function used by multiple modules
+
+    console.log("loadTitle --- entered");
+
+    const UrlParams = new URLSearchParams(window.location.search);
+    const name = UrlParams.get("name");
+
+    let title = document.getElementsByClassName("title")[0];
+    title.children[0].innerHTML = name;
+
+}
+
+
     function sendChairInfo() {
         if (document.getElementById("terms").checked === true) {
             const UrlParams = new URLSearchParams(window.location.search);
             const id = UrlParams.get("id");
+
+            alert("Successfuly sent!");
+
+
             let http = new XMLHttpRequest();
             let list = [];
             http.onreadystatechange = function () {
@@ -26,14 +47,8 @@
                     let dict = {title: json["title"]};
                     list.push(dict);
 
-                    //we don t know for sure
-
                 }
             }
-            //WE DON T KNOW FOR SURE
-            let title = JSON.stringify(list);
-            http.open("GET", "api/conference/get?id=" + id, true);
-            http.send(title);
         } else {
             alert("Agree with terms and conditions first");
         }
