@@ -113,12 +113,17 @@ $(document).on('submit', '#conf-form',function(e){
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
             action: 'post'
         },
-        success:function(){
+        done: function()
+        {
             window.location.href = "{% url 'conference_list' %}";
+        },
+        success: function(){
             document.getElementById("post-form").reset();
+            window.location.href = "{% url 'conference_list' %}";
         },
         error : function(xhr,errmsg,err) {
            console.log(xhr.status + ": " + xhr.responseText);
+           window.location.href = "{% url 'conference_list' %}";
         }
     });
 

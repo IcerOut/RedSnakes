@@ -138,12 +138,12 @@
         http.onreadystatechange = purge;
 
         function purge() {
-                if (this.readyState == 4 && this.status == 200) {
+                if (this.readyState === 4 && this.status === 200) {
                     loadedPapers();
                     window.location.href = "{% url 'section_choice' %}";
                 }
 
-            if (this.readyState == 4 && this.status !== 200) {
+            if (this.readyState === 4 && this.status !== 200) {
                 $('#errors').html('');
                 $("#errors").append(this.responseText);
                 $('#errors').css("color", "red");

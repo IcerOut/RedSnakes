@@ -84,10 +84,17 @@
                 http.send(json);
             }
             if (this.readyState === 4 && this.status !== 200) {
-                //TODO
+                $('#errors').html('');
+                $("#errors").append(xhr.status + ": " + xhr.responseText);
+                $('#errors').css("color", "red");
+                setTimeout(fade_out, 5000);
             }
         }
 
+    }
+
+    function fade_out() {
+        $("#errors").fadeOut().empty();
     }
 </script>
 
@@ -157,5 +164,8 @@
         </div>
     </div>
 </form>
+<div id="layout-errors">
+    <p id="errors"></p>
+</div>
 </body>
 </html>

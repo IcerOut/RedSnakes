@@ -39,9 +39,9 @@
         let http = new XMLHttpRequest();
         http.onreadystatechange = purge;
         function purge() {
-                if (this.readyState === 4 && this.status === 200) {
+            if (this.readyState === 4 && this.status === 200) {
                     //FIXME maybe
-                }
+            }
 
             if (this.readyState === 4 && this.status !== 200) {
                 $('#errors').html('');
