@@ -7,6 +7,8 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
     <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 </head>
 
@@ -50,7 +52,9 @@
         {#alert("submit");#}
 
         let http = new XMLHttpRequest();
-        http.onreadystatechange = function () {
+        http.onreadystatechange = purge;
+
+        function purge() {
             if (this.readyState === 4 && this.status === 200) {
                 let json_response = jsonParse(this.responseText);
                 // for each checked checkbox
@@ -79,7 +83,10 @@
                 http.open("POST", "../api/conferences/sendSectionChoices", true);
                 http.send(json);
             }
-        };
+            if (this.readyState === 4 && this.status !== 200) {
+                //TODO
+            }
+        }
 
     }
 </script>

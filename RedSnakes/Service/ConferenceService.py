@@ -13,9 +13,14 @@ class ConferenceService(MainService):
         super().__init__()
 
     def add(self, entity):
+        print(entity)
+        print("dupa:")
+        entity = json.loads(entity)
+        print(entity)
         conference_serializer = serializers.ConferenceSerializer(data=entity)
         if not conference_serializer.is_valid():
-            raise ValueError("Invalid JSON")
+
+            raise ValueError("Invalid JSON", conference_serializer.errors)
         new_conference = conference_serializer.create(conference_serializer.validated_data)
         Conference.save(new_conference)
 
@@ -30,7 +35,7 @@ class ConferenceService(MainService):
         participant_serializer = serializers.Participant(data=participant)
 
         if not participant_serializer.is_valid() or not conference_serializer.is_valid():
-            raise ValueError("Invalid JSON")
+            raise ValueError("Invalid JSON", conference_serializer.errors)
 
         cid = conference.pk
         email = participant.email

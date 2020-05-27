@@ -12,7 +12,7 @@ from RedSnakes.Service.ReviewService import ReviewService
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 
-
+@csrf_exempt
 def conference_list(request):
     if request.method == 'GET':
         service = ConferenceService()
@@ -20,17 +20,36 @@ def conference_list(request):
         return JsonResponse(conferences.data, safe=False)
     return HttpResponse(status=405)
 
-
+# @csrf_exempt
+# def add_new_conference(request):
+#     response_data = {}
+#
+#     if request.method == 'POST':
+#         service = ConferenceService()
+#         service.add(request.body.decode('utf-8'))
+#         return HttpResponse(status=200)
+#     return HttpResponse(status=405)
+@csrf_exempt
 def add_new_conference(request):
     response_data = {}
-
     if request.method == 'POST':
-        service = ConferenceService()
-        service.add(request.body.decode('utf-8'))
-        return HttpResponse(status=200)
-    return HttpResponse(status=405)
+        name = request.POST.get('name')
+        submissionDeadline = request.POST.get('submissionDeadline')
+        reviewDeadline = request.POST.get('reviewDeadline')
+        conferenceDate = request.POST.get('conferenceDate')
 
+        response_data = {'name': name, 'submissionDeadline': submissionDeadline,
+                         'reviewDeadline': reviewDeadline, 'conferenceDate': conferenceDate}
 
+        Conference.objects.create(
+            name=name,
+            submissionDeadline=submissionDeadline,
+            reviewDeadline=reviewDeadline,
+            conferenceDate=conferenceDate
+        )
+        return JsonResponse(response_data)
+
+@csrf_exempt
 def sign_up(request):
     if request.metho == 'POST':
         conference_id = request.POST.get('conference_id')
@@ -42,6 +61,7 @@ def sign_up(request):
         HttpResponse(status=200)
     return HttpResponse(status=405)
 
+@csrf_exempt
 def get_conference_by_id(request):
     if request.method == 'GET':
         conference_id = request.GET.get('id')
@@ -128,7 +148,7 @@ def add_section(request: HttpRequest):
 #         return JsonResponse(response_data)
 #     return HttpResponse(status=405)
 
-
+@csrf_exempt
 def find_paper(request):
     if request.method == 'GET':
         try:

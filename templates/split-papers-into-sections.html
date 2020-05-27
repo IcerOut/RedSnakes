@@ -140,7 +140,7 @@
         function purge() {
                 if (this.readyState == 4 && this.status == 200) {
                     loadedPapers();
-                    //FIXME redirect
+                    window.location.href = "{% url 'section_choice' %}";
                 }
 
             if (this.readyState == 4 && this.status !== 200) {
@@ -154,6 +154,8 @@
         http.open("POST", "../api/review/submitSection", true);
         http.send(json);
     }
+
+
 
     function fade_out() {
         $("#errors").fadeOut().empty();

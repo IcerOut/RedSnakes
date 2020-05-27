@@ -6,6 +6,8 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <meta charset="UTF-8">
 </head>
 <body>
@@ -35,9 +37,27 @@
         let json = JSON.stringify(dict);
 
         let http = new XMLHttpRequest();
+        http.onreadystatechange = purge;
+        function purge() {
+                if (this.readyState === 4 && this.status === 200) {
+                    //FIXME maybe
+                }
+
+            if (this.readyState === 4 && this.status !== 200) {
+                $('#errors').html('');
+                $("#errors").append(this.responseText);
+                $('#errors').css("color", "red");
+                setTimeout(fade_out, 5000);
+            }
+        }
+
         http.open("POST", "../api/speaker/registerr", true);
         http.send(json);
 
+    }
+
+    function fade_out() {
+        $("#errors").fadeOut().empty();
     }
 
     function sendAbstract() {
@@ -60,8 +80,23 @@
         console.log(json);
 
         let http = new XMLHttpRequest();
+        http.onreadystatechange = purge;
+
         http.open("POST", "../api/papers/sendAbstract", true);
         http.send(json);
+        function purge() {
+            if (this.readyState == 4 && this.status == 200) {
+                   // window.location.href = "{% url 'section_choice' %}";
+                    //FIXME maybe
+            }
+
+            if (this.readyState == 4 && this.status !== 200) {
+                $('#errors').html('');
+                $("#errors").append(this.responseText);
+                $('#errors').css("color", "red");
+                setTimeout(fade_out, 5000);
+            }
+        }
     }
 </script>
 <style>
@@ -176,6 +211,8 @@
     </form>
     <p>Paper deadline:</p>
 </div>
-
+<div id="layout-errors">
+    <p id="errors"></p>
+</div>
 </body>
 </html>

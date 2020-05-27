@@ -5,6 +5,8 @@
     <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
         <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();loadTitle();-->
     <meta charset="UTF-8">
     <title>Listener Sign up</title>
@@ -21,7 +23,10 @@
             let http = new XMLHttpRequest();
 
             let list = [];
-            http.onreadystatechange = function () {
+            http.onreadystatechange = purge;
+
+
+            function purge() {
                 if (this.readyState === 4 && this.status === 200) {
                     let json = jsonParse(this.responseText);
                     let title = json["title"];
@@ -29,18 +34,28 @@
                     let dict = {title: title, info: info};
                     alert(info);
                     list.push(dict);
-
                     //we don t know for sure
-
+                    //FIXME redirect where?
                 }
+                if (this.readyState === 4 && this.status !== 200) {
+                    $('#errors').html('');
+                    $("#errors").append(this.responseText);
+                    $('#errors').css("color", "red");
+                    setTimeout(fade_out, 5000);
+                }
+
             }
             let information = JSON.stringify(list);
             http.open("GET", "api/conference/get?id=" + id, true);
             http.send(information);
 
         } else {
-            alert("Agree with terms and coditions first");
+            alert("Firstly, you need to agree with terms and conditions");
         }
+    }
+
+    function fade_out() {
+        $("#errors").fadeOut().empty();
     }
 </script>
 <style>
@@ -107,6 +122,9 @@
         <input type="checkbox" id="terms"><br>
         <button type="submit" onclick="sendListenerInfo()">Register</button>
     </form>
+</div>
+<div id="layout-errors">
+    <p id="errors"></p>
 </div>
 </body>
 </html>
