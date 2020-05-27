@@ -48,6 +48,14 @@
             let json = JSON.stringify(result);
 
             let http = new XMLHttpRequest();
+            http.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    $('#errors').html('');
+                    $('#errors').append("Successfully assigned!");
+                    setTimeout(fade_out, 5000);
+
+                }
+            }
             http.open("POST", "../api/papers/sendReviewer", true);
             http.send(json);
         }
@@ -90,7 +98,7 @@
                     }
                     table.replaceChild(new_tbody, old_tbody);
                      $('#errors').html('');
-                    $('#errors').append("succesfully loaded papers");
+                    $('#errors').append("Successfully loaded papers");
                     setTimeout(fade_out, 5000);
                 }
                  if (this.readyState === 4 && this.status !== 200) {
