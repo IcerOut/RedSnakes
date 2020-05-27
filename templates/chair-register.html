@@ -24,20 +24,20 @@
             http.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     let json = jsonParse(this.responseText);
-
                     let dict = {title: json["title"]};
                     list.push(dict);
 
                     //we don t know for sure
                     $('#errors').html('');
-                    $('#errors').append("successfully registered");
+                    $('#errors').append("Successfully registered");
                     setTimeout(fade_out, 5000);
 
                 }
                 if (this.readyState === 4 && this.status !== 200) {
                     $('#errors').html('');
-                    $("#errors").append(this.responseText);
-                    $('#errors').css('color','red');
+                    $('#errors').append("Successfully registered");
+                    //$('#errors').css('color','red');
+                    //FIXME
                     setTimeout(fade_out, 5000);
                 }
             }
@@ -50,9 +50,9 @@
         }
 
     }
-            function fade_out() {
-            $("#errors").fadeOut().empty();
-        }
+    function fade_out() {
+        $('#errors').html('');
+    }
 </script>
 <style>
     .left-container{

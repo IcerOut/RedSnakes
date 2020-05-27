@@ -32,16 +32,11 @@
                     let title = json["title"];
                     let info = document.getElementById("payment").value;
                     let dict = {title: title, info: info};
-                    alert(info);
                     list.push(dict);
-                    //we don t know for sure
-                    //FIXME redirect where?
+                    window.location.href = "{% url 'conference_list' %}";
                 }
                 if (this.readyState === 4 && this.status !== 200) {
-                    $('#errors').html('');
-                    $("#errors").append(this.responseText);
-                    $('#errors').css("color", "red");
-                    setTimeout(fade_out, 5000);
+                    window.location.href = "{% url 'conference_list' %}";
                 }
 
             }
@@ -55,7 +50,8 @@
     }
 
     function fade_out() {
-        $("#errors").fadeOut().empty();
+        $('#errors').html('');
+
     }
 </script>
 <style>
