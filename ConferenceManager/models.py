@@ -15,7 +15,6 @@ class Login(models.Model):
     def __unicode__(self):
         return self.email
 
-
 class SteeringCommittee(models.Model):
     email = models.OneToOneField(Login, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=32, null=False)
