@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluation</title>
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--Used for jsonParse();-->
+    <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
+    <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<style>
+    #layout-errors {
+        margin-left: 42%;
+        font-size: 10px;
+        font-style: italic;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        text-align: center;
+    }
+</style>
+<body onload="getEvaluationPapers()">
+
+<script>
+    function getEvaluationPapers() {
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let table = document.getElementsByTagName("table")[0];
+                let old_tbody = document.getElementsByTagName("tbody")[0];
+                let new_tbody = document.createElement('tbody');
+
+                let json = jsonParse(this.responseText);
+
+                for (let i = 0; i < json.length; i++) {
+                    let paper = json[i];
+
+                    let row = new_tbody.insertRow();
+                    let cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["paperId"]["title"]));
+                    cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["paperId"]["text"]));
+                    cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["paperId"]["authorId"]["cId"]["name"]));
+                    console.log(paper["paperId"]["authorId"]["cId"]["name"]);
+                    cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["paperId"]["authorId"]["pEmail"]["email"]["email"]));
+                    cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(paper["path"]));
+
+                    let button = document.createElement("a");
+                    button.classList.add("button-link");
+                    button.innerHTML = "Evaluate";
+
+                    button.setAttribute("href", "../review/?id=" + paper["id"]);
+
+                    cell = row.insertCell();
+                    cell.appendChild(button);
+                }
+                table.replaceChild(new_tbody, old_tbody);
+                    $('#errors').html('');
+                    $('#errors').append("Successfully loaded papers!");
+                    setTimeout(fade_out, 5000);
+
+            }
+            if (this.readyState === 4 && this.status !== 200) {
+                    $('#errors').html('');
+                    $("#errors").append(this.responseText);
+                    $('#errors').css('color','red');
+                    setTimeout(fade_out, 5000);
+                }
+
+        };
+        http.open("GET", "../api/papers/getAll", true);
+        http.send(null);
+    }
+            function fade_out() {
+            $('#errors').html('');
+        }
+</script>
+<div class="navbar">
+  <a href='{% url "home" %}'><img src="{% static 'favicon.ico' %}" height="25" width="25"></a>
+  <a href='{% url "conference_list" %}'>Conference List</a>
+  {% if request.user.is_authenticated %}
+    <a href='{% url "section_choices" %}'>Section Choices</a>
+    {% if request.user.first_name == "Speaker" or request.user.first_name == "Chair"%}
+      <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
+    {% endif %}
+      {% if request.user.first_name == "Chair" %}
+        <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
+          <div class="dropdown">
+            <button class="dropbtn">Administrative functions &darr;
+            </button>
+            <div class="dropdown-content">
+                <a href='{% url "assign_reviewers" %}'>Assign Reviewers</a>
+                <a href='{% url "bidding" %}'>Bidding</a>
+                <a href='{% url "evaluation" %}'>Evaluation</a>
+                <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
+            </div>
+          </div>
+    {% endif %}
+  {% endif %}
+
+  <div class = "navbar-right">
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'account_logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'account_login' %}">Login</a>
+        <a href="{% url 'account_signup' %}">Sign-up</a>
+    {% endif %}
+    </div>
+</div>
+<div class="center-container">
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Paper title</th>
+                <th>Paper abstract</th>
+                <th>Conference name</th>
+                <th>Author email</th>
+                <th>File URL</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+    <div id="layout-errors">
+        <p id="errors"></p>
+    </div>
+
+</body>
+</html>

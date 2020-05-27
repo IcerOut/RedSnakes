@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>{% block head_title %}{% endblock %}</title>
+
+
+    {% block extra_head %}
+    {% endblock %}
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
+
+
+  <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+html {
+    height: 100%;
+    width: 1000px;
+    color: #a9b7c6;
+       height: 100%;
+    width: 1000px;
+    background-color: hsla(200,40%,30%,.4);
+    background-image:
+            url("/static/media/abstract3.jpg"),
+            url("/static/media/abstract3.jpg");
+    background-blend-mode: multiply;
+    background-repeat: repeat-x, repeat-x;
+    background-position: 0px 0px, 0px 0px;
+    background-size: 2000px, 4000px;
+    animation: animateSun 50s infinite linear;
+    color: #a9b7c6;
+}
+body{
+    height: 300px;
+    width: 350px;
+    {#margin-left: 450px;#}
+    {#margin-top: 100px;#}
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #a9b7c6;
+}
+
+@keyframes animateSun{
+    from {background-position: 0 0, 0 0;}
+    to {background-position: 10px 10%, 100% 0;}
+}
+h5 {
+    padding: 7px;
+    color: white;
+    font-size: 20px;
+    background-color: rgb(3, 80, 3);
+}
+form{
+    padding: 5px;
+}
+label{
+    padding: 10px;
+    font-size: 20px;
+}
+input {
+    text-align: center;
+    padding: 5px;
+    width: 250px;
+    font-size: 15px;
+    margin-left: 50px;
+}
+
+input[type="submit"], button{
+    background: #252525;
+    padding: 10px 20px;
+    border: 1px solid #1a1a1a;
+    color: #a9b7c6;
+    margin-left:auto;
+    margin-right:auto;
+}
+input[type="submit"]:hover, button:hover{
+    background-color: #214283;
+}
+#upnav li{
+    display: inline-block;
+    padding: 5px;
+    margin:5px;
+    list-style-type: none;
+}
+
+#upnav a{
+    color: #a9b7c6;
+}
+
+.errorlist{
+    color:red;
+    list-style-type: none;
+}
+
+  </style>
+
+  </head>
+  <body>
+    {% block body %}
+
+    {% if messages %}
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div id="upnav">
+      <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">Sign In</a></li>
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </div>
+    {% block content %}
+    {% endblock %}
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+
+  </body>
+</html>

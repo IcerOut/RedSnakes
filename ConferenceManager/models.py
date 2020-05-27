@@ -1,195 +1,151 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
-# Create your models here.
-class Organization(models.Model):
-    """
-    Stores the information about an Organization
-    Fields:
-        Title - Varchar(255)
-    """
-    # OrganizationID = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=255)
+class Login(models.Model):
+    email = models.CharField(max_length=100, primary_key=True)
+    password = models.CharField(max_length=32, null=False)
 
     def __str__(self):
-        return f'Organization[Title={self.title}]'
+        return str(self.email)
 
-    __repr__ = __str__
+    def __unicode__(self):
+        return self.email
 
-
-class User(models.Model):
-    """
-    Stores the information about an User
-    Fields:
-        Organization - FK
-        UserCategory - Varchar(255)
-        Affiliation - Varchar(255)
-        Email - Varchar()
-        FullName - Varchar(255)
-        LocationX - float
-        LocationY - float
-        PhotoURL - varchar(255)
-        Street - varchar(255)
-    """
-    organization = models.ForeignKey(Organization, on_delete=models.PROTECT)
-    userCategory = models.CharField(max_length=255)
-    affiliation = models.CharField(max_length=255)
-    email = models.EmailField()
-    fullName = models.CharField(max_length=255)
-    userName = models.CharField(max_length=255)
-    webPage = models.CharField(max_length=255)
-
-
-    def createAccount(self):
-        """
-        Create an account
-        """
-        pass
-
-    def logIn(self):
-        """
-        Log in into account
-        """
-        pass
-
-    def logOut(self):
-        """
-         Log out
-        """
-        pass
-
+class SteeringCommittee(models.Model):
+    email = models.OneToOneField(Login, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=32, null=False)
+    website = models.CharField(max_length=32, null=False)
+    affiliation = models.CharField(max_length=32, null=False)
 
     def __str__(self):
-        return f'User[FullName = {self.fullName}]'
+        return self.email
 
-    __repr__ = __str__
+    def __unicode(self):
+        return self.email
 
+
+class Participant(models.Model):
+    email = models.OneToOneField(Login, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=32, null=False)
+    website = models.CharField(max_length=32, null=False)
+    affiliation = models.CharField(max_length=32, null=False)
+
+    def __str__(self):
+        return str(self.email)
+
+    def __unicode(self):
+        return self.email
 
 
 class Conference(models.Model):
-    """
-    Stores the information about a Conference
-    Fields:
-        -category: Varchar(50)
-        -deadlineAbstract: date
-        -deadlineBiding: date
-        -deadlinePaper: date
-        -deadlineReview: date
-        -descriprion: text
-        -email: string
-        -startDate: date
-        -endDate: date
-        -ownerEmail: string
-        -price: float
-        -researchTopics: string
-        -title: Varchar(50)
-        -website:Varchar(50)
-    """
-    category = models.CharField(max_length=50)
-    deadlineAbstract = models.DateField()
-    deadlineBiding = models.DateField()
-    deadlinePaper = models.DateField()
-    deadlineReview = models.DateField()
-    description = models.TextField()
-    email = models.EmailField()
-    startDate = models.DateField()
-    endDate = models.DateField()
-    ownerEmail = models.DateField()
-    price = models.FloatField()
-    researchTopics = models.CharField(max_length=50)
-    title = models.CharField(max_length=50)
-    website = models.CharField(max_length=50)
+    name = models.CharField(max_length=32, null=False)
+    submissionDeadline = models.DateField(null=False)
+    reviewDeadline = models.DateField(null=False)
+    conferenceDate = models.DateField(null=False)
 
     def __str__(self):
-        return f'Conference[Title = {self.title}]'
+        return self.name
 
-    __repr__ = __str__
+    def _unicode(self):
+        return self.name
 
 
-class ConferenceCategory(models.Model):
-    """
-        Stores the information about a ConferenceCategory
-        Fields:
-            title: varchar(255)
-            conference = FK of Conference
-    """
-    title = models.CharField(max_length=255)
-    conference = models.ForeignKey(Conference, on_delete=models.PROTECT)
-
+class ConferenceAuthor(models.Model):
+    pEmail = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    cId = models.ForeignKey(Conference, on_delete=models.CASCADE)
+    rank = models.CharField(max_length=32, default='listener')
 
     def __str__(self):
-        return f'ConferenceCategory[Title = {self.title} , Conference = {self.conference}]'
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
 
-    __repr__ = __str__
+    def __unicode(self):
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
 
 
-class ResearchTopic(models.Model):
-    """
-    Stores information about a ResearchTopic
-    Fields:
-        category: varchar(255)
-        conferenceCategory: FK references ConferenceCategory
-        name: varchar(255)
-    """
-    category = models.CharField(max_length=255)
-    conferenceCategory = models.ForeignKey(ConferenceCategory, on_delete=models.PROTECT)
-    name = models.CharField(max_length=255)
+class ProgramCommitteeMember(models.Model):
+    pEmail = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    cId = models.ForeignKey(Conference, on_delete=models.CASCADE)
+    rank = models.CharField(max_length=32, default='listener')
 
     def __str__(self):
-        return f'ResearchTopic[Category = {self.category}, ConferenceCategory = {self.conferenceCategory}, Name = {self.name} ]'
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
 
-    __repr__ = __str__
+    def __unicode(self):
+        return str(self.pEmail) + ' ' + str(self.cId) + ' ' + self.rank
+
+
+class ConferenceSession(models.Model):
+    pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, null=False)
+
+    def __str__(self):
+        return str(self.pcId) + ' ' + str(self.title)
+
+    def __unicode__(self):
+        return str(self.pcId) + ' ' + str(self.title)
+
+
+class ConferenceAuthorSession(models.Model):
+    conferenceAuthorId = models.ForeignKey(ConferenceAuthor, on_delete=models.CASCADE)
+    conferenceSessionId = models.ForeignKey(ConferenceSession, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.conferenceAuthorId) + ' ' + str(self.conferenceSessionId)
+
+    def __unicode__(self):
+        return str(self.conferenceAuthorId) + ' ' + str(self.conferenceSessionId)
+
+
+class Abstract(models.Model):
+    authorId = models.OneToOneField(ConferenceAuthor, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255, null=False, default='')
+    title = models.CharField(max_length=32, null=False)
+
+    def __str__(self):
+        return str(self.authorId) + ' ' + self.title
+
+    def __unicode__(self):
+        return str(self.authorId) + ' ' + self.title
 
 
 class Paper(models.Model):
-    """
-    Stores information about a Paper
-    Fields:
-        authorEmail: varchar(255)
-        conference: FK references Conference
-        conferenceName: varchar(255)
-        fileURL: varchar(255)
-        status: varchar(255)
-        timestamp: varchar(255)
-        abstract: varchar(10000)
-        title: varchar(255)
-    """
-    authorEmail = models.EmailField()
-    conference = models.ForeignKey(Conference, on_delete=models.PROTECT)
-    conferenceName = models.CharField(max_length=255)
-    fileURL = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
-    timestamp = models.CharField(max_length=255)
-    abstract = models.CharField(max_length=1000)
-    title = models.CharField(max_length=255)
+    paperId = models.OneToOneField(Abstract, on_delete=models.CASCADE)
+    path = models.CharField(max_length=255, null=False)
+    accepted = models.BooleanField(null=True)
 
     def __str__(self):
-        return f'Paper[AuthorEmail = {self.authorEmail}, conference = {self.conference}, , fileURL = {self.fileURL}, status = {self.status}, timestamp = {self.timestamp}, abstract = {self.abstract}, title = {self.title}]'
+        return str(self.paperId)
 
-    __repr__ = __str__
+    def __unicode__(self):
+        return str(self.paperId)
 
 
-class Review:
-    """
-    Stores information about a Review
-    Fields:
-        user: FK references User
-        paper: FK references Paper
-        assignedReviewerEmail: varchar(255)
-        conferenceName: varchar(255)
-        paperTitle: varchar(255)
-        review: varchar(255)
-        status: varchar(255)
-    """
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    paper = models.ForeignKey(Paper, on_delete=models.PROTECT)
-    assignedReviewerEmail = models.CharField(max_length=255)
-    conferenceName = models.CharField(max_length=255)
-    paperTitle = models.CharField(max_length=255)
-    review = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+class Review(models.Model):
+    paperId = models.ForeignKey(Paper, on_delete=models.CASCADE)
+    pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    status = models.CharField(max_length=32, null=False, default='borderline')
+    justification = models.CharField(max_length=5000, null=False, default='-')
+    recommendations = models.CharField(max_length=5000, null=False, default='-')
 
     def __str__(self):
-        return f'Review[User = {self.user}, Paper = {self.paper}, AssignedReviewerEmail = {self.assignedReviewerEmail}, ConferenceName = {self.conferenceName}, Review = {self.review}, status = {self.status}]'
+        return str(self.paperId) + ' ' + str(self.pcId) + ' ' + self.status
 
-    __repr__ = __str__
+    def __unicode__(self):
+        return str(self.paperId) + ' ' + str(self.pcId) + ' ' + self.status
+
+
+class Bid(models.Model):
+    abstractId = models.ForeignKey(Abstract, on_delete=models.CASCADE)
+    pcId = models.ForeignKey(ProgramCommitteeMember, on_delete=models.CASCADE)
+    status = models.BooleanField()
+    chosenToReview = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status) + ' ' + str(self.chosenToReview)
+
+    def __unicode__(self):
+        return str(self.abstractId) + ' ' + str(self.pcId) + ' ' + str(self.status) + ' ' + str(self.chosenToReview)

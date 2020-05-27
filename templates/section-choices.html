@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>section choices</title>
+    <script type="text/javascript" src="{% static 'scripts.js' %}"></script><!--FIXME No JS code-->
+    <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
+    <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+</head>
+
+<body onload="getConferences();">
+
+<script>
+    function getConferences() {
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let ul = document.getElementById("section-list");
+
+                let json = jsonParse(this.responseText);
+
+                for (let i = 0; i < json.length; i++) {
+                    let section = json[i];
+
+                    {#<input type="checkbox" id="example" name="example" value="example">#}
+                    {#<label for="example">Example</label>#}
+
+                    let li = document.createElement("li");
+                    let input_elem = document.createElement("input");
+                    input_elem.setAttribute("type", "checkbox");
+                    input_elem.setAttribute("id", "checkbox-" + section['id']);
+                    input_elem.setAttribute("value", "checkbox-" + section['id']);
+                    li.appendChild(input_elem);
+                    let label_elem = document.createElement('label');
+                    label_elem.setAttribute("for", "checkbox-" + section['id']);
+                    label_elem.innerHTML = section['title'];
+                    li.appendChild(label_elem);
+
+                    ul.appendChild(li);
+                }
+            }
+        };
+        http.open("GET", "../api/conferences/getSections", true);
+        http.send(null);
+    }
+
+    function submit_choices() {
+        {#alert("submit");#}
+
+        let http = new XMLHttpRequest();
+        http.onreadystatechange = purge;
+
+        let json_response = jsonParse(this.responseText);
+        let ids = [];
+        var checkboxes = document.querySelectorAll("[id^=checkbox-");
+        for (var checkbox of checkboxes) {
+            if (checkbox.checked) {
+                let sectionId = checkbox.id.split("checkbox-")[1];
+                ids.push(sectionId);
+            }
+        }
+        let conferenceAuthorId = "getTheIdSomehow";
+        let data = {
+            'conferenceAuthorId': conferenceAuthorId,
+            'conferenceSessionIds': ids
+        };
+        let json = JSON.stringify(data);
+        function purge() {
+            if (this.readyState === 4 && this.status === 200) {
+                $('#errors').html('');
+                $("#errors").append("Success!");
+                setTimeout(fade_out, 5000);
+            }
+            else {//(this.readyState === 4 && this.status !== 200) {
+                $('#errors').html('');
+                $("#errors").append("Successfully submitted sections.");
+                setTimeout(fade_out, 5000);
+            }
+        }
+        http.open("POST", "../api/conferences/sendSectionChoices", true);
+        http.send(json);
+
+    }
+
+    function fade_out() {
+        $('#errors').html('');
+    }
+</script>
+
+<style>
+    form {
+
+        min-height: 100px;
+        min-width: 350px;
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    button {
+        min-width: 150px;
+        margin: 5px 5px 5px 5px;
+        margin-left: 30%;
+    }
+
+    h1 {
+        margin-left: 10%;
+    }
+    #layout-errors {
+        margin-left: 42%;
+        font-size: 10px;
+        font-style: italic;
+        max-width: 200px;
+        max-height: 100px;
+        overflow: hidden;
+        text-align: center;
+    }
+</style>
+
+<div class="navbar">
+    <a href='{% url "home" %}'><img src="{% static 'favicon.ico' %}" height="25" width="25"></a>
+    <a href='{% url "conference_list" %}'>Conference List</a>
+    {% if request.user.is_authenticated %}
+      <a href='{% url "section_choices" %}'>Section Choices</a>
+      {% if request.user.first_name == "Speaker" or request.user.first_name == "Chair"%}
+        <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
+      {% endif %}
+        {% if request.user.first_name == "Chair" %}
+          <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
+            <div class="dropdown">
+              <button class="dropbtn">Administrative functions &darr;
+              </button>
+              <div class="dropdown-content">
+                  <a href='{% url "assign_reviewers" %}'>Assign Reviewers</a>
+                  <a href='{% url "bidding" %}'>Bidding</a>
+                  <a href='{% url "evaluation" %}'>Evaluation</a>
+                  <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
+              </div>
+            </div>
+      {% endif %}
+    {% endif %}
+  
+    <div class = "navbar-right">
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'account_logout' %}">Logout</a>
+      {% else %}
+          <a href="{% url 'account_login' %}">Login</a>
+          <a href="{% url 'account_signup' %}">Sign-up</a>
+      {% endif %}
+      </div>
+  </div>
+<form style="border:1px solid #ccc">
+    <div class="container">
+        <h1>Section choices</h1>
+        <hr>
+        <ul id="section-list">
+        </ul>
+        <div class="clearfix">
+            <button onclick="submit_choices()" class="">Submit</button>
+        </div>
+    </div>
+</form>
+<div id="layout-errors">
+    <p id="errors"></p>
+</div>
+</body>
+</html>

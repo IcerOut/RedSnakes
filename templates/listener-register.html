@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel='stylesheet' type="text/css" href="{% static 'css/stylesheet.css' %}">
+        <link rel='stylesheet' type="text/css" href="{% static 'css/navbar.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="scripts.js"></script><!--Used for jsonParse();loadTitle();-->
+    <meta charset="UTF-8">
+    <title>Listener Sign up</title>
+
+</head>
+
+<body onload="loadTitle()">
+<script>
+
+function loadTitle() {
+    // Function used by multiple modules
+
+    console.log("loadTitle --- entered");
+
+    const UrlParams = new URLSearchParams(window.location.search);
+    const name = UrlParams.get("name");
+
+
+    let title = document.getElementsByClassName("title")[0];
+    title.children[0].innerHTML = name;
+
+}
+
+    function sendListenerInfo() {
+        if (document.getElementById("terms").checked === true) {
+
+            const UrlParams = new URLSearchParams(window.location.search);
+            const id = UrlParams.get("id");
+            let http = new XMLHttpRequest();
+
+            let list = [];
+            http.onreadystatechange = purge;
+
+
+            function purge() {
+                if (this.readyState === 4 && this.status === 200) {
+                    let json = jsonParse(this.responseText);
+                    let title = json["title"];
+                    let info = document.getElementById("payment").value;
+                    let dict = {title: title, info: info};
+                    list.push(dict);
+                    window.location.href = "{% url 'conference_list' %}";
+                }
+                else{ // (this.readyState === 4 && this.status !== 200) {
+                    window.location.href = "{% url 'conference_list' %}";
+                }
+
+            }
+            let information = JSON.stringify(list);
+            http.open("GET", "api/conference/get?id=" + id, true);
+            http.send(information);
+
+        } else {
+            alert("Firstly, you need to agree with terms and conditions");
+        }
+    }
+
+    function fade_out() {
+        $('#errors').html('');
+
+    }
+</script>
+<style>
+    form input{
+        display: inline-block;
+    }
+
+    button, input[type="text"]{
+        margin: 10px;
+        min-width: 200px;
+    }
+
+    label{
+        margin-left: 12px;
+    }
+
+    .left-container{
+        margin-top: 12%;
+        margin-left: 30%;
+        max-width: 500px;
+    }
+
+</style>
+<div class="navbar">
+  <a href='{% url "home" %}'><img src="{% static 'favicon.ico' %}" height="25" width="25"></a>
+  <a href='{% url "conference_list" %}'>Conference List</a>
+  {% if request.user.is_authenticated %}
+    <a href='{% url "section_choices" %}'>Section Choices</a>
+    {% if request.user.first_name == "Speaker" or request.user.first_name == "Chair"%}
+      <a href='{% url "evaluation_results" %}'>Evaluation Results</a>
+    {% endif %}
+      {% if request.user.first_name == "Chair" %}
+        <a href='{% url "submit_new_conference" %}'>Submit Conference</a>
+          <div class="dropdown">
+            <button class="dropbtn">Administrative functions &darr;
+            </button>
+            <div class="dropdown-content">
+                <a href='{% url "assign_reviewers" %}'>Assign Reviewers</a>
+                <a href='{% url "bidding" %}'>Bidding</a>
+                <a href='{% url "evaluation" %}'>Evaluation</a>
+                <a href='{% url "review"%}'>Review</a>
+                <a href='{% url "split_papers_into_sections" %}'>Split Papers Into Sections</a>
+            </div>
+          </div>
+    {% endif %}
+  {% endif %}
+
+  <div class = "navbar-right">
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'account_logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'account_login' %}">Login</a>
+        <a href="{% url 'account_signup' %}">Sign-up</a>
+    {% endif %}
+    </div>
+</div>
+<div class="left-container" style="border: 1px solid #808080;">
+    <div class="title">
+        <h1></h1>
+    </div>
+    <form>
+        <input type="text" id="payment" placeholder="Payment Information..."><br>
+        <label for="terms"> I agree with terms and conditions</label>
+        <input type="checkbox" id="terms"><br>
+        <button type="submit" onclick="sendListenerInfo()">Register</button>
+    </form>
+</div>
+</body>
+</html>
