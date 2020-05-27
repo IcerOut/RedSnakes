@@ -18,7 +18,7 @@
         console.log("Entered speakerRegister");
 
         let title = document.getElementById("title").value;
-        if(title=="")
+        if(title==="")
         {
             document.getElementById("elem").style.display="block";
             return;
@@ -42,13 +42,6 @@
             if (this.readyState === 4 && this.status === 200) {
                     //FIXME maybe
             }
-
-            if (this.readyState === 4 && this.status !== 200) {
-                $('#errors').html('');
-                $("#errors").append(this.responseText);
-                $('#errors').css("color", "red");
-                setTimeout(fade_out, 5000);
-            }
         }
 
         http.open("POST", "../api/speaker/registerr", true);
@@ -56,14 +49,10 @@
 
     }
 
-    function fade_out() {
-        $("#errors").fadeOut().empty();
-    }
-
     function sendAbstract() {
 
         let title = document.getElementById("title").value;
-        if(title=="")
+        if(title==="")
         {
             document.getElementById("elem").style.display="block";
             return;
@@ -80,23 +69,9 @@
         console.log(json);
 
         let http = new XMLHttpRequest();
-        http.onreadystatechange = purge;
 
         http.open("POST", "../api/papers/sendAbstract", true);
         http.send(json);
-        function purge() {
-            if (this.readyState == 4 && this.status == 200) {
-                   // window.location.href = "{% url 'section_choice' %}";
-                    //FIXME maybe
-            }
-
-            if (this.readyState == 4 && this.status !== 200) {
-                $('#errors').html('');
-                $("#errors").append(this.responseText);
-                $('#errors').css("color", "red");
-                setTimeout(fade_out, 5000);
-            }
-        }
     }
 </script>
 <style>
@@ -193,7 +168,6 @@
 
     </ul>
     <button id="sendAbstr" onclick="sendAbstract()" class="btn">Send Abstract</button>
-    <p id="deadline">Abstract deadline: </p>
 
 </div>
 
@@ -209,10 +183,6 @@
         <input type="file" name="mile" accept="application/pdf" />
         <input type="submit">
     </form>
-    <p>Paper deadline:</p>
-</div>
-<div id="layout-errors">
-    <p id="errors"></p>
 </div>
 </body>
 </html>
